@@ -1,0 +1,9 @@
+query GetLoginUser {
+  loginUser {
+    id
+    image
+    name
+    userId
+    email
+  }
+}

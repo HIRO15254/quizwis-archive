@@ -1,0 +1,32 @@
+// "use client";
+
+// 各種import
+import React from 'react';
+
+// Propsの型定義
+interface ComponentProps {
+
+}
+
+/**
+ * 説明
+ */
+export const Component: React.FC<ComponentProps> = (props) => {
+  const {
+    
+  } = props;
+
+  // reactのhookの宣言
+  // nextのhookの宣言
+  // その他ライブラリのhookの宣言
+  // 自作のhookの宣言
+
+  // その他必要な関数の宣言
+
+  // 部分的なコンポーネントの宣言
+
+  // 実際のコンポーネント
+  return (
+    
+  );
+};
