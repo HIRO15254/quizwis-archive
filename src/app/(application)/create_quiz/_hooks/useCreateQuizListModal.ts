@@ -29,8 +29,8 @@ export const useCreateQuizListModal = (props: UseCreateQuizListModalProps) => {
     handlers.close();
   };
 
-  const onSubmit = form.onSubmit((values) => {
-    createQuizList({
+  const onSubmit = form.onSubmit(async (values) => {
+    await createQuizList({
       variables: {
         input: {
           name: values.name,

@@ -53,7 +53,7 @@ model User {
 }
 
 model QuizList {
-  id String @id @default(cuid())
+  databaseId String @id @default(cuid())
   name String
   description String?
 
@@ -62,31 +62,37 @@ model QuizList {
 
   quizzes Quiz[]
   genreSetId String?
-  genreSet GenreSet? @relation(fields: [genreSetId], references: [id], onDelete: Cascade)
+  genreSet GenreSet? @relation(fields: [genreSetId], references: [databaseId], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Quiz {
-  id String @id @default(cuid())
+  databaseId String @id @default(cuid())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  quizList QuizList @relation(fields: [quizlistId], references: [id], onDelete: Cascade)
+  quizList QuizList @relation(fields: [quizlistId], references: [databaseId], onDelete: Cascade)
 
   question String?
   answer String?
   explanation String?
 
-  genre Genre? @relation(fields: [genreId], references: [id], onDelete: Cascade)
+  genre Genre? @relation(fields: [genreId], references: [databaseId], onDelete: Cascade)
 
   genreId String?
   quizlistId String
   userId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Genre {
-  id String @id @default(cuid())
+  databaseId String @id @default(cuid())
 
-  genreSet GenreSet @relation(fields: [genreSetId], references: [id], onDelete: Cascade)
-  parentGenre Genre? @relation("GenreTree", fields: [parentGenreId], references: [id], onDelete: Cascade)
+  genreSet GenreSet @relation(fields: [genreSetId], references: [databaseId], onDelete: Cascade)
+  parentGenre Genre? @relation("GenreTree", fields: [parentGenreId], references: [databaseId], onDelete: Cascade)
 
   name String
   description String?
@@ -97,10 +103,13 @@ model Genre {
 
   genreSetId String
   parentGenreId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model GenreSet {
-  id String @id @default(cuid())
+  databaseId String @id @default(cuid())
 
   genres Genre[]
 
@@ -111,6 +120,9 @@ model GenreSet {
 
   quizLists QuizList[]
   userId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum UserRole {

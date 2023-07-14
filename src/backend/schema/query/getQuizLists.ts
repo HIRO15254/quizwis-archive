@@ -25,6 +25,7 @@ builder.queryField('getQuizLists', (t) => t.prismaField({
     const ret = await prisma.quizList.findMany({
       ...query,
       where: { user: { id: user?.id } },
+      orderBy: { updatedAt: 'desc' },
     });
     return ret;
   },

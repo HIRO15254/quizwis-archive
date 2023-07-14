@@ -1,0 +1,8 @@
+mutation UpdateQuizList($input: UpdateQuizListInput!) {
+  updateQuizList(input: $input) {
+    description
+    name
+    id
+    databaseId
+  }
+}

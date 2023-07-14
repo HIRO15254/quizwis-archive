@@ -1,14 +1,18 @@
 'use client';
 
 // 各種import
-import { Title } from '@mantine/core';
+import { Title, Paper, Group } from '@mantine/core';
 import React, { useEffect } from 'react';
 
 import { useGetQuizListsLazyQuery } from 'gql';
 
 import { useCreateQuizListModal } from '../../../_hooks/useCreateQuizListModal';
+import { useDeleteQuizListModal } from '../../../_hooks/useDeleteQuizListModal';
+import { useUpdateQuizListModal } from '../../../_hooks/useUpdateQuizListModal';
 import { CreateQuizListModal } from '../../presenter/CreateQuizListModal';
+import { DeleteQuizListModal } from '../../presenter/DeleteQuizListModal';
 import { QuizListTable } from '../../presenter/QuizListTable';
+import { UpdateQuizListModal } from '../../presenter/UpdateQuizListModal';
 
 /**
  * クイズリストの一覧表示
@@ -21,6 +25,18 @@ export const QuizListTableContainer: React.FC = () => {
     form: createQuizListModalForm,
     onSubmit: onCreateQuizListFormSubmit,
   } = useCreateQuizListModal({ reload });
+  const {
+    opened: deleteQuizListModalOpened,
+    handlers: deleteQuizListModalHandlers,
+    name: deleteQuizListModalName,
+    onDelete: onDeleteQuizList,
+  } = useDeleteQuizListModal({ reload });
+  const {
+    opened: updateQuizListModalOpened,
+    handlers: updateQuizListModalHandlers,
+    onSubmit: onUpdateQuizListFormSubmit,
+    form: updateQuizListModalForm,
+  } = useUpdateQuizListModal({ reload });
 
   useEffect(() => {
     reload();
@@ -28,19 +44,35 @@ export const QuizListTableContainer: React.FC = () => {
 
   // 実際のコンポーネント
   return (
-    <>
-      <Title order={1}>問題リスト一覧</Title>
-      <CreateQuizListModal
-        opened={createQuizListModalOpened}
-        form={createQuizListModalForm}
-        onClose={createQuizListModalHandlers.close}
-        onSubmit={onCreateQuizListFormSubmit}
-      />
-      <QuizListTable
-        data={data?.getQuizLists ?? []}
-        loading={loading}
-        openCreateQuizListModal={createQuizListModalHandlers.open}
-      />
-    </>
+    <Group position="center" pb="sm">
+      <Paper w="100%" maw={800} p="xl" shadow="xs">
+        <Title order={1}>問題リスト一覧</Title>
+        <CreateQuizListModal
+          opened={createQuizListModalOpened}
+          form={createQuizListModalForm}
+          onClose={createQuizListModalHandlers.close}
+          onSubmit={onCreateQuizListFormSubmit}
+        />
+        <DeleteQuizListModal
+          name={deleteQuizListModalName}
+          opened={deleteQuizListModalOpened}
+          onClose={deleteQuizListModalHandlers.close}
+          onDelete={onDeleteQuizList}
+        />
+        <UpdateQuizListModal
+          opened={updateQuizListModalOpened}
+          form={updateQuizListModalForm}
+          onClose={updateQuizListModalHandlers.close}
+          onSubmit={onUpdateQuizListFormSubmit}
+        />
+        <QuizListTable
+          data={data?.getQuizLists ?? []}
+          loading={loading}
+          openCreateQuizListModal={createQuizListModalHandlers.open}
+          openDeleteQuizListModal={deleteQuizListModalHandlers.open}
+          openEditQuizListModal={updateQuizListModalHandlers.open}
+        />
+      </Paper>
+    </Group>
   );
 };

@@ -3,16 +3,15 @@
 // 各種import
 import {
   ActionIcon,
-  Button, Group, Skeleton, Stack, Table, Text, Tooltip, useMantineTheme,
+  Button, Group, Skeleton, Stack, Table, Text, Tooltip,
 } from '@mantine/core';
 import { IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
 import React from 'react';
 
-import { colors } from 'styles/colors';
-
 // Propsの型定義
 interface QuizListData {
   id: string;
+  databaseId: string;
   name: string;
   description?: string | null | undefined;
 }
@@ -21,6 +20,8 @@ interface QuizListListProps {
   loading: boolean;
   data: QuizListData[];
   openCreateQuizListModal: () => void;
+  openDeleteQuizListModal: (databaseId: string) => void;
+  openEditQuizListModal: (databaseId: string) => void;
 }
 
 /**
@@ -31,31 +32,34 @@ export const QuizListTable: React.FC<QuizListListProps> = (props) => {
     data,
     loading,
     openCreateQuizListModal,
+    openDeleteQuizListModal,
+    openEditQuizListModal,
   } = props;
-  const theme = useMantineTheme();
-
-  // reactのhookの宣言
-  // nextのhookの宣言
-  // その他ライブラリのhookの宣言
-  // 自作のhookの宣言
-
-  // その他必要な関数の宣言
 
   // 部分的なコンポーネントの宣言
   const rows = data.map((quizList) => (
-    <tr id={quizList.id}>
+    <tr key={quizList.id}>
       <td>{quizList.name}</td>
       <td>
-        <Text c="dimmed">
-          {quizList.description || '説明文はありません'}
-        </Text>
+        { quizList.description
+          && (
+          <Text>
+            {quizList.description}
+          </Text>
+          )}
+        { !quizList.description
+          && (
+          <Text c="dimmed">
+            説明文はありません
+          </Text>
+          )}
       </td>
       <td>
         <Group spacing={3}>
           <ActionIcon
             size="lg"
             color="blue"
-            onClick={() => console.log('編集')}
+            onClick={() => openEditQuizListModal(quizList.databaseId)}
           >
             <Tooltip label="編集">
               <IconPencil size="1.5rem" stroke={1.4} />
@@ -63,7 +67,7 @@ export const QuizListTable: React.FC<QuizListListProps> = (props) => {
           </ActionIcon>
           <ActionIcon
             size="lg"
-            onClick={() => console.log('削除')}
+            onClick={() => openDeleteQuizListModal(quizList.databaseId)}
             color="red"
           >
             <Tooltip label="削除">
@@ -90,7 +94,7 @@ export const QuizListTable: React.FC<QuizListListProps> = (props) => {
     );
   }
   return (
-    <Skeleton visible={loading} height={200}>
+    <Skeleton visible={loading}>
       <Group position="right">
         <Button
           onClick={openCreateQuizListModal}
@@ -106,9 +110,9 @@ export const QuizListTable: React.FC<QuizListListProps> = (props) => {
       >
         <thead>
           <tr>
-            <td>リスト名</td>
-            <td>説明</td>
-            <td>操作</td>
+            <th style={{ minWidth: 80 }}>リスト名</th>
+            <th>説明</th>
+            <th style={{ minWidth: 120 }}>操作</th>
           </tr>
         </thead>
         <tbody>

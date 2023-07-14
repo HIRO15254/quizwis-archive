@@ -1,8 +1,9 @@
 import { builder } from '../builder';
 
 export const Quiz = builder.prismaNode('Quiz', {
-  id: { field: 'id' },
+  id: { field: 'databaseId' },
   fields: (t) => ({
+    databaseId: t.exposeString('databaseId'),
     quizList: t.relation('quizList'),
     user: t.relation('user'),
 

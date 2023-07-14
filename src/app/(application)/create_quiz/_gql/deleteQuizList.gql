@@ -1,0 +1,5 @@
+mutation DeleteQuizList($input: DeleteQuizListInput!) {
+  deleteQuizList(input: $input) {
+    id
+  }
+}

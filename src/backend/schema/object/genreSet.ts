@@ -1,8 +1,9 @@
 import { builder } from '../builder';
 
 export const GenreSet = builder.prismaNode('GenreSet', {
-  id: { field: 'id' },
+  id: { field: 'databaseId' },
   fields: (t) => ({
+    databaseId: t.exposeString('databaseId'),
     genres: t.relation('genres'),
     user: t.relation('user'),
 

@@ -10,26 +10,24 @@ import {
   Textarea,
 } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
-// 各種import
 import React from 'react';
 
-// Propsの型定義
-export interface CreateQuizListFormType {
+export interface UpdateQuizListFormType {
   name: string;
   description?: string | null | undefined;
 }
 
-interface CreateQuizListModalProps {
+interface UpdateQuizListModalProps {
   opened: boolean;
   onClose: () => void;
-  form: UseFormReturnType<CreateQuizListFormType>;
+  form: UseFormReturnType<UpdateQuizListFormType>;
   onSubmit: () => void;
 }
 
 /**
  * クイズリストを新たに作成するためのモーダル
  */
-export const CreateQuizListModal: React.FC<CreateQuizListModalProps> = (props) => {
+export const UpdateQuizListModal: React.FC<UpdateQuizListModalProps> = (props) => {
   const {
     opened,
     onClose,
@@ -41,7 +39,7 @@ export const CreateQuizListModal: React.FC<CreateQuizListModalProps> = (props) =
     <Modal
       opened={opened}
       onClose={onClose}
-      title={<Title order={3}>新規問題リスト</Title>}
+      title={<Title order={3}>問題リスト編集</Title>}
     >
       <form onSubmit={onSubmit}>
         <Stack>
@@ -58,7 +56,7 @@ export const CreateQuizListModal: React.FC<CreateQuizListModalProps> = (props) =
           />
           <Group position="right">
             <Button type="submit">
-              作成
+              更新
             </Button>
           </Group>
         </Stack>
