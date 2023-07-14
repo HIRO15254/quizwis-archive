@@ -9,5 +9,8 @@ export const User = builder.prismaNode('User', {
     email: t.exposeString('trueEmail', { nullable: true }),
     image: t.exposeString('image', { nullable: true }),
     role: t.expose('role', { type: UserRoleEnum }),
+
+    quizzes: t.relation('quizzes'),
+    quizLists: t.relation('quizLists'),
   }),
 });

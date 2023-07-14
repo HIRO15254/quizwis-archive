@@ -1,6 +1,6 @@
 module.exports = {
   client: {
-    service: 'hiro15254-supergraph',
+    service: 'quizwis-supergraph',
     includes: ['./src/**/*.gql'],
   },
 };

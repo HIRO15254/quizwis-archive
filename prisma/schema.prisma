@@ -36,6 +36,7 @@ model Account {
 
 model User {
   id String @id @default(cuid())
+  isActive Boolean @default(true)
   role UserRole @default(USER)
   userId String? @unique
   name String?
@@ -45,6 +46,71 @@ model User {
   image String?
   isDarkMode Boolean @default(false)
   accounts Account[]
+
+  quizLists QuizList[]
+  quizzes Quiz[]
+  genreSets GenreSet[]
+}
+
+model QuizList {
+  id String @id @default(cuid())
+  name String
+  description String?
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  quizzes Quiz[]
+  genreSetId String?
+  genreSet GenreSet? @relation(fields: [genreSetId], references: [id], onDelete: Cascade)
+}
+
+model Quiz {
+  id String @id @default(cuid())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quizList QuizList @relation(fields: [quizlistId], references: [id], onDelete: Cascade)
+
+  question String?
+  answer String?
+  explanation String?
+
+  genre Genre? @relation(fields: [genreId], references: [id], onDelete: Cascade)
+
+  genreId String?
+  quizlistId String
+  userId String
+}
+
+model Genre {
+  id String @id @default(cuid())
+
+  genreSet GenreSet @relation(fields: [genreSetId], references: [id], onDelete: Cascade)
+  parentGenre Genre? @relation("GenreTree", fields: [parentGenreId], references: [id], onDelete: Cascade)
+
+  name String
+  description String?
+  ratio Int? @default(0)
+
+  quizzes Quiz[]
+  childGenres Genre[] @relation("GenreTree")
+
+  genreSetId String
+  parentGenreId String?
+}
+
+model GenreSet {
+  id String @id @default(cuid())
+
+  genres Genre[]
+
+  name String
+  description String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  quizLists QuizList[]
+  userId String
 }
 
 enum UserRole {

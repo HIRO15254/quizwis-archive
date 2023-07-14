@@ -19,8 +19,40 @@ export type Scalars = {
   Date: { input: any; output: any; }
 };
 
+export type CreateQuizListInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  genreSetId?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+};
+
 export type DeleteUserInput = {
   userId: Scalars['String']['input'];
+};
+
+export type Genre = Node & {
+  __typename?: 'Genre';
+  childGenres: Array<Genre>;
+  description?: Maybe<Scalars['String']['output']>;
+  genreSet: GenreSet;
+  id: Scalars['ID']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+  parentGenre?: Maybe<Genre>;
+  quizzes: Array<Quiz>;
+  ratio?: Maybe<Scalars['Int']['output']>;
+};
+
+export type GenreSet = Node & {
+  __typename?: 'GenreSet';
+  description?: Maybe<Scalars['String']['output']>;
+  genres: Array<Genre>;
+  id: Scalars['ID']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+  quizLists: Array<QuizList>;
+  user: User;
+};
+
+export type GetQuizListsInput = {
+  userId?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type GetUserInput = {
@@ -29,9 +61,15 @@ export type GetUserInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createQuizList: QuizList;
   deleteUser: User;
   updateLoginUser: User;
   updateUser: User;
+};
+
+
+export type MutationCreateQuizListArgs = {
+  input: CreateQuizListInput;
 };
 
 
@@ -55,10 +93,16 @@ export type Node = {
 
 export type Query = {
   __typename?: 'Query';
+  getQuizLists: Array<QuizList>;
   getUser: User;
   loginUser: User;
   node?: Maybe<Node>;
   nodes: Array<Maybe<Node>>;
+};
+
+
+export type QueryGetQuizListsArgs = {
+  input?: InputMaybe<GetQuizListsInput>;
 };
 
 
@@ -74,6 +118,27 @@ export type QueryNodeArgs = {
 
 export type QueryNodesArgs = {
   ids: Array<Scalars['ID']['input']>;
+};
+
+export type Quiz = Node & {
+  __typename?: 'Quiz';
+  answer?: Maybe<Scalars['String']['output']>;
+  explanation?: Maybe<Scalars['String']['output']>;
+  genre: Genre;
+  id: Scalars['ID']['output'];
+  question?: Maybe<Scalars['String']['output']>;
+  quizList: QuizList;
+  user: User;
+};
+
+export type QuizList = Node & {
+  __typename?: 'QuizList';
+  description?: Maybe<Scalars['String']['output']>;
+  genreSet: GenreSet;
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  quizzes: Array<Quiz>;
+  user: User;
 };
 
 export type UpdateLoginUserInput = {
@@ -97,6 +162,8 @@ export type User = Node & {
   id: Scalars['ID']['output'];
   image?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  quizLists: Array<QuizList>;
+  quizzes: Array<Quiz>;
   role: UserRole;
   userId?: Maybe<Scalars['String']['output']>;
 };
@@ -105,6 +172,20 @@ export enum UserRole {
   Admin = 'ADMIN',
   User = 'USER'
 }
+
+export type CreateQuizListMutationVariables = Exact<{
+  input: CreateQuizListInput;
+}>;
+
+
+export type CreateQuizListMutation = { __typename?: 'Mutation', createQuizList: { __typename?: 'QuizList', id: string, name: string, description?: string | null } };
+
+export type GetQuizListsQueryVariables = Exact<{
+  getQuizListsInput?: InputMaybe<GetQuizListsInput>;
+}>;
+
+
+export type GetQuizListsQuery = { __typename?: 'Query', getQuizLists: Array<{ __typename?: 'QuizList', description?: string | null, name: string, id: string }> };
 
 export type GetLoginUserQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -119,8 +200,80 @@ export type UpdateLoginUserMutationVariables = Exact<{
 export type UpdateLoginUserMutation = { __typename?: 'Mutation', updateLoginUser: { __typename?: 'User', id: string } };
 
 
+export const CreateQuizListDocument = gql`
+    mutation CreateQuizList($input: CreateQuizListInput!) {
+  createQuizList(input: $input) {
+    id
+    name
+    description
+  }
+}
+    `;
+export type CreateQuizListMutationFn = Apollo.MutationFunction<CreateQuizListMutation, CreateQuizListMutationVariables>;
+
+/**
+ * __useCreateQuizListMutation__
+ *
+ * To run a mutation, you first call `useCreateQuizListMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateQuizListMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createQuizListMutation, { data, loading, error }] = useCreateQuizListMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateQuizListMutation(baseOptions?: Apollo.MutationHookOptions<CreateQuizListMutation, CreateQuizListMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateQuizListMutation, CreateQuizListMutationVariables>(CreateQuizListDocument, options);
+      }
+export type CreateQuizListMutationHookResult = ReturnType<typeof useCreateQuizListMutation>;
+export type CreateQuizListMutationResult = Apollo.MutationResult<CreateQuizListMutation>;
+export type CreateQuizListMutationOptions = Apollo.BaseMutationOptions<CreateQuizListMutation, CreateQuizListMutationVariables>;
+export const GetQuizListsDocument = gql`
+    query GetQuizLists($getQuizListsInput: GetQuizListsInput) {
+  getQuizLists(input: $getQuizListsInput) {
+    description
+    name
+    id
+  }
+}
+    `;
+
+/**
+ * __useGetQuizListsQuery__
+ *
+ * To run a query within a React component, call `useGetQuizListsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetQuizListsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetQuizListsQuery({
+ *   variables: {
+ *      getQuizListsInput: // value for 'getQuizListsInput'
+ *   },
+ * });
+ */
+export function useGetQuizListsQuery(baseOptions?: Apollo.QueryHookOptions<GetQuizListsQuery, GetQuizListsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetQuizListsQuery, GetQuizListsQueryVariables>(GetQuizListsDocument, options);
+      }
+export function useGetQuizListsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetQuizListsQuery, GetQuizListsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetQuizListsQuery, GetQuizListsQueryVariables>(GetQuizListsDocument, options);
+        }
+export type GetQuizListsQueryHookResult = ReturnType<typeof useGetQuizListsQuery>;
+export type GetQuizListsLazyQueryHookResult = ReturnType<typeof useGetQuizListsLazyQuery>;
+export type GetQuizListsQueryResult = Apollo.QueryResult<GetQuizListsQuery, GetQuizListsQueryVariables>;
 export const GetLoginUserDocument = gql`
-    query getLoginUser {
+    query GetLoginUser {
   loginUser {
     id
     image
