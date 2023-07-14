@@ -11,11 +11,11 @@ import { BasicUserSettingForm } from '../BasicUserSettingForm';
  */
 export const UserSettingForm: React.FC = () => (
   <>
-    <Title order={1} p="md">
+    <Title order={1}>
       ユーザー設定
     </Title>
-    <Group position="center" px="md">
-      <Tabs defaultValue="basic" w="100%">
+    <Group position="center">
+      <Tabs defaultValue="basic" w="100%" mt="md">
         <Tabs.List>
           <Tabs.Tab value="basic">基本設定</Tabs.Tab>
           <Tabs.Tab value="icon">アイコン設定</Tabs.Tab>

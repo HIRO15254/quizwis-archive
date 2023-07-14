@@ -54,7 +54,7 @@ export const MainAppShell: React.FC<MainAppShellProps> = (props) => {
       }
     >
       <Group position="center" pb="sm">
-        <Paper w="100%" maw={800} p="lg" shadow="xs">
+        <Paper w="100%" maw={800} p="xl" shadow="xs">
           {children}
         </Paper>
       </Group>

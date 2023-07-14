@@ -1,0 +1,7 @@
+query GetQuizLists($getQuizListsInput: GetQuizListsInput) {
+  getQuizLists(input: $getQuizListsInput) {
+    description
+    name
+    id
+  }
+}
