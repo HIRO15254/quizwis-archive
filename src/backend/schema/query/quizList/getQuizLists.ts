@@ -3,7 +3,7 @@ import { checkAuthority } from '../../../util/checkAuthority';
 import { builder } from '../../builder';
 import { QuizList } from '../../object/quizList';
 
-const GetQuizListsInput = builder.inputType('GetQuizzesInput', {
+const GetQuizListsInput = builder.inputType('GetQuizListsInput', {
   fields: (t) => ({
     userId: t.string(),
   }),

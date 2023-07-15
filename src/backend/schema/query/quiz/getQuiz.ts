@@ -3,7 +3,7 @@ import { checkAuthority } from '../../../util/checkAuthority';
 import { builder } from '../../builder';
 import { Quiz } from '../../object/quiz';
 
-const GetQuizInput = builder.inputType('GetQuizListInput', {
+const GetQuizInput = builder.inputType('GetQuizInput', {
   fields: (t) => ({
     databaseId: t.string(),
   }),
