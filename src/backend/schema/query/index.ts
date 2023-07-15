@@ -1,4 +1,6 @@
 import './getUser';
 import './loginUser';
-import './getQuizLists';
-import './getQuizList';
+import './quizList/getQuizLists';
+import './quizList/getQuizList';
+import './quiz/getQuizzes';
+import './quiz/getQuiz';

@@ -1,9 +1,9 @@
-import { prisma } from '../../../lib/prisma';
-import { checkAuthority } from '../../util/checkAuthority';
-import { builder } from '../builder';
-import { QuizList } from '../object/quizList';
+import { prisma } from '../../../../lib/prisma';
+import { checkAuthority } from '../../../util/checkAuthority';
+import { builder } from '../../builder';
+import { QuizList } from '../../object/quizList';
 
-const GetQuizListsInput = builder.inputType('GetQuizListsInput', {
+const GetQuizListsInput = builder.inputType('GetQuizzesInput', {
   fields: (t) => ({
     userId: t.string(),
   }),

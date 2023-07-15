@@ -4,3 +4,6 @@ import './updateLoginUser';
 import './createQuizList';
 import './deleteQuizList';
 import './updateQuizList';
+import './quiz/createQuiz';
+import './quiz/deleteQuiz';
+import './quiz/updateQuiz';
