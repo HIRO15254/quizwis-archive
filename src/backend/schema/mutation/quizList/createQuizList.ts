@@ -1,5 +1,5 @@
-import { prisma } from '../../../lib/prisma';
-import { builder } from '../builder';
+import { prisma } from '../../../../lib/prisma';
+import { builder } from '../../builder';
 
 const CreateQuizListInput = builder.inputType('CreateQuizListInput', {
   fields: (t) => ({

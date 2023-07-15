@@ -1,9 +1,9 @@
 import './deleteUser';
 import './updateUser';
 import './updateLoginUser';
-import './createQuizList';
-import './deleteQuizList';
-import './updateQuizList';
+import './quizList/createQuizList';
+import './quizList/deleteQuizList';
+import './quizList/updateQuizList';
 import './quiz/createQuiz';
 import './quiz/deleteQuiz';
 import './quiz/updateQuiz';

@@ -1,6 +1,6 @@
-import { prisma } from '../../../lib/prisma';
-import { checkAuthority } from '../../util/checkAuthority';
-import { builder } from '../builder';
+import { prisma } from '../../../../lib/prisma';
+import { checkAuthority } from '../../../util/checkAuthority';
+import { builder } from '../../builder';
 
 const DeleteQuizListInput = builder.inputType('DeleteQuizListInput', {
   fields: (t) => ({
