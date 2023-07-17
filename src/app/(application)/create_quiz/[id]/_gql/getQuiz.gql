@@ -1,0 +1,9 @@
+query GetQuiz($input: GetQuizInput) {
+  getQuiz(input: $input) {
+    explanation
+    databaseId
+    answer
+    id
+    question
+  }
+}

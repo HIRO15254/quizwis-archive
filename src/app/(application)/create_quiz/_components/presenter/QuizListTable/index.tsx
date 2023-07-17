@@ -3,6 +3,7 @@
 // 各種import
 import {
   ActionIcon,
+  Anchor,
   Button, Group, Skeleton, Stack, Table, Text, Tooltip,
 } from '@mantine/core';
 import { IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
@@ -16,7 +17,7 @@ interface QuizListData {
   description?: string | null | undefined;
 }
 
-interface QuizListListProps {
+interface QuizListTableProps {
   loading: boolean;
   data: QuizListData[];
   openCreateQuizListModal: () => void;
@@ -27,7 +28,7 @@ interface QuizListListProps {
 /**
  * 説明
  */
-export const QuizListTable: React.FC<QuizListListProps> = (props) => {
+export const QuizListTable: React.FC<QuizListTableProps> = (props) => {
   const {
     data,
     loading,
@@ -39,7 +40,11 @@ export const QuizListTable: React.FC<QuizListListProps> = (props) => {
   // 部分的なコンポーネントの宣言
   const rows = data.map((quizList) => (
     <tr key={quizList.id}>
-      <td>{quizList.name}</td>
+      <td>
+        <Anchor href={`/create_quiz/${quizList.databaseId}`}>
+          {quizList.name}
+        </Anchor>
+      </td>
       <td>
         { quizList.description
           && (

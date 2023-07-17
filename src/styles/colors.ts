@@ -28,4 +28,12 @@ export const colors = {
   border(theme: MantineTheme) {
     return theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3];
   },
+  // disabled時の色
+  disabled(theme: MantineTheme) {
+    return theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[5];
+  },
+  // アイコンがactive時の色
+  active(theme: MantineTheme) {
+    return theme.colorScheme === 'dark' ? theme.colors.blue[3] : theme.colors.blue[5];
+  },
 };

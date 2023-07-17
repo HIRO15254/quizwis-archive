@@ -19,10 +19,21 @@ export type Scalars = {
   Date: { input: any; output: any; }
 };
 
+export type CreateQuizInput = {
+  answer?: InputMaybe<Scalars['String']['input']>;
+  explanation?: InputMaybe<Scalars['String']['input']>;
+  question?: InputMaybe<Scalars['String']['input']>;
+  quizListDatabaseId: Scalars['String']['input'];
+};
+
 export type CreateQuizListInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   genreSetId?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
+};
+
+export type DeleteQuizInput = {
+  quizDatabaseId: Scalars['String']['input'];
 };
 
 export type DeleteQuizListInput = {
@@ -57,6 +68,10 @@ export type GenreSet = Node & {
   user: User;
 };
 
+export type GetQuizInput = {
+  databaseId?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type GetQuizListInput = {
   databaseId?: InputMaybe<Scalars['String']['input']>;
 };
@@ -65,23 +80,40 @@ export type GetQuizListsInput = {
   userId?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type GetQuizzesInput = {
+  quizListDatabaseId?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type GetUserInput = {
   userId: Scalars['String']['input'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createQuiz: Quiz;
   createQuizList: QuizList;
+  deleteQuiz: Quiz;
   deleteQuizList: QuizList;
   deleteUser: User;
   updateLoginUser: User;
+  updateQuiz: Quiz;
   updateQuizList: QuizList;
   updateUser: User;
 };
 
 
+export type MutationCreateQuizArgs = {
+  input: CreateQuizInput;
+};
+
+
 export type MutationCreateQuizListArgs = {
   input: CreateQuizListInput;
+};
+
+
+export type MutationDeleteQuizArgs = {
+  input: DeleteQuizInput;
 };
 
 
@@ -100,6 +132,11 @@ export type MutationUpdateLoginUserArgs = {
 };
 
 
+export type MutationUpdateQuizArgs = {
+  input: UpdateQuizInput;
+};
+
+
 export type MutationUpdateQuizListArgs = {
   input: UpdateQuizListInput;
 };
@@ -115,12 +152,19 @@ export type Node = {
 
 export type Query = {
   __typename?: 'Query';
+  getQuiz: Quiz;
   getQuizList: QuizList;
   getQuizLists: Array<QuizList>;
+  getQuizzes: Array<Quiz>;
   getUser: User;
   loginUser: User;
   node?: Maybe<Node>;
   nodes: Array<Maybe<Node>>;
+};
+
+
+export type QueryGetQuizArgs = {
+  input?: InputMaybe<GetQuizInput>;
 };
 
 
@@ -131,6 +175,11 @@ export type QueryGetQuizListArgs = {
 
 export type QueryGetQuizListsArgs = {
   input?: InputMaybe<GetQuizListsInput>;
+};
+
+
+export type QueryGetQuizzesArgs = {
+  input: GetQuizzesInput;
 };
 
 
@@ -178,6 +227,13 @@ export type UpdateLoginUserInput = {
   newUserId?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type UpdateQuizInput = {
+  answer?: InputMaybe<Scalars['String']['input']>;
+  explanation?: InputMaybe<Scalars['String']['input']>;
+  question?: InputMaybe<Scalars['String']['input']>;
+  quizDatabaseId: Scalars['String']['input'];
+};
+
 export type UpdateQuizListInput = {
   databaseId: Scalars['String']['input'];
   description?: InputMaybe<Scalars['String']['input']>;
@@ -209,6 +265,20 @@ export enum UserRole {
   Admin = 'ADMIN',
   User = 'USER'
 }
+
+export type GetQuizQueryVariables = Exact<{
+  input?: InputMaybe<GetQuizInput>;
+}>;
+
+
+export type GetQuizQuery = { __typename?: 'Query', getQuiz: { __typename?: 'Quiz', explanation?: string | null, databaseId: string, answer?: string | null, id: string, question?: string | null } };
+
+export type GetQuizzesQueryVariables = Exact<{
+  input: GetQuizzesInput;
+}>;
+
+
+export type GetQuizzesQuery = { __typename?: 'Query', getQuizzes: Array<{ __typename?: 'Quiz', answer?: string | null, databaseId: string, explanation?: string | null, id: string, question?: string | null }> };
 
 export type CreateQuizListMutationVariables = Exact<{
   input: CreateQuizListInput;
@@ -258,6 +328,84 @@ export type UpdateLoginUserMutationVariables = Exact<{
 export type UpdateLoginUserMutation = { __typename?: 'Mutation', updateLoginUser: { __typename?: 'User', id: string } };
 
 
+export const GetQuizDocument = gql`
+    query GetQuiz($input: GetQuizInput) {
+  getQuiz(input: $input) {
+    explanation
+    databaseId
+    answer
+    id
+    question
+  }
+}
+    `;
+
+/**
+ * __useGetQuizQuery__
+ *
+ * To run a query within a React component, call `useGetQuizQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetQuizQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetQuizQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetQuizQuery(baseOptions?: Apollo.QueryHookOptions<GetQuizQuery, GetQuizQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetQuizQuery, GetQuizQueryVariables>(GetQuizDocument, options);
+      }
+export function useGetQuizLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetQuizQuery, GetQuizQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetQuizQuery, GetQuizQueryVariables>(GetQuizDocument, options);
+        }
+export type GetQuizQueryHookResult = ReturnType<typeof useGetQuizQuery>;
+export type GetQuizLazyQueryHookResult = ReturnType<typeof useGetQuizLazyQuery>;
+export type GetQuizQueryResult = Apollo.QueryResult<GetQuizQuery, GetQuizQueryVariables>;
+export const GetQuizzesDocument = gql`
+    query GetQuizzes($input: GetQuizzesInput!) {
+  getQuizzes(input: $input) {
+    answer
+    databaseId
+    explanation
+    id
+    question
+  }
+}
+    `;
+
+/**
+ * __useGetQuizzesQuery__
+ *
+ * To run a query within a React component, call `useGetQuizzesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetQuizzesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetQuizzesQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetQuizzesQuery(baseOptions: Apollo.QueryHookOptions<GetQuizzesQuery, GetQuizzesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetQuizzesQuery, GetQuizzesQueryVariables>(GetQuizzesDocument, options);
+      }
+export function useGetQuizzesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetQuizzesQuery, GetQuizzesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetQuizzesQuery, GetQuizzesQueryVariables>(GetQuizzesDocument, options);
+        }
+export type GetQuizzesQueryHookResult = ReturnType<typeof useGetQuizzesQuery>;
+export type GetQuizzesLazyQueryHookResult = ReturnType<typeof useGetQuizzesLazyQuery>;
+export type GetQuizzesQueryResult = Apollo.QueryResult<GetQuizzesQuery, GetQuizzesQueryVariables>;
 export const CreateQuizListDocument = gql`
     mutation CreateQuizList($input: CreateQuizListInput!) {
   createQuizList(input: $input) {
