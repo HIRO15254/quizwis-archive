@@ -15,6 +15,7 @@ import React from 'react';
 
 import { colors } from 'styles/colors';
 
+import { LayoutProps } from '../../../../../../../../.next/types/app/api/auth/[...nextauth]/route';
 import { InlineQuizEditor } from '../InlineQuizEditor';
 
 // Propsの型定義
@@ -184,12 +185,14 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
         highlightOnHover
         fontSize="md"
         align="center"
+        w="100%"
+        style={{ tableLayout: 'fixed' }}
         verticalSpacing={0}
       >
         <thead>
           <tr>
-            <th style={{ minWidth: 240 }}>問題文</th>
-            <th>解答</th>
+            <th>問題文</th>
+            <th style={{ width: '25%' }}>解答</th>
             <th style={{ width: 100 }}>追加情報</th>
             <th style={{ width: 100 }}>操作</th>
           </tr>
