@@ -4,9 +4,11 @@
 import { Title, Paper, Group } from '@mantine/core';
 import React, { useEffect } from 'react';
 
-import { useGetQuizzesLazyQuery } from 'gql';
+import { useCreateQuizMutation, useGetQuizzesLazyQuery } from 'gql';
 
+import { useDeleteQuizModal } from '../../../_hooks/useDeleteQuizModal';
 import { useInlineQuizEditor } from '../../../_hooks/useInlineQuizEditor';
+import { DeleteQuizModal } from '../../presenter/DeleteQuizModal';
 import { QuizTable } from '../../presenter/QuizTable';
 
 interface QuizTableContainerProps {
@@ -18,6 +20,7 @@ interface QuizTableContainerProps {
  */
 export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => {
   const { listId } = props;
+
   const [reload, { loading, data }] = useGetQuizzesLazyQuery({
     fetchPolicy: 'network-only',
     variables: {
@@ -26,25 +29,61 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
       },
     },
   });
-  const { form, editingQuizId, setEditingQuizId } = useInlineQuizEditor();
+  const [createQuiz] = useCreateQuizMutation({
+    variables: {
+      input: {
+        quizListDatabaseId: listId,
+      },
+    },
+  });
+  const {
+    onSubmit,
+    questionEditor,
+    answerEditor,
+    editingQuizId,
+    setEditingQuizId,
+  } = useInlineQuizEditor({ reload });
+  const {
+    opened: deleteQuizModalOpened,
+    handlers: deleteQuizModalHandlers,
+    onDelete: onDeleteQuiz,
+  } = useDeleteQuizModal({ reload });
+
+  const createNewQuiz = () => {
+    createQuiz().then((created) => {
+      setEditingQuizId(created.data?.createQuiz?.databaseId ?? null);
+      reload();
+    });
+  };
 
   useEffect(() => {
     reload();
   }, [reload]);
+
+  if (!questionEditor || !answerEditor) {
+    return null;
+  }
 
   // 実際のコンポーネント
   return (
     <Group position="center" pb="sm">
       <Paper w="100%" maw={1200} p="xl" shadow="xs">
         <Title order={1}>問題一覧</Title>
+        <DeleteQuizModal
+          onClose={deleteQuizModalHandlers.close}
+          opened={deleteQuizModalOpened}
+          onDelete={onDeleteQuiz}
+        />
         <QuizTable
-          form={form}
+          onSubmit={onSubmit}
+          questionEditor={questionEditor}
+          answerEditor={answerEditor}
           data={data?.getQuizzes ?? []}
-          loading={loading}
+          loading={!data && loading}
           editingQuizId={editingQuizId}
           setEditingQuizId={setEditingQuizId}
-          createNewQuiz={() => { }}
-          openDeleteQuizModal={() => { }}
+          createNewQuiz={createNewQuiz}
+          openDeleteQuizModal={deleteQuizModalHandlers.open}
         />
       </Paper>
     </Group>

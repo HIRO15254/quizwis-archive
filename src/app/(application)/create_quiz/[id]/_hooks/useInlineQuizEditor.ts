@@ -1,39 +1,90 @@
 import { useForm } from '@mantine/form';
+import { useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
 import { useState } from 'react';
 
-import { useGetQuizLazyQuery } from 'gql';
+import { useUpdateQuizMutation } from 'gql';
+import { Ruby } from 'util/tiptap/ruby';
 
-export const useInlineQuizEditor = () => {
+interface UseInlineQuizEditorProps {
+  reload: () => void;
+}
+
+export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
+  const { reload } = props;
+
   const [editingQuizId, setEditingQuizId] = useState<string | null>(null);
+  const [updateQuiz] = useUpdateQuizMutation();
 
   const form = useForm({
     initialValues: {
       question: '',
+      answer: '',
     },
   });
 
-  const [reload, { data }] = useGetQuizLazyQuery({
-    variables: {
-      input: {
-        databaseId: editingQuizId ?? '',
+  const questionEditor = useEditor({
+    extensions: [
+      StarterKit,
+      Ruby,
+    ],
+    content: '',
+    onUpdate({ editor: newEditor }) {
+      form.setFieldValue('question', newEditor.getHTML());
+    },
+    editorProps: {
+      attributes: {
+        style: 'padding: 0.5rem',
       },
     },
-    onCompleted: (newData) => {
-      form.setValues({
-        question: newData.getQuiz?.question ?? '',
-      });
+  });
+
+  const answerEditor = useEditor({
+    extensions: [
+      StarterKit,
+      Ruby,
+    ],
+    content: '',
+    onUpdate({ editor: newEditor }) {
+      form.setFieldValue('answer', newEditor.getHTML());
+    },
+    editorProps: {
+      attributes: {
+        style: 'padding: 0.5rem',
+      },
     },
   });
 
-  const newSetEditingQuizId = (id: string | null) => {
+  const newSetEditingQuizId = (id: string | null, quiz?: { question: string, answer: string }) => {
     setEditingQuizId(id);
-    if (id) {
-      reload();
+    if (!questionEditor || !answerEditor) {
+      return;
+    }
+    questionEditor.commands.setContent(quiz?.question ?? '', true);
+    answerEditor.commands.setContent(quiz?.answer ?? '', true);
+  };
+
+  const onSubmit = () => {
+    if (editingQuizId) {
+      updateQuiz({
+        variables: {
+          input: {
+            quizDatabaseId: editingQuizId,
+            question: form.values.question,
+            answer: form.values.answer,
+          },
+        },
+      }).then(() => {
+        newSetEditingQuizId(null);
+        reload();
+      });
     }
   };
 
   return {
-    form,
+    onSubmit,
+    questionEditor,
+    answerEditor,
     editingQuizId,
     setEditingQuizId: newSetEditingQuizId,
   };

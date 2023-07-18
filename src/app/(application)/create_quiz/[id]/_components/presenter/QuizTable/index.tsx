@@ -1,3 +1,5 @@
+/* eslint-disable react/no-danger */
+
 'use client';
 
 // 各種import
@@ -5,10 +7,10 @@ import {
   ActionIcon,
   Button, Group, Skeleton, Stack, Table, Text, Tooltip, useMantineTheme,
 } from '@mantine/core';
-import { UseFormReturnType, useForm } from '@mantine/form';
 import {
-  IconArrowsSplit, IconBook2, IconNote, IconPencil, IconPlus, IconTrash,
+  IconArrowsSplit, IconBook2, IconCheck, IconNote, IconPencil, IconPlus, IconTrash,
 } from '@tabler/icons-react';
+import { Editor } from '@tiptap/react';
 import React from 'react';
 
 import { colors } from 'styles/colors';
@@ -27,11 +29,13 @@ interface QuizData {
 }
 
 interface QuizTableProps {
-  form: UseFormReturnType<any>;
+  onSubmit: () => void;
+  questionEditor: Editor;
+  answerEditor: Editor;
   loading: boolean;
   data: QuizData[];
   editingQuizId: string | null | undefined;
-  setEditingQuizId: (databaseId: string) => void;
+  setEditingQuizId: (databaseId: string, quiz?: { question: string, answer: string }) => void;
   createNewQuiz: () => void;
   openDeleteQuizModal: (databaseId: string) => void;
 }
@@ -41,7 +45,9 @@ interface QuizTableProps {
  */
 export const QuizTable: React.FC<QuizTableProps> = (props) => {
   const {
-    form,
+    onSubmit,
+    questionEditor,
+    answerEditor,
     data,
     loading,
     editingQuizId,
@@ -57,28 +63,60 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
     if (quiz.databaseId === editingQuizId) {
       return (
         <tr key={quiz.id}>
-          <td colSpan={5}>
+          <td>
             <InlineQuizEditor
-              key={quiz.id}
-              form={form}
+              editor={questionEditor}
             />
+          </td>
+          <td>
+            <InlineQuizEditor
+              editor={answerEditor}
+            />
+          </td>
+          <td>
+            <Group spacing={3}>
+              <Tooltip label={quiz.otherAnswer ? quiz.otherAnswer : '別解なし'}>
+                <IconArrowsSplit size="1.5rem" stroke={1.4} color={quiz.otherAnswer ? colors.active(theme) : colors.disabled(theme)} />
+              </Tooltip>
+              <Tooltip label={quiz.explanation ? quiz.explanation : '解説なし'}>
+                <IconNote size="1.5rem" stroke={1.4} color={quiz.explanation ? colors.active(theme) : colors.disabled(theme)} />
+              </Tooltip>
+              <Tooltip label={quiz.source ? quiz.source : '出典未記載'}>
+                <IconBook2 size="1.5rem" stroke={1.4} color={quiz.source ? colors.active(theme) : colors.disabled(theme)} />
+              </Tooltip>
+            </Group>
+          </td>
+          <td>
+            <ActionIcon
+              size="lg"
+              color="green"
+              onClick={onSubmit}
+            >
+              <Tooltip label="確定">
+                <IconCheck size="1.5rem" stroke={1.4} />
+              </Tooltip>
+            </ActionIcon>
           </td>
         </tr>
       );
     }
     return (
       <tr key={quiz.id}>
-        <td>{quiz.question}</td>
-        <td>{quiz.answer}</td>
+        <td>
+          <div dangerouslySetInnerHTML={{ __html: quiz.question ?? '' }} />
+        </td>
+        <td>
+          <div dangerouslySetInnerHTML={{ __html: quiz.answer ?? '' }} />
+        </td>
         <td>
           <Group spacing={3}>
-            <Tooltip label={quiz.otherAnswer ? '別解あり' : '別解なし'}>
+            <Tooltip label={quiz.otherAnswer ? quiz.otherAnswer : '別解なし'}>
               <IconArrowsSplit size="1.5rem" stroke={1.4} color={quiz.otherAnswer ? colors.active(theme) : colors.disabled(theme)} />
             </Tooltip>
-            <Tooltip label={quiz.explanation ? '解説あり' : '解説なし'}>
+            <Tooltip label={quiz.explanation ? quiz.explanation : '解説なし'}>
               <IconNote size="1.5rem" stroke={1.4} color={quiz.explanation ? colors.active(theme) : colors.disabled(theme)} />
             </Tooltip>
-            <Tooltip label={quiz.source ? '出典記載済み' : '出典未記載'}>
+            <Tooltip label={quiz.source ? quiz.source : '出典未記載'}>
               <IconBook2 size="1.5rem" stroke={1.4} color={quiz.source ? colors.active(theme) : colors.disabled(theme)} />
             </Tooltip>
           </Group>
@@ -88,7 +126,15 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
             <ActionIcon
               size="lg"
               color="blue"
-              onClick={() => setEditingQuizId(quiz.databaseId)}
+              onClick={() => {
+                setEditingQuizId(
+                  quiz.databaseId,
+                  {
+                    question: quiz.question ?? '',
+                    answer: quiz.answer ?? '',
+                  },
+                );
+              }}
             >
               <Tooltip label="編集">
                 <IconPencil size="1.5rem" stroke={1.4} />
@@ -137,13 +183,15 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
         mt="md"
         highlightOnHover
         fontSize="md"
+        align="center"
+        verticalSpacing={0}
       >
         <thead>
           <tr>
             <th style={{ minWidth: 240 }}>問題文</th>
             <th>解答</th>
-            <th>追加情報</th>
-            <th>操作</th>
+            <th style={{ width: 100 }}>追加情報</th>
+            <th style={{ width: 100 }}>操作</th>
           </tr>
         </thead>
         <tbody>

@@ -1,38 +1,34 @@
 'use client';
 
-import { UseFormReturnType } from '@mantine/form';
+import { Input } from '@mantine/core';
 import { RichTextEditor } from '@mantine/tiptap';
 import { IconArrowRampRight } from '@tabler/icons-react';
-import { BubbleMenu, useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
+import { BubbleMenu, Editor } from '@tiptap/react';
 import React from 'react';
 
-import { Rt } from 'util/tiptap/ruby';
+import { RubyControl } from 'util/tiptap/RubyControl';
 
 interface InlineQuizEditorProps {
-  form: UseFormReturnType<any>;
+  editor: Editor;
 }
 
 export const InlineQuizEditor: React.FC<InlineQuizEditorProps> = (props) => {
-  const { form } = props;
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Rt,
-    ],
-    content: form.getInputProps('question').value,
-  });
+  const { editor } = props;
 
   return (
-    <RichTextEditor editor={editor} m="xs">
-      {editor && (
-        <BubbleMenu editor={editor}>
-          <RichTextEditor.ControlsGroup>
-            <RichTextEditor.Bold icon={IconArrowRampRight} />
-          </RichTextEditor.ControlsGroup>
-        </BubbleMenu>
-      )}
-      <RichTextEditor.Content />
-    </RichTextEditor>
+    <Input.Wrapper>
+      <RichTextEditor editor={editor} my="0.5rem">
+        {editor && (
+          <BubbleMenu editor={editor}>
+            <RichTextEditor.ControlsGroup>
+              <RichTextEditor.Bold icon={IconArrowRampRight} />
+              <RichTextEditor.Link />
+              <RubyControl />
+            </RichTextEditor.ControlsGroup>
+          </BubbleMenu>
+        )}
+        <RichTextEditor.Content />
+      </RichTextEditor>
+    </Input.Wrapper>
   );
 };
