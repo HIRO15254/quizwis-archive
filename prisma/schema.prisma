@@ -64,7 +64,7 @@ model QuizList {
 
   quizzes Quiz[]
   genreSetId String?
-  genreSet GenreSet? @relation(fields: [genreSetId], references: [databaseId], onDelete: Cascade)
+  genreSet GenreSet? @relation(fields: [genreSetId], references: [databaseId], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -82,7 +82,7 @@ model Quiz {
   explanation String?
   source String?
 
-  genre Genre? @relation(fields: [genreId], references: [databaseId], onDelete: Cascade)
+  genre Genre? @relation(fields: [genreId], references: [databaseId], onDelete: SetNull)
 
   genreId String?
   quizlistId String

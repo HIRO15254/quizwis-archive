@@ -7,7 +7,9 @@ import React, { useEffect } from 'react';
 import { useGetGenreSetsLazyQuery } from 'gql';
 
 import { useCreateGenreSetModal } from '../../../_hooks/useCreateGenreSetModal';
+import { useDeleteGenreSetModal } from '../../../_hooks/useDeleteGenreSetModal';
 import { CreateGenreSetModal } from '../../presenter/CreateGenreSetModal';
+import { DeleteGenreSetModal } from '../../presenter/DeleteGenreSetModal';
 import { GenreSetTable } from '../../presenter/GenreSetTable';
 
 /**
@@ -21,6 +23,12 @@ export const GenreSetTableContainer: React.FC = () => {
     form: createGenreSetForm,
     onSubmit: onSubmitCreateGenreSetForm,
   } = useCreateGenreSetModal({ reload });
+  const {
+    opened: deleteGenreSetModalOpened,
+    handlers: deleteGenreSetModalHandlers,
+    name: deleteGenreSetName,
+    onDelete: onDeleteGenreSet,
+  } = useDeleteGenreSetModal({ reload });
 
   useEffect(() => {
     reload();
@@ -37,11 +45,17 @@ export const GenreSetTableContainer: React.FC = () => {
           form={createGenreSetForm}
           onSubmit={onSubmitCreateGenreSetForm}
         />
+        <DeleteGenreSetModal
+          name={deleteGenreSetName}
+          opened={deleteGenreSetModalOpened}
+          onClose={deleteGenreSetModalHandlers.close}
+          onDelete={onDeleteGenreSet}
+        />
         <GenreSetTable
           data={data?.getGenreSets ?? []}
           loading={loading}
           openCreateGenreSetModal={createGenreSetModalHandlers.open}
-          openDeleteGenreSetModal={() => {}}
+          openDeleteGenreSetModal={deleteGenreSetModalHandlers.open}
           openEditGenreSetModal={() => {}}
         />
       </Paper>

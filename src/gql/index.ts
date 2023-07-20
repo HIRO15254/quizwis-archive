@@ -398,6 +398,20 @@ export type CreateGenreSetMutationVariables = Exact<{
 
 export type CreateGenreSetMutation = { __typename?: 'Mutation', createGenreSet: { __typename?: 'GenreSet', databaseId: string, id: string } };
 
+export type DeleteGenreSetMutationVariables = Exact<{
+  input: DeleteGenreSetInput;
+}>;
+
+
+export type DeleteGenreSetMutation = { __typename?: 'Mutation', deleteGenreSet: { __typename?: 'GenreSet', id: string, databaseId: string } };
+
+export type GetGenreSetQueryVariables = Exact<{
+  input?: InputMaybe<GetGenreSetInput>;
+}>;
+
+
+export type GetGenreSetQuery = { __typename?: 'Query', getGenreSet: { __typename?: 'GenreSet', name: string, id: string, databaseId: string } };
+
 export type GetGenreSetsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -520,6 +534,77 @@ export function useCreateGenreSetMutation(baseOptions?: Apollo.MutationHookOptio
 export type CreateGenreSetMutationHookResult = ReturnType<typeof useCreateGenreSetMutation>;
 export type CreateGenreSetMutationResult = Apollo.MutationResult<CreateGenreSetMutation>;
 export type CreateGenreSetMutationOptions = Apollo.BaseMutationOptions<CreateGenreSetMutation, CreateGenreSetMutationVariables>;
+export const DeleteGenreSetDocument = gql`
+    mutation DeleteGenreSet($input: DeleteGenreSetInput!) {
+  deleteGenreSet(input: $input) {
+    id
+    databaseId
+  }
+}
+    `;
+export type DeleteGenreSetMutationFn = Apollo.MutationFunction<DeleteGenreSetMutation, DeleteGenreSetMutationVariables>;
+
+/**
+ * __useDeleteGenreSetMutation__
+ *
+ * To run a mutation, you first call `useDeleteGenreSetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteGenreSetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteGenreSetMutation, { data, loading, error }] = useDeleteGenreSetMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDeleteGenreSetMutation(baseOptions?: Apollo.MutationHookOptions<DeleteGenreSetMutation, DeleteGenreSetMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteGenreSetMutation, DeleteGenreSetMutationVariables>(DeleteGenreSetDocument, options);
+      }
+export type DeleteGenreSetMutationHookResult = ReturnType<typeof useDeleteGenreSetMutation>;
+export type DeleteGenreSetMutationResult = Apollo.MutationResult<DeleteGenreSetMutation>;
+export type DeleteGenreSetMutationOptions = Apollo.BaseMutationOptions<DeleteGenreSetMutation, DeleteGenreSetMutationVariables>;
+export const GetGenreSetDocument = gql`
+    query GetGenreSet($input: GetGenreSetInput) {
+  getGenreSet(input: $input) {
+    name
+    id
+    databaseId
+  }
+}
+    `;
+
+/**
+ * __useGetGenreSetQuery__
+ *
+ * To run a query within a React component, call `useGetGenreSetQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGenreSetQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGenreSetQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetGenreSetQuery(baseOptions?: Apollo.QueryHookOptions<GetGenreSetQuery, GetGenreSetQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGenreSetQuery, GetGenreSetQueryVariables>(GetGenreSetDocument, options);
+      }
+export function useGetGenreSetLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGenreSetQuery, GetGenreSetQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGenreSetQuery, GetGenreSetQueryVariables>(GetGenreSetDocument, options);
+        }
+export type GetGenreSetQueryHookResult = ReturnType<typeof useGetGenreSetQuery>;
+export type GetGenreSetLazyQueryHookResult = ReturnType<typeof useGetGenreSetLazyQuery>;
+export type GetGenreSetQueryResult = Apollo.QueryResult<GetGenreSetQuery, GetGenreSetQueryVariables>;
 export const GetGenreSetsDocument = gql`
     query GetGenreSets {
   getGenreSets {
