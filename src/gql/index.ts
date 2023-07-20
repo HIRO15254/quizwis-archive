@@ -391,6 +391,13 @@ export enum UserRole {
   User = 'USER'
 }
 
+export type CreateGenreSetMutationVariables = Exact<{
+  input: CreateGenreSetInput;
+}>;
+
+
+export type CreateGenreSetMutation = { __typename?: 'Mutation', createGenreSet: { __typename?: 'GenreSet', databaseId: string, id: string } };
+
 export type GetGenreSetsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -479,6 +486,40 @@ export type UpdateLoginUserMutationVariables = Exact<{
 export type UpdateLoginUserMutation = { __typename?: 'Mutation', updateLoginUser: { __typename?: 'User', id: string } };
 
 
+export const CreateGenreSetDocument = gql`
+    mutation CreateGenreSet($input: CreateGenreSetInput!) {
+  createGenreSet(input: $input) {
+    databaseId
+    id
+  }
+}
+    `;
+export type CreateGenreSetMutationFn = Apollo.MutationFunction<CreateGenreSetMutation, CreateGenreSetMutationVariables>;
+
+/**
+ * __useCreateGenreSetMutation__
+ *
+ * To run a mutation, you first call `useCreateGenreSetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateGenreSetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createGenreSetMutation, { data, loading, error }] = useCreateGenreSetMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateGenreSetMutation(baseOptions?: Apollo.MutationHookOptions<CreateGenreSetMutation, CreateGenreSetMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateGenreSetMutation, CreateGenreSetMutationVariables>(CreateGenreSetDocument, options);
+      }
+export type CreateGenreSetMutationHookResult = ReturnType<typeof useCreateGenreSetMutation>;
+export type CreateGenreSetMutationResult = Apollo.MutationResult<CreateGenreSetMutation>;
+export type CreateGenreSetMutationOptions = Apollo.BaseMutationOptions<CreateGenreSetMutation, CreateGenreSetMutationVariables>;
 export const GetGenreSetsDocument = gql`
     query GetGenreSets {
   getGenreSets {
