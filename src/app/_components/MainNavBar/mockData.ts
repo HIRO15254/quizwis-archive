@@ -11,6 +11,7 @@ export const mockData = [
     initiallyOpened: true,
     link: [
       { label: '問題リスト一覧', link: '/create_quiz/quizlists' },
+      { label: 'ジャンルセット一覧', link: '/create_quiz/genresets' },
     ],
   },
 ];

@@ -88,7 +88,7 @@ export type GenreSet = Node & {
   description?: Maybe<Scalars['String']['output']>;
   genres: Array<Genre>;
   id: Scalars['ID']['output'];
-  name?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
   quizLists: Array<QuizList>;
   user: User;
 };
@@ -391,6 +391,11 @@ export enum UserRole {
   User = 'USER'
 }
 
+export type GetGenreSetsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetGenreSetsQuery = { __typename?: 'Query', getGenreSets: Array<{ __typename?: 'GenreSet', id: string, name: string, description?: string | null, databaseId: string }> };
+
 export type CreateQuizMutationVariables = Exact<{
   input: CreateQuizInput;
 }>;
@@ -474,6 +479,43 @@ export type UpdateLoginUserMutationVariables = Exact<{
 export type UpdateLoginUserMutation = { __typename?: 'Mutation', updateLoginUser: { __typename?: 'User', id: string } };
 
 
+export const GetGenreSetsDocument = gql`
+    query GetGenreSets {
+  getGenreSets {
+    id
+    name
+    description
+    databaseId
+  }
+}
+    `;
+
+/**
+ * __useGetGenreSetsQuery__
+ *
+ * To run a query within a React component, call `useGetGenreSetsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGenreSetsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGenreSetsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetGenreSetsQuery(baseOptions?: Apollo.QueryHookOptions<GetGenreSetsQuery, GetGenreSetsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGenreSetsQuery, GetGenreSetsQueryVariables>(GetGenreSetsDocument, options);
+      }
+export function useGetGenreSetsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGenreSetsQuery, GetGenreSetsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGenreSetsQuery, GetGenreSetsQueryVariables>(GetGenreSetsDocument, options);
+        }
+export type GetGenreSetsQueryHookResult = ReturnType<typeof useGetGenreSetsQuery>;
+export type GetGenreSetsLazyQueryHookResult = ReturnType<typeof useGetGenreSetsLazyQuery>;
+export type GetGenreSetsQueryResult = Apollo.QueryResult<GetGenreSetsQuery, GetGenreSetsQueryVariables>;
 export const CreateQuizDocument = gql`
     mutation CreateQuiz($input: CreateQuizInput!) {
   createQuiz(input: $input) {
