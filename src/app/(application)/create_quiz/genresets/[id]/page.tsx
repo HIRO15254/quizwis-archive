@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { QuizTableContainer } from './_components/container/QuizTableContainer';
+import { GenreTableContainer } from './_components/container/GenreTableContainer';
 
 const QuizListPage = ({ params }: { params: { id: string } }) => (
-  <QuizTableContainer listId={params.id} />
+  <GenreTableContainer setId={params.id} />
 );
 
 export default QuizListPage;

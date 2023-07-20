@@ -1,0 +1,15 @@
+query GetGenres($input: GetGenresInput) {
+  getGenres(input: $input) {
+    childGenres {
+      id
+    }
+    id
+    databaseId
+    description
+    name
+    ratio
+    parentGenre {
+      id
+    }
+  }
+}
