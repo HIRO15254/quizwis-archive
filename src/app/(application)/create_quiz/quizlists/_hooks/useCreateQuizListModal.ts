@@ -3,7 +3,7 @@ import { useDisclosure } from '@mantine/hooks';
 
 import { useCreateQuizListMutation } from 'gql';
 
-import type { CreateQuizListFormType } from '../../_components/presenter/CreateQuizListModal';
+import type { CreateQuizListFormType } from '../_components/presenter/CreateQuizListModal';
 
 type UseCreateQuizListModalProps = {
   reload: () => void;
