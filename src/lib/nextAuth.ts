@@ -40,7 +40,6 @@ export const authOptions: AuthOptions = {
         },
       });
       retSession.user.userId = userData?.userId ?? '';
-      retSession.user.isDarkMode = userData?.isDarkMode ?? false;
       retSession.user.email = userData?.email ?? '';
       retSession.user.name = userData?.name ?? '';
       retSession.user.image = userData?.image ?? '';

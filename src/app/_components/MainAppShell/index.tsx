@@ -2,8 +2,6 @@
 
 import {
   AppShell,
-  Group,
-  Paper,
   useMantineTheme,
 } from '@mantine/core';
 import React, { useState } from 'react';
@@ -53,11 +51,7 @@ export const MainAppShell: React.FC<MainAppShellProps> = (props) => {
         ) : undefined
       }
     >
-      <Group position="center" pb="sm">
-        <Paper w="100%" maw={800} p="lg" shadow="xs">
-          {children}
-        </Paper>
-      </Group>
+      {children}
     </AppShell>
   );
 };

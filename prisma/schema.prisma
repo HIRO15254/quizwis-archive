@@ -36,6 +36,7 @@ model Account {
 
 model User {
   id String @id @default(cuid())
+  isActive Boolean @default(true)
   role UserRole @default(USER)
   userId String? @unique
   name String?
@@ -43,8 +44,89 @@ model User {
   emailVerified DateTime?
   trueEmail String?
   image String?
-  isDarkMode Boolean @default(false)
   accounts Account[]
+
+  quizLists QuizList[]
+  quizzes Quiz[]
+  genreSets GenreSet[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model QuizList {
+  databaseId String @id @default(cuid())
+  name String
+  description String?
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  quizzes Quiz[]
+  genreSetId String?
+  genreSet GenreSet? @relation(fields: [genreSetId], references: [databaseId], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Quiz {
+  databaseId String @id @default(cuid())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quizList QuizList @relation(fields: [quizlistId], references: [databaseId], onDelete: Cascade)
+
+  question String?
+  answer String?
+  otherAnswer String?
+  explanation String?
+  source String?
+
+  genre Genre? @relation(fields: [genreId], references: [databaseId], onDelete: Cascade)
+
+  genreId String?
+  quizlistId String
+  userId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Genre {
+  databaseId String @id @default(cuid())
+
+  genreSet GenreSet @relation(fields: [genreSetId], references: [databaseId], onDelete: Cascade)
+  parentGenre Genre? @relation("GenreTree", fields: [parentGenreId], references: [databaseId], onDelete: Cascade)
+
+  name String
+  description String?
+  ratio Int? @default(0)
+
+  quizzes Quiz[]
+  childGenres Genre[] @relation("GenreTree")
+
+  genreSetId String
+  parentGenreId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model GenreSet {
+  databaseId String @id @default(cuid())
+
+  genres Genre[]
+
+  name String
+  description String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  quizLists QuizList[]
+  userId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum UserRole {
