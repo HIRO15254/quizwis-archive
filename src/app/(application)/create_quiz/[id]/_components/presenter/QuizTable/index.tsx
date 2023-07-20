@@ -5,7 +5,7 @@
 // 各種import
 import {
   ActionIcon,
-  Button, Group, Skeleton, Stack, Table, Text, Tooltip, useMantineTheme,
+  Button, Group, Skeleton, Stack, Table, Text, Tooltip,
 } from '@mantine/core';
 import {
   IconArrowsSplit, IconBook2, IconCheck, IconNote, IconPencil, IconPlus, IconTrash,
@@ -13,10 +13,13 @@ import {
 import { Editor } from '@tiptap/react';
 import React from 'react';
 
-import { colors } from 'styles/colors';
-
-import { LayoutProps } from '../../../../../../../../.next/types/app/api/auth/[...nextauth]/route';
-import { InlineQuizEditor } from '../InlineQuizEditor';
+import { AdditionalInfoEditIcon } from '../AdditionalInfoEditIcon';
+import { AdditionalInfoIcon } from '../AdditionalInfoIcon';
+import { ExplanationEditor } from '../Editors/ExplanationEditor';
+import { InlineAnswerEditor } from '../Editors/InlineAnswerEditor';
+import { InlineQuestionEditor } from '../Editors/InlineQuestionEditor';
+import { OtherAnswerEditor } from '../Editors/OtherAnswerEditor';
+import { SourceEditor } from '../Editors/SourceEditor';
 
 // Propsの型定義
 interface QuizData {
@@ -31,12 +34,11 @@ interface QuizData {
 
 interface QuizTableProps {
   onSubmit: () => void;
-  questionEditor: Editor;
-  answerEditor: Editor;
+  editors: { [key: string]: Editor };
   loading: boolean;
   data: QuizData[];
   editingQuizId: string | null | undefined;
-  setEditingQuizId: (databaseId: string, quiz?: { question: string, answer: string }) => void;
+  setEditingQuizId: (databaseId: string) => void;
   createNewQuiz: () => void;
   openDeleteQuizModal: (databaseId: string) => void;
 }
@@ -47,8 +49,7 @@ interface QuizTableProps {
 export const QuizTable: React.FC<QuizTableProps> = (props) => {
   const {
     onSubmit,
-    questionEditor,
-    answerEditor,
+    editors,
     data,
     loading,
     editingQuizId,
@@ -57,46 +58,63 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
     openDeleteQuizModal,
   } = props;
 
-  const theme = useMantineTheme();
-
   // 部分的なコンポーネントの宣言
   const rows = data.map((quiz) => {
     if (quiz.databaseId === editingQuizId) {
       return (
         <tr key={quiz.id}>
           <td>
-            <InlineQuizEditor
-              editor={questionEditor}
-            />
+            <InlineQuestionEditor editor={editors.question} />
           </td>
           <td>
-            <InlineQuizEditor
-              editor={answerEditor}
-            />
+            <InlineAnswerEditor editor={editors.answer} />
           </td>
           <td>
             <Group spacing={3}>
-              <Tooltip label={quiz.otherAnswer ? quiz.otherAnswer : '別解なし'}>
-                <IconArrowsSplit size="1.5rem" stroke={1.4} color={quiz.otherAnswer ? colors.active(theme) : colors.disabled(theme)} />
-              </Tooltip>
-              <Tooltip label={quiz.explanation ? quiz.explanation : '解説なし'}>
-                <IconNote size="1.5rem" stroke={1.4} color={quiz.explanation ? colors.active(theme) : colors.disabled(theme)} />
-              </Tooltip>
-              <Tooltip label={quiz.source ? quiz.source : '出典未記載'}>
-                <IconBook2 size="1.5rem" stroke={1.4} color={quiz.source ? colors.active(theme) : colors.disabled(theme)} />
-              </Tooltip>
+              <AdditionalInfoEditIcon
+                label="別解"
+                editor={editors.otherAnswer}
+                Icon={IconArrowsSplit}
+              >
+                <OtherAnswerEditor editor={editors.otherAnswer} />
+              </AdditionalInfoEditIcon>
+              <AdditionalInfoEditIcon
+                label="解説"
+                editor={editors.explanation}
+                Icon={IconNote}
+              >
+                <ExplanationEditor editor={editors.explanation} />
+              </AdditionalInfoEditIcon>
+              <AdditionalInfoEditIcon
+                label="出典"
+                editor={editors.source}
+                Icon={IconBook2}
+              >
+                <SourceEditor editor={editors.source} />
+              </AdditionalInfoEditIcon>
             </Group>
           </td>
           <td>
-            <ActionIcon
-              size="lg"
-              color="green"
-              onClick={onSubmit}
-            >
-              <Tooltip label="確定">
-                <IconCheck size="1.5rem" stroke={1.4} />
-              </Tooltip>
-            </ActionIcon>
+            <Group spacing={3}>
+              <ActionIcon
+                size="lg"
+                color="green"
+                onClick={onSubmit}
+              >
+                <Tooltip label="確定">
+                  <IconCheck size="1.5rem" stroke={1.4} />
+                </Tooltip>
+              </ActionIcon>
+              <ActionIcon
+                size="lg"
+                onClick={() => openDeleteQuizModal(quiz.databaseId)}
+                color="red"
+              >
+                <Tooltip label="削除">
+                  <IconTrash size="1.5rem" stroke={1.4} />
+                </Tooltip>
+              </ActionIcon>
+            </Group>
           </td>
         </tr>
       );
@@ -111,15 +129,9 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
         </td>
         <td>
           <Group spacing={3}>
-            <Tooltip label={quiz.otherAnswer ? quiz.otherAnswer : '別解なし'}>
-              <IconArrowsSplit size="1.5rem" stroke={1.4} color={quiz.otherAnswer ? colors.active(theme) : colors.disabled(theme)} />
-            </Tooltip>
-            <Tooltip label={quiz.explanation ? quiz.explanation : '解説なし'}>
-              <IconNote size="1.5rem" stroke={1.4} color={quiz.explanation ? colors.active(theme) : colors.disabled(theme)} />
-            </Tooltip>
-            <Tooltip label={quiz.source ? quiz.source : '出典未記載'}>
-              <IconBook2 size="1.5rem" stroke={1.4} color={quiz.source ? colors.active(theme) : colors.disabled(theme)} />
-            </Tooltip>
+            <AdditionalInfoIcon tooltipLabel="別解" data={quiz.otherAnswer} Icon={IconArrowsSplit} />
+            <AdditionalInfoIcon tooltipLabel="解説" data={quiz.explanation} Icon={IconNote} />
+            <AdditionalInfoIcon tooltipLabel="出典" data={quiz.source} Icon={IconBook2} />
           </Group>
         </td>
         <td>
@@ -127,15 +139,7 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
             <ActionIcon
               size="lg"
               color="blue"
-              onClick={() => {
-                setEditingQuizId(
-                  quiz.databaseId,
-                  {
-                    question: quiz.question ?? '',
-                    answer: quiz.answer ?? '',
-                  },
-                );
-              }}
+              onClick={() => setEditingQuizId(quiz.databaseId)}
             >
               <Tooltip label="編集">
                 <IconPencil size="1.5rem" stroke={1.4} />

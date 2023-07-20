@@ -2,7 +2,7 @@
 
 import { CacheProvider } from '@emotion/react';
 import {
-  useEmotionCache, MantineProvider, ColorSchemeProvider, ColorScheme, TypographyStylesProvider,
+  useEmotionCache, MantineProvider, ColorSchemeProvider, ColorScheme,
 } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { Notifications } from '@mantine/notifications';

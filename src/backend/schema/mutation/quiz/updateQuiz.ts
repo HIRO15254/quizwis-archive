@@ -9,6 +9,8 @@ const UpdateQuizInput = builder.inputType('UpdateQuizInput', {
     question: t.string(),
     answer: t.string(),
     explanation: t.string(),
+    otherAnswer: t.string(),
+    source: t.string(),
   }),
 });
 
@@ -31,9 +33,11 @@ builder.mutationFields((t) => ({
       const ret = await prisma.quiz.update({
         where: { databaseId: args.input?.quizDatabaseId ?? '' },
         data: {
-          question: args.input?.question ?? '',
-          answer: args.input?.answer ?? '',
-          explanation: args.input?.explanation ?? '',
+          question: args.input?.question,
+          answer: args.input?.answer,
+          explanation: args.input?.explanation,
+          otherAnswer: args.input?.otherAnswer,
+          source: args.input?.source,
         },
       });
       return ret;

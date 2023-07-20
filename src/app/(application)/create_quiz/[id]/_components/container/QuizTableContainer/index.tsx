@@ -4,7 +4,7 @@
 import { Title, Paper, Group } from '@mantine/core';
 import React, { useEffect } from 'react';
 
-import { useCreateQuizMutation, useGetQuizzesLazyQuery } from 'gql';
+import { useGetQuizListQuery, useGetQuizzesLazyQuery } from 'gql';
 
 import { useDeleteQuizModal } from '../../../_hooks/useDeleteQuizModal';
 import { useInlineQuizEditor } from '../../../_hooks/useInlineQuizEditor';
@@ -29,46 +29,36 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
       },
     },
   });
-  const [createQuiz] = useCreateQuizMutation({
+  const { data: quizListName } = useGetQuizListQuery({
     variables: {
       input: {
-        quizListDatabaseId: listId,
+        databaseId: listId,
       },
     },
   });
+
   const {
     onSubmit,
-    questionEditor,
-    answerEditor,
+    editors,
+    createQuiz,
     editingQuizId,
     setEditingQuizId,
-  } = useInlineQuizEditor({ reload });
+  } = useInlineQuizEditor({ reload, listId });
   const {
     opened: deleteQuizModalOpened,
     handlers: deleteQuizModalHandlers,
     onDelete: onDeleteQuiz,
   } = useDeleteQuizModal({ reload });
 
-  const createNewQuiz = () => {
-    createQuiz().then((created) => {
-      setEditingQuizId(created.data?.createQuiz?.databaseId ?? null);
-      reload();
-    });
-  };
-
   useEffect(() => {
     reload();
   }, [reload]);
-
-  if (!questionEditor || !answerEditor) {
-    return null;
-  }
 
   // 実際のコンポーネント
   return (
     <Group position="center" pb="sm">
       <Paper w="100%" maw={1200} p="xl" shadow="xs">
-        <Title order={1}>問題一覧</Title>
+        <Title order={1}>{`〈${quizListName?.getQuizList.name}〉問題一覧`}</Title>
         <DeleteQuizModal
           onClose={deleteQuizModalHandlers.close}
           opened={deleteQuizModalOpened}
@@ -76,13 +66,12 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
         />
         <QuizTable
           onSubmit={onSubmit}
-          questionEditor={questionEditor}
-          answerEditor={answerEditor}
+          editors={editors}
           data={data?.getQuizzes ?? []}
           loading={!data && loading}
           editingQuizId={editingQuizId}
           setEditingQuizId={setEditingQuizId}
-          createNewQuiz={createNewQuiz}
+          createNewQuiz={createQuiz}
           openDeleteQuizModal={deleteQuizModalHandlers.open}
         />
       </Paper>

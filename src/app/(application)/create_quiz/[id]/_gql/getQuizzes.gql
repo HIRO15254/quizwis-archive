@@ -3,6 +3,8 @@ query GetQuizzes($input: GetQuizzesInput!) {
     answer
     databaseId
     explanation
+    otherAnswer
+    source
     id
     question
   }

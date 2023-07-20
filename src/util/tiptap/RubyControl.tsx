@@ -58,7 +58,7 @@ export const RubyControl = () => {
           title="ルビの挿入"
           onClick={open}
         >
-          <IconLanguageHiragana />
+          <IconLanguageHiragana size="1.3rem" stroke={1.5} />
         </RichTextEditor.Control>
       </Popover.Target>
       <Popover.Dropdown>

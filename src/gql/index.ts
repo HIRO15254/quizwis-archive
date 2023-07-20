@@ -204,8 +204,10 @@ export type Quiz = Node & {
   explanation?: Maybe<Scalars['String']['output']>;
   genre: Genre;
   id: Scalars['ID']['output'];
+  otherAnswer?: Maybe<Scalars['String']['output']>;
   question?: Maybe<Scalars['String']['output']>;
   quizList: QuizList;
+  source?: Maybe<Scalars['String']['output']>;
   user: User;
 };
 
@@ -230,8 +232,10 @@ export type UpdateLoginUserInput = {
 export type UpdateQuizInput = {
   answer?: InputMaybe<Scalars['String']['input']>;
   explanation?: InputMaybe<Scalars['String']['input']>;
+  otherAnswer?: InputMaybe<Scalars['String']['input']>;
   question?: InputMaybe<Scalars['String']['input']>;
   quizDatabaseId: Scalars['String']['input'];
+  source?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateQuizListInput = {
@@ -285,14 +289,14 @@ export type GetQuizQueryVariables = Exact<{
 }>;
 
 
-export type GetQuizQuery = { __typename?: 'Query', getQuiz: { __typename?: 'Quiz', explanation?: string | null, databaseId: string, answer?: string | null, id: string, question?: string | null } };
+export type GetQuizQuery = { __typename?: 'Query', getQuiz: { __typename?: 'Quiz', explanation?: string | null, databaseId: string, answer?: string | null, otherAnswer?: string | null, source?: string | null, id: string, question?: string | null } };
 
 export type GetQuizzesQueryVariables = Exact<{
   input: GetQuizzesInput;
 }>;
 
 
-export type GetQuizzesQuery = { __typename?: 'Query', getQuizzes: Array<{ __typename?: 'Quiz', answer?: string | null, databaseId: string, explanation?: string | null, id: string, question?: string | null }> };
+export type GetQuizzesQuery = { __typename?: 'Query', getQuizzes: Array<{ __typename?: 'Quiz', answer?: string | null, databaseId: string, explanation?: string | null, otherAnswer?: string | null, source?: string | null, id: string, question?: string | null }> };
 
 export type UpdateQuizMutationVariables = Exact<{
   input: UpdateQuizInput;
@@ -423,6 +427,8 @@ export const GetQuizDocument = gql`
     explanation
     databaseId
     answer
+    otherAnswer
+    source
     id
     question
   }
@@ -462,6 +468,8 @@ export const GetQuizzesDocument = gql`
     answer
     databaseId
     explanation
+    otherAnswer
+    source
     id
     question
   }
