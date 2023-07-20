@@ -15,23 +15,23 @@ import { UseFormReturnType } from '@mantine/form';
 import React from 'react';
 
 // Propsの型定義
-export interface CreateGenreFormType {
+export interface UpdateGenreFormType {
   name: string;
   description?: string | null | undefined;
   ratio: number;
 }
 
-interface CreateGenreModalProps {
+interface UpdateGenreModalProps {
   opened: boolean;
   onClose: () => void;
-  form: UseFormReturnType<CreateGenreFormType>;
+  form: UseFormReturnType<UpdateGenreFormType>;
   onSubmit: () => void;
 }
 
 /**
  * クイズリストを新たに作成するためのモーダル
  */
-export const CreateGenreModal: React.FC<CreateGenreModalProps> = (props) => {
+export const UpdateGenreModal: React.FC<UpdateGenreModalProps> = (props) => {
   const {
     opened,
     onClose,
@@ -43,7 +43,7 @@ export const CreateGenreModal: React.FC<CreateGenreModalProps> = (props) => {
     <Modal
       opened={opened}
       onClose={onClose}
-      title={<Title order={3}>新規ジャンル</Title>}
+      title={<Title order={3}>ジャンル編集</Title>}
     >
       <form onSubmit={onSubmit}>
         <Stack>
@@ -66,7 +66,7 @@ export const CreateGenreModal: React.FC<CreateGenreModalProps> = (props) => {
           />
           <Group position="right">
             <Button type="submit">
-              作成
+              更新
             </Button>
           </Group>
         </Stack>

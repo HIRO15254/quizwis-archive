@@ -100,7 +100,7 @@ model Genre {
 
   name String
   description String?
-  ratio Int? @default(0)
+  ratio Int @default(1)
 
   quizzes Quiz[]
   childGenres Genre[] @relation("GenreTree")

@@ -398,12 +398,33 @@ export type CreateGenreMutationVariables = Exact<{
 
 export type CreateGenreMutation = { __typename?: 'Mutation', createGenre: { __typename?: 'Genre', databaseId: string, id: string } };
 
+export type DeleteGenreMutationVariables = Exact<{
+  input: DeleteGenreInput;
+}>;
+
+
+export type DeleteGenreMutation = { __typename?: 'Mutation', deleteGenre: { __typename?: 'Genre', id: string, databaseId: string } };
+
+export type GetGenreQueryVariables = Exact<{
+  input?: InputMaybe<GetGenreInput>;
+}>;
+
+
+export type GetGenreQuery = { __typename?: 'Query', getGenre: { __typename?: 'Genre', databaseId: string, id: string, description?: string | null, name?: string | null, ratio?: number | null } };
+
 export type GetGenresQueryVariables = Exact<{
   input?: InputMaybe<GetGenresInput>;
 }>;
 
 
 export type GetGenresQuery = { __typename?: 'Query', getGenres: Array<{ __typename?: 'Genre', id: string, databaseId: string, description?: string | null, name?: string | null, ratio?: number | null, childGenres: Array<{ __typename?: 'Genre', id: string }>, parentGenre?: { __typename?: 'Genre', id: string } | null }> };
+
+export type UpdateGenreMutationVariables = Exact<{
+  input: UpdateGenreInput;
+}>;
+
+
+export type UpdateGenreMutation = { __typename?: 'Mutation', updateGenre: { __typename?: 'Genre', databaseId: string, id: string } };
 
 export type CreateGenreSetMutationVariables = Exact<{
   input: CreateGenreSetInput;
@@ -555,6 +576,79 @@ export function useCreateGenreMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateGenreMutationHookResult = ReturnType<typeof useCreateGenreMutation>;
 export type CreateGenreMutationResult = Apollo.MutationResult<CreateGenreMutation>;
 export type CreateGenreMutationOptions = Apollo.BaseMutationOptions<CreateGenreMutation, CreateGenreMutationVariables>;
+export const DeleteGenreDocument = gql`
+    mutation DeleteGenre($input: DeleteGenreInput!) {
+  deleteGenre(input: $input) {
+    id
+    databaseId
+  }
+}
+    `;
+export type DeleteGenreMutationFn = Apollo.MutationFunction<DeleteGenreMutation, DeleteGenreMutationVariables>;
+
+/**
+ * __useDeleteGenreMutation__
+ *
+ * To run a mutation, you first call `useDeleteGenreMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteGenreMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteGenreMutation, { data, loading, error }] = useDeleteGenreMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDeleteGenreMutation(baseOptions?: Apollo.MutationHookOptions<DeleteGenreMutation, DeleteGenreMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteGenreMutation, DeleteGenreMutationVariables>(DeleteGenreDocument, options);
+      }
+export type DeleteGenreMutationHookResult = ReturnType<typeof useDeleteGenreMutation>;
+export type DeleteGenreMutationResult = Apollo.MutationResult<DeleteGenreMutation>;
+export type DeleteGenreMutationOptions = Apollo.BaseMutationOptions<DeleteGenreMutation, DeleteGenreMutationVariables>;
+export const GetGenreDocument = gql`
+    query GetGenre($input: GetGenreInput) {
+  getGenre(input: $input) {
+    databaseId
+    id
+    description
+    name
+    ratio
+  }
+}
+    `;
+
+/**
+ * __useGetGenreQuery__
+ *
+ * To run a query within a React component, call `useGetGenreQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGenreQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGenreQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetGenreQuery(baseOptions?: Apollo.QueryHookOptions<GetGenreQuery, GetGenreQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGenreQuery, GetGenreQueryVariables>(GetGenreDocument, options);
+      }
+export function useGetGenreLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGenreQuery, GetGenreQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGenreQuery, GetGenreQueryVariables>(GetGenreDocument, options);
+        }
+export type GetGenreQueryHookResult = ReturnType<typeof useGetGenreQuery>;
+export type GetGenreLazyQueryHookResult = ReturnType<typeof useGetGenreLazyQuery>;
+export type GetGenreQueryResult = Apollo.QueryResult<GetGenreQuery, GetGenreQueryVariables>;
 export const GetGenresDocument = gql`
     query GetGenres($input: GetGenresInput) {
   getGenres(input: $input) {
@@ -600,6 +694,40 @@ export function useGetGenresLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type GetGenresQueryHookResult = ReturnType<typeof useGetGenresQuery>;
 export type GetGenresLazyQueryHookResult = ReturnType<typeof useGetGenresLazyQuery>;
 export type GetGenresQueryResult = Apollo.QueryResult<GetGenresQuery, GetGenresQueryVariables>;
+export const UpdateGenreDocument = gql`
+    mutation UpdateGenre($input: UpdateGenreInput!) {
+  updateGenre(input: $input) {
+    databaseId
+    id
+  }
+}
+    `;
+export type UpdateGenreMutationFn = Apollo.MutationFunction<UpdateGenreMutation, UpdateGenreMutationVariables>;
+
+/**
+ * __useUpdateGenreMutation__
+ *
+ * To run a mutation, you first call `useUpdateGenreMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateGenreMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateGenreMutation, { data, loading, error }] = useUpdateGenreMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateGenreMutation(baseOptions?: Apollo.MutationHookOptions<UpdateGenreMutation, UpdateGenreMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateGenreMutation, UpdateGenreMutationVariables>(UpdateGenreDocument, options);
+      }
+export type UpdateGenreMutationHookResult = ReturnType<typeof useUpdateGenreMutation>;
+export type UpdateGenreMutationResult = Apollo.MutationResult<UpdateGenreMutation>;
+export type UpdateGenreMutationOptions = Apollo.BaseMutationOptions<UpdateGenreMutation, UpdateGenreMutationVariables>;
 export const CreateGenreSetDocument = gql`
     mutation CreateGenreSet($input: CreateGenreSetInput!) {
   createGenreSet(input: $input) {
