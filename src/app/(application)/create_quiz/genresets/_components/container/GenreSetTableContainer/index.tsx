@@ -8,9 +8,11 @@ import { useGetGenreSetsLazyQuery } from 'gql';
 
 import { useCreateGenreSetModal } from '../../../_hooks/useCreateGenreSetModal';
 import { useDeleteGenreSetModal } from '../../../_hooks/useDeleteGenreSetModal';
+import { useUpdateGenreSetModal } from '../../../_hooks/useUpdateGenreSetModal';
 import { CreateGenreSetModal } from '../../presenter/CreateGenreSetModal';
 import { DeleteGenreSetModal } from '../../presenter/DeleteGenreSetModal';
 import { GenreSetTable } from '../../presenter/GenreSetTable';
+import { UpdateGenreSetModal } from '../../presenter/UpdateGenreSetModal';
 
 /**
  * クイズリストの一覧表示
@@ -29,6 +31,12 @@ export const GenreSetTableContainer: React.FC = () => {
     name: deleteGenreSetName,
     onDelete: onDeleteGenreSet,
   } = useDeleteGenreSetModal({ reload });
+  const {
+    opened: updateGenreSetModalOpened,
+    handlers: updateGenreSetModalHandlers,
+    onSubmit: onSubmitUpdateGenreSetForm,
+    form: updateGenreSetForm,
+  } = useUpdateGenreSetModal({ reload });
 
   useEffect(() => {
     reload();
@@ -51,12 +59,18 @@ export const GenreSetTableContainer: React.FC = () => {
           onClose={deleteGenreSetModalHandlers.close}
           onDelete={onDeleteGenreSet}
         />
+        <UpdateGenreSetModal
+          opened={updateGenreSetModalOpened}
+          form={updateGenreSetForm}
+          onClose={updateGenreSetModalHandlers.close}
+          onSubmit={onSubmitUpdateGenreSetForm}
+        />
         <GenreSetTable
           data={data?.getGenreSets ?? []}
           loading={loading}
           openCreateGenreSetModal={createGenreSetModalHandlers.open}
           openDeleteGenreSetModal={deleteGenreSetModalHandlers.open}
-          openEditGenreSetModal={() => {}}
+          openEditGenreSetModal={updateGenreSetModalHandlers.open}
         />
       </Paper>
     </Group>

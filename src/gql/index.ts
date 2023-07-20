@@ -410,12 +410,19 @@ export type GetGenreSetQueryVariables = Exact<{
 }>;
 
 
-export type GetGenreSetQuery = { __typename?: 'Query', getGenreSet: { __typename?: 'GenreSet', name: string, id: string, databaseId: string } };
+export type GetGenreSetQuery = { __typename?: 'Query', getGenreSet: { __typename?: 'GenreSet', name: string, description?: string | null, id: string, databaseId: string } };
 
 export type GetGenreSetsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetGenreSetsQuery = { __typename?: 'Query', getGenreSets: Array<{ __typename?: 'GenreSet', id: string, name: string, description?: string | null, databaseId: string }> };
+
+export type UpdateGenreSetMutationVariables = Exact<{
+  input: UpdateGenreSetInput;
+}>;
+
+
+export type UpdateGenreSetMutation = { __typename?: 'Mutation', updateGenreSet: { __typename?: 'GenreSet', id: string, databaseId: string } };
 
 export type CreateQuizMutationVariables = Exact<{
   input: CreateQuizInput;
@@ -572,6 +579,7 @@ export const GetGenreSetDocument = gql`
     query GetGenreSet($input: GetGenreSetInput) {
   getGenreSet(input: $input) {
     name
+    description
     id
     databaseId
   }
@@ -642,6 +650,40 @@ export function useGetGenreSetsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type GetGenreSetsQueryHookResult = ReturnType<typeof useGetGenreSetsQuery>;
 export type GetGenreSetsLazyQueryHookResult = ReturnType<typeof useGetGenreSetsLazyQuery>;
 export type GetGenreSetsQueryResult = Apollo.QueryResult<GetGenreSetsQuery, GetGenreSetsQueryVariables>;
+export const UpdateGenreSetDocument = gql`
+    mutation UpdateGenreSet($input: UpdateGenreSetInput!) {
+  updateGenreSet(input: $input) {
+    id
+    databaseId
+  }
+}
+    `;
+export type UpdateGenreSetMutationFn = Apollo.MutationFunction<UpdateGenreSetMutation, UpdateGenreSetMutationVariables>;
+
+/**
+ * __useUpdateGenreSetMutation__
+ *
+ * To run a mutation, you first call `useUpdateGenreSetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateGenreSetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateGenreSetMutation, { data, loading, error }] = useUpdateGenreSetMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateGenreSetMutation(baseOptions?: Apollo.MutationHookOptions<UpdateGenreSetMutation, UpdateGenreSetMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateGenreSetMutation, UpdateGenreSetMutationVariables>(UpdateGenreSetDocument, options);
+      }
+export type UpdateGenreSetMutationHookResult = ReturnType<typeof useUpdateGenreSetMutation>;
+export type UpdateGenreSetMutationResult = Apollo.MutationResult<UpdateGenreSetMutation>;
+export type UpdateGenreSetMutationOptions = Apollo.BaseMutationOptions<UpdateGenreSetMutation, UpdateGenreSetMutationVariables>;
 export const CreateQuizDocument = gql`
     mutation CreateQuiz($input: CreateQuizInput!) {
   createQuiz(input: $input) {

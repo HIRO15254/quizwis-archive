@@ -35,7 +35,7 @@ export const DeleteQuizListModal: React.FC<DeleteQuizListModalProps> = (props) =
       title={<Title order={3}>問題リスト削除</Title>}
     >
       <Text>
-        {`問題リスト${name}を本当に削除しますか？`}
+        {`問題リスト「${name}」を本当に削除しますか？`}
         <br />
         削除した場合、リスト内の問題もすべて削除され、これらは元に戻せません。
       </Text>

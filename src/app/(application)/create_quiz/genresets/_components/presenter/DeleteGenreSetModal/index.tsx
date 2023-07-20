@@ -35,7 +35,7 @@ export const DeleteGenreSetModal: React.FC<DeleteGenreSetModalProps> = (props) =
       title={<Title order={3}>ジャンルセット削除</Title>}
     >
       <Text>
-        {`ジャンルセット${name}を本当に削除しますか？`}
+        {`ジャンルセット「${name}」を本当に削除しますか？`}
         <br />
         削除した場合、このジャンルセットが使用されているすべての問題リストはジャンルなしになります。
       </Text>
