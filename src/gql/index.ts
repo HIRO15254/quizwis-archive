@@ -19,6 +19,23 @@ export type Scalars = {
   Date: { input: any; output: any; }
 };
 
+export type CopyGenreSetInput = {
+  databaseId: Scalars['String']['input'];
+};
+
+export type CreateGenreInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  genreSetDatabaseId: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  parentGenreDatabaseId?: InputMaybe<Scalars['String']['input']>;
+  ratio?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type CreateGenreSetInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+};
+
 export type CreateQuizInput = {
   answer?: InputMaybe<Scalars['String']['input']>;
   explanation?: InputMaybe<Scalars['String']['input']>;
@@ -30,6 +47,14 @@ export type CreateQuizListInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   genreSetId?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
+};
+
+export type DeleteGenreInput = {
+  databaseId: Scalars['String']['input'];
+};
+
+export type DeleteGenreSetInput = {
+  databaseId: Scalars['String']['input'];
 };
 
 export type DeleteQuizInput = {
@@ -68,6 +93,22 @@ export type GenreSet = Node & {
   user: User;
 };
 
+export type GetGenreInput = {
+  databaseId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type GetGenreSetInput = {
+  databaseId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type GetGenreSetsInput = {
+  userDatabaseId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type GetGenresInput = {
+  genreSetDatabaseId?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type GetQuizInput = {
   databaseId?: InputMaybe<Scalars['String']['input']>;
 };
@@ -90,15 +131,37 @@ export type GetUserInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  copyGenreSet: GenreSet;
+  createGenre: Genre;
+  createGenreSet: GenreSet;
   createQuiz: Quiz;
   createQuizList: QuizList;
+  deleteGenre: Genre;
+  deleteGenreSet: GenreSet;
   deleteQuiz: Quiz;
   deleteQuizList: QuizList;
   deleteUser: User;
+  updateGenre: Genre;
+  updateGenreSet: GenreSet;
   updateLoginUser: User;
   updateQuiz: Quiz;
   updateQuizList: QuizList;
   updateUser: User;
+};
+
+
+export type MutationCopyGenreSetArgs = {
+  input: CopyGenreSetInput;
+};
+
+
+export type MutationCreateGenreArgs = {
+  input: CreateGenreInput;
+};
+
+
+export type MutationCreateGenreSetArgs = {
+  input: CreateGenreSetInput;
 };
 
 
@@ -109,6 +172,16 @@ export type MutationCreateQuizArgs = {
 
 export type MutationCreateQuizListArgs = {
   input: CreateQuizListInput;
+};
+
+
+export type MutationDeleteGenreArgs = {
+  input: DeleteGenreInput;
+};
+
+
+export type MutationDeleteGenreSetArgs = {
+  input: DeleteGenreSetInput;
 };
 
 
@@ -124,6 +197,16 @@ export type MutationDeleteQuizListArgs = {
 
 export type MutationDeleteUserArgs = {
   input: DeleteUserInput;
+};
+
+
+export type MutationUpdateGenreArgs = {
+  input: UpdateGenreInput;
+};
+
+
+export type MutationUpdateGenreSetArgs = {
+  input: UpdateGenreSetInput;
 };
 
 
@@ -152,6 +235,10 @@ export type Node = {
 
 export type Query = {
   __typename?: 'Query';
+  getGenre: Genre;
+  getGenreSet: GenreSet;
+  getGenreSets: Array<GenreSet>;
+  getGenres: Array<Genre>;
   getQuiz: Quiz;
   getQuizList: QuizList;
   getQuizLists: Array<QuizList>;
@@ -160,6 +247,26 @@ export type Query = {
   loginUser: User;
   node?: Maybe<Node>;
   nodes: Array<Maybe<Node>>;
+};
+
+
+export type QueryGetGenreArgs = {
+  input?: InputMaybe<GetGenreInput>;
+};
+
+
+export type QueryGetGenreSetArgs = {
+  input?: InputMaybe<GetGenreSetInput>;
+};
+
+
+export type QueryGetGenreSetsArgs = {
+  input?: InputMaybe<GetGenreSetsInput>;
+};
+
+
+export type QueryGetGenresArgs = {
+  input?: InputMaybe<GetGenresInput>;
 };
 
 
@@ -220,6 +327,20 @@ export type QuizList = Node & {
   name: Scalars['String']['output'];
   quizzes: Array<Quiz>;
   user: User;
+};
+
+export type UpdateGenreInput = {
+  databaseId: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  parentGenreDatabaseId?: InputMaybe<Scalars['String']['input']>;
+  ratio?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type UpdateGenreSetInput = {
+  databaseId: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateLoginUserInput = {

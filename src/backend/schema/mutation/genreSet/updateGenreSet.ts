@@ -1,6 +1,5 @@
-import { checkAuthority } from 'backend/util/checkAuthority';
-
 import { prisma } from '../../../../lib/prisma';
+import { checkAuthority } from '../../../util/checkAuthority';
 import { builder } from '../../builder';
 import { GenreSet } from '../../object/genreSet';
 
