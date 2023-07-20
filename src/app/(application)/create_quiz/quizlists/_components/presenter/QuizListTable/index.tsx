@@ -41,7 +41,7 @@ export const QuizListTable: React.FC<QuizListTableProps> = (props) => {
   const rows = data.map((quizList) => (
     <tr key={quizList.id}>
       <td>
-        <Anchor href={`/create_quiz/${quizList.databaseId}`}>
+        <Anchor href={`quizlists/${quizList.databaseId}`}>
           {quizList.name}
         </Anchor>
       </td>

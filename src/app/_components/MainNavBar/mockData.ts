@@ -10,7 +10,7 @@ export const mockData = [
     icon: IconSquareRoundedLetterQ,
     initiallyOpened: true,
     link: [
-      { label: '問題リスト一覧', link: '/create_quiz' },
+      { label: '問題リスト一覧', link: '/create_quiz/quizlists' },
     ],
   },
 ];
