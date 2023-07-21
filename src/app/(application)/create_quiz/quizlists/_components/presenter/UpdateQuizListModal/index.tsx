@@ -8,6 +8,8 @@ import {
   TextInput,
   Title,
   Textarea,
+  NativeSelect,
+  SelectItem,
 } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import React from 'react';
@@ -15,6 +17,7 @@ import React from 'react';
 export interface UpdateQuizListFormType {
   name: string;
   description?: string | null | undefined;
+  genreSetId?: string | null | undefined;
 }
 
 interface UpdateQuizListModalProps {
@@ -22,6 +25,7 @@ interface UpdateQuizListModalProps {
   onClose: () => void;
   form: UseFormReturnType<UpdateQuizListFormType>;
   onSubmit: () => void;
+  genreSets: SelectItem[];
 }
 
 /**
@@ -33,6 +37,7 @@ export const UpdateQuizListModal: React.FC<UpdateQuizListModalProps> = (props) =
     onClose,
     form,
     onSubmit,
+    genreSets,
   } = props;
 
   return (
@@ -53,6 +58,12 @@ export const UpdateQuizListModal: React.FC<UpdateQuizListModalProps> = (props) =
             autosize
             minRows={2}
             {...form.getInputProps('description')}
+          />
+          <NativeSelect
+            label="使用するジャンルセット"
+            description="ジャンルセットは割り当てなおすたびにすべての問題のジャンルがリセットされます。"
+            data={genreSets}
+            {...form.getInputProps('genreSetId')}
           />
           <Group position="right">
             <Button type="submit">

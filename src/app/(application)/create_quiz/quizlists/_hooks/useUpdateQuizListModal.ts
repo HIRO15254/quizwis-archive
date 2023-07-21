@@ -2,7 +2,7 @@ import { isNotEmpty, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 
-import { useUpdateQuizListMutation, useGetQuizListLazyQuery } from 'gql';
+import { useUpdateQuizListMutation, useGetQuizListLazyQuery, useGetGenreSetsForQuizListLazyQuery } from 'gql';
 
 import { UpdateQuizListFormType } from '../_components/presenter/UpdateQuizListModal';
 
@@ -16,11 +16,15 @@ export const useUpdateQuizListModal = (props: UseUpdateQuizListModalProps) => {
   const [updateQuizList] = useUpdateQuizListMutation();
   const [getQuizList] = useGetQuizListLazyQuery();
   const [databaseId, setDatabaseId] = useState<string>('');
+  const [getGenreSets, { data }] = useGetGenreSetsForQuizListLazyQuery({
+    fetchPolicy: 'network-only',
+  });
 
   const form = useForm<UpdateQuizListFormType>({
     initialValues: {
       name: '',
       description: '',
+      genreSetId: '',
     },
     validate: {
       name: isNotEmpty('このフィールドは必須です'),
@@ -29,7 +33,8 @@ export const useUpdateQuizListModal = (props: UseUpdateQuizListModalProps) => {
 
   const onOpen = async (open_id: string) => {
     setDatabaseId(open_id);
-    getQuizList({
+    await getGenreSets();
+    await getQuizList({
       variables: {
         input: {
           databaseId: open_id,
@@ -39,9 +44,22 @@ export const useUpdateQuizListModal = (props: UseUpdateQuizListModalProps) => {
       form.setValues({
         name: res.data?.getQuizList?.name ?? '',
         description: res.data?.getQuizList?.description ?? '',
+        genreSetId: res.data?.getQuizList?.genreSet?.databaseId ?? '',
       });
     });
     handlers.open();
+  };
+
+  const genreSets = () => {
+    if (!data?.getGenreSets) {
+      return [{ value: '', label: 'なし' }];
+    }
+    const dataArray = data.getGenreSets.map((genreSet) => ({
+      value: genreSet.databaseId,
+      label: genreSet.name,
+    }));
+    const ret = [{ value: '', label: 'なし' }].concat(dataArray);
+    return ret;
   };
 
   const onSubmit = form.onSubmit(async (values) => {
@@ -51,6 +69,7 @@ export const useUpdateQuizListModal = (props: UseUpdateQuizListModalProps) => {
           databaseId,
           name: values.name,
           description: values.description,
+          genreSetId: values.genreSetId ?? undefined,
         },
       },
     });
@@ -64,6 +83,6 @@ export const useUpdateQuizListModal = (props: UseUpdateQuizListModalProps) => {
   };
 
   return {
-    opened, handlers: newHandlers, form, onSubmit,
+    opened, handlers: newHandlers, form, onSubmit, genreSets,
   };
 };

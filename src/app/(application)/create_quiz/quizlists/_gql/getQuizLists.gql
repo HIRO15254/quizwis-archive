@@ -4,5 +4,10 @@ query GetQuizLists($input: GetQuizListsInput) {
     name
     databaseId
     id
+    genreSet {
+      name
+      id
+      databaseId
+    }
   }
 }

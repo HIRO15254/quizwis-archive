@@ -324,7 +324,7 @@ export type QuizList = Node & {
   __typename?: 'QuizList';
   databaseId: Scalars['String']['output'];
   description?: Maybe<Scalars['String']['output']>;
-  genreSet: GenreSet;
+  genreSet?: Maybe<GenreSet>;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   quizzes: Array<Quiz>;
@@ -365,6 +365,7 @@ export type UpdateQuizInput = {
 export type UpdateQuizListInput = {
   databaseId: Scalars['String']['input'];
   description?: InputMaybe<Scalars['String']['input']>;
+  genreSetId?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
 };
 
@@ -511,19 +512,24 @@ export type DeleteQuizListMutationVariables = Exact<{
 
 export type DeleteQuizListMutation = { __typename?: 'Mutation', deleteQuizList: { __typename?: 'QuizList', id: string } };
 
+export type GetGenreSetsForQuizListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetGenreSetsForQuizListQuery = { __typename?: 'Query', getGenreSets: Array<{ __typename?: 'GenreSet', name: string, id: string, databaseId: string }> };
+
 export type GetQuizListQueryVariables = Exact<{
   input?: InputMaybe<GetQuizListInput>;
 }>;
 
 
-export type GetQuizListQuery = { __typename?: 'Query', getQuizList: { __typename?: 'QuizList', name: string, databaseId: string, description?: string | null, id: string } };
+export type GetQuizListQuery = { __typename?: 'Query', getQuizList: { __typename?: 'QuizList', name: string, databaseId: string, description?: string | null, id: string, genreSet?: { __typename?: 'GenreSet', name: string, databaseId: string } | null } };
 
 export type GetQuizListsQueryVariables = Exact<{
   input?: InputMaybe<GetQuizListsInput>;
 }>;
 
 
-export type GetQuizListsQuery = { __typename?: 'Query', getQuizLists: Array<{ __typename?: 'QuizList', description?: string | null, name: string, databaseId: string, id: string }> };
+export type GetQuizListsQuery = { __typename?: 'Query', getQuizLists: Array<{ __typename?: 'QuizList', description?: string | null, name: string, databaseId: string, id: string, genreSet?: { __typename?: 'GenreSet', name: string, id: string, databaseId: string } | null }> };
 
 export type UpdateQuizListMutationVariables = Exact<{
   input: UpdateQuizListInput;
@@ -1163,12 +1169,52 @@ export function useDeleteQuizListMutation(baseOptions?: Apollo.MutationHookOptio
 export type DeleteQuizListMutationHookResult = ReturnType<typeof useDeleteQuizListMutation>;
 export type DeleteQuizListMutationResult = Apollo.MutationResult<DeleteQuizListMutation>;
 export type DeleteQuizListMutationOptions = Apollo.BaseMutationOptions<DeleteQuizListMutation, DeleteQuizListMutationVariables>;
+export const GetGenreSetsForQuizListDocument = gql`
+    query GetGenreSetsForQuizList {
+  getGenreSets {
+    name
+    id
+    databaseId
+  }
+}
+    `;
+
+/**
+ * __useGetGenreSetsForQuizListQuery__
+ *
+ * To run a query within a React component, call `useGetGenreSetsForQuizListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGenreSetsForQuizListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGenreSetsForQuizListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetGenreSetsForQuizListQuery(baseOptions?: Apollo.QueryHookOptions<GetGenreSetsForQuizListQuery, GetGenreSetsForQuizListQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGenreSetsForQuizListQuery, GetGenreSetsForQuizListQueryVariables>(GetGenreSetsForQuizListDocument, options);
+      }
+export function useGetGenreSetsForQuizListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGenreSetsForQuizListQuery, GetGenreSetsForQuizListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGenreSetsForQuizListQuery, GetGenreSetsForQuizListQueryVariables>(GetGenreSetsForQuizListDocument, options);
+        }
+export type GetGenreSetsForQuizListQueryHookResult = ReturnType<typeof useGetGenreSetsForQuizListQuery>;
+export type GetGenreSetsForQuizListLazyQueryHookResult = ReturnType<typeof useGetGenreSetsForQuizListLazyQuery>;
+export type GetGenreSetsForQuizListQueryResult = Apollo.QueryResult<GetGenreSetsForQuizListQuery, GetGenreSetsForQuizListQueryVariables>;
 export const GetQuizListDocument = gql`
     query GetQuizList($input: GetQuizListInput) {
   getQuizList(input: $input) {
     name
     databaseId
     description
+    genreSet {
+      name
+      databaseId
+    }
     id
   }
 }
@@ -1208,6 +1254,11 @@ export const GetQuizListsDocument = gql`
     name
     databaseId
     id
+    genreSet {
+      name
+      id
+      databaseId
+    }
   }
 }
     `;

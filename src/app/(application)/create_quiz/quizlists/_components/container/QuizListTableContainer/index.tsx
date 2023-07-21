@@ -24,6 +24,7 @@ export const QuizListTableContainer: React.FC = () => {
     handlers: createQuizListModalHandlers,
     form: createQuizListModalForm,
     onSubmit: onCreateQuizListFormSubmit,
+    genreSets: createQuizListModalGenreSets,
   } = useCreateQuizListModal({ reload });
   const {
     opened: deleteQuizListModalOpened,
@@ -36,6 +37,7 @@ export const QuizListTableContainer: React.FC = () => {
     handlers: updateQuizListModalHandlers,
     onSubmit: onUpdateQuizListFormSubmit,
     form: updateQuizListModalForm,
+    genreSets: updateQuizListModalGenreSets,
   } = useUpdateQuizListModal({ reload });
 
   useEffect(() => {
@@ -52,6 +54,7 @@ export const QuizListTableContainer: React.FC = () => {
           form={createQuizListModalForm}
           onClose={createQuizListModalHandlers.close}
           onSubmit={onCreateQuizListFormSubmit}
+          genreSets={createQuizListModalGenreSets()}
         />
         <DeleteQuizListModal
           name={deleteQuizListModalName}
@@ -64,6 +67,7 @@ export const QuizListTableContainer: React.FC = () => {
           form={updateQuizListModalForm}
           onClose={updateQuizListModalHandlers.close}
           onSubmit={onUpdateQuizListFormSubmit}
+          genreSets={updateQuizListModalGenreSets()}
         />
         <QuizListTable
           data={data?.getQuizLists ?? []}

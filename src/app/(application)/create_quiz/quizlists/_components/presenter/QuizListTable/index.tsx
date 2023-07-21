@@ -15,6 +15,10 @@ interface QuizListData {
   databaseId: string;
   name: string;
   description?: string | null | undefined;
+  genreSet?: {
+    databaseId: string;
+    name: string;
+  } | null | undefined;
 }
 
 interface QuizListTableProps {
@@ -46,18 +50,28 @@ export const QuizListTable: React.FC<QuizListTableProps> = (props) => {
         </Anchor>
       </td>
       <td>
-        { quizList.description
-          && (
+        { quizList.description && (
           <Text>
             {quizList.description}
           </Text>
-          )}
-        { !quizList.description
-          && (
+        )}
+        { !quizList.description && (
           <Text c="dimmed">
             説明文はありません
           </Text>
-          )}
+        )}
+      </td>
+      <td>
+        { quizList.genreSet && (
+          <Anchor href={`genresets/${quizList.genreSet.databaseId}`}>
+            {quizList.genreSet.name}
+          </Anchor>
+        )}
+        { !quizList.genreSet && (
+          <Text c="dimmed">
+            未割り当て
+          </Text>
+        )}
       </td>
       <td>
         <Group spacing={3}>
@@ -117,7 +131,8 @@ export const QuizListTable: React.FC<QuizListTableProps> = (props) => {
           <tr>
             <th style={{ minWidth: 80 }}>リスト名</th>
             <th>説明</th>
-            <th style={{ minWidth: 120 }}>操作</th>
+            <th>使用ジャンルセット</th>
+            <th style={{ width: 120 }}>操作</th>
           </tr>
         </thead>
         <tbody>
