@@ -7,7 +7,7 @@ export const GenreSet = builder.prismaNode('GenreSet', {
     genres: t.relation('genres'),
     user: t.relation('user'),
 
-    name: t.exposeString('name', { nullable: true }),
+    name: t.exposeString('name'),
     description: t.exposeString('description', { nullable: true }),
 
     quizLists: t.relation('quizLists'),

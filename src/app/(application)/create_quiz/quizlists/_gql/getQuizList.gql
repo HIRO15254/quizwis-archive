@@ -1,0 +1,12 @@
+query GetQuizList($input: GetQuizListInput) {
+  getQuizList(input: $input) {
+    name
+    databaseId
+    description
+    genreSet {
+      name
+      databaseId
+    }
+    id
+  }
+}

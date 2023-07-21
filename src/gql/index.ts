@@ -19,6 +19,24 @@ export type Scalars = {
   Date: { input: any; output: any; }
 };
 
+export type CopyGenreSetInput = {
+  databaseId: Scalars['String']['input'];
+};
+
+export type CreateGenreInput = {
+  color?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  genreSetDatabaseId: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  parentGenreDatabaseId?: InputMaybe<Scalars['String']['input']>;
+  ratio?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type CreateGenreSetInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+};
+
 export type CreateQuizInput = {
   answer?: InputMaybe<Scalars['String']['input']>;
   explanation?: InputMaybe<Scalars['String']['input']>;
@@ -30,6 +48,14 @@ export type CreateQuizListInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   genreSetId?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
+};
+
+export type DeleteGenreInput = {
+  databaseId: Scalars['String']['input'];
+};
+
+export type DeleteGenreSetInput = {
+  databaseId: Scalars['String']['input'];
 };
 
 export type DeleteQuizInput = {
@@ -47,11 +73,12 @@ export type DeleteUserInput = {
 export type Genre = Node & {
   __typename?: 'Genre';
   childGenres: Array<Genre>;
+  color?: Maybe<Scalars['String']['output']>;
   databaseId: Scalars['String']['output'];
   description?: Maybe<Scalars['String']['output']>;
   genreSet: GenreSet;
   id: Scalars['ID']['output'];
-  name?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
   parentGenre?: Maybe<Genre>;
   quizzes: Array<Quiz>;
   ratio?: Maybe<Scalars['Int']['output']>;
@@ -63,9 +90,25 @@ export type GenreSet = Node & {
   description?: Maybe<Scalars['String']['output']>;
   genres: Array<Genre>;
   id: Scalars['ID']['output'];
-  name?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
   quizLists: Array<QuizList>;
   user: User;
+};
+
+export type GetGenreInput = {
+  databaseId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type GetGenreSetInput = {
+  databaseId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type GetGenreSetsInput = {
+  userDatabaseId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type GetGenresInput = {
+  genreSetDatabaseId?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type GetQuizInput = {
@@ -90,15 +133,37 @@ export type GetUserInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  copyGenreSet: GenreSet;
+  createGenre: Genre;
+  createGenreSet: GenreSet;
   createQuiz: Quiz;
   createQuizList: QuizList;
+  deleteGenre: Genre;
+  deleteGenreSet: GenreSet;
   deleteQuiz: Quiz;
   deleteQuizList: QuizList;
   deleteUser: User;
+  updateGenre: Genre;
+  updateGenreSet: GenreSet;
   updateLoginUser: User;
   updateQuiz: Quiz;
   updateQuizList: QuizList;
   updateUser: User;
+};
+
+
+export type MutationCopyGenreSetArgs = {
+  input: CopyGenreSetInput;
+};
+
+
+export type MutationCreateGenreArgs = {
+  input: CreateGenreInput;
+};
+
+
+export type MutationCreateGenreSetArgs = {
+  input: CreateGenreSetInput;
 };
 
 
@@ -109,6 +174,16 @@ export type MutationCreateQuizArgs = {
 
 export type MutationCreateQuizListArgs = {
   input: CreateQuizListInput;
+};
+
+
+export type MutationDeleteGenreArgs = {
+  input: DeleteGenreInput;
+};
+
+
+export type MutationDeleteGenreSetArgs = {
+  input: DeleteGenreSetInput;
 };
 
 
@@ -124,6 +199,16 @@ export type MutationDeleteQuizListArgs = {
 
 export type MutationDeleteUserArgs = {
   input: DeleteUserInput;
+};
+
+
+export type MutationUpdateGenreArgs = {
+  input: UpdateGenreInput;
+};
+
+
+export type MutationUpdateGenreSetArgs = {
+  input: UpdateGenreSetInput;
 };
 
 
@@ -152,6 +237,10 @@ export type Node = {
 
 export type Query = {
   __typename?: 'Query';
+  getGenre: Genre;
+  getGenreSet: GenreSet;
+  getGenreSets: Array<GenreSet>;
+  getGenres: Array<Genre>;
   getQuiz: Quiz;
   getQuizList: QuizList;
   getQuizLists: Array<QuizList>;
@@ -160,6 +249,26 @@ export type Query = {
   loginUser: User;
   node?: Maybe<Node>;
   nodes: Array<Maybe<Node>>;
+};
+
+
+export type QueryGetGenreArgs = {
+  input?: InputMaybe<GetGenreInput>;
+};
+
+
+export type QueryGetGenreSetArgs = {
+  input?: InputMaybe<GetGenreSetInput>;
+};
+
+
+export type QueryGetGenreSetsArgs = {
+  input?: InputMaybe<GetGenreSetsInput>;
+};
+
+
+export type QueryGetGenresArgs = {
+  input?: InputMaybe<GetGenresInput>;
 };
 
 
@@ -202,7 +311,7 @@ export type Quiz = Node & {
   answer?: Maybe<Scalars['String']['output']>;
   databaseId: Scalars['String']['output'];
   explanation?: Maybe<Scalars['String']['output']>;
-  genre: Genre;
+  genre?: Maybe<Genre>;
   id: Scalars['ID']['output'];
   otherAnswer?: Maybe<Scalars['String']['output']>;
   question?: Maybe<Scalars['String']['output']>;
@@ -215,11 +324,26 @@ export type QuizList = Node & {
   __typename?: 'QuizList';
   databaseId: Scalars['String']['output'];
   description?: Maybe<Scalars['String']['output']>;
-  genreSet: GenreSet;
+  genreSet?: Maybe<GenreSet>;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   quizzes: Array<Quiz>;
   user: User;
+};
+
+export type UpdateGenreInput = {
+  color?: InputMaybe<Scalars['String']['input']>;
+  databaseId: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  parentGenreDatabaseId?: InputMaybe<Scalars['String']['input']>;
+  ratio?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type UpdateGenreSetInput = {
+  databaseId: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateLoginUserInput = {
@@ -232,6 +356,7 @@ export type UpdateLoginUserInput = {
 export type UpdateQuizInput = {
   answer?: InputMaybe<Scalars['String']['input']>;
   explanation?: InputMaybe<Scalars['String']['input']>;
+  genreName?: InputMaybe<Scalars['String']['input']>;
   otherAnswer?: InputMaybe<Scalars['String']['input']>;
   question?: InputMaybe<Scalars['String']['input']>;
   quizDatabaseId: Scalars['String']['input'];
@@ -241,6 +366,7 @@ export type UpdateQuizInput = {
 export type UpdateQuizListInput = {
   databaseId: Scalars['String']['input'];
   description?: InputMaybe<Scalars['String']['input']>;
+  genreSetId?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
 };
 
@@ -270,6 +396,81 @@ export enum UserRole {
   User = 'USER'
 }
 
+export type CreateGenreMutationVariables = Exact<{
+  input: CreateGenreInput;
+}>;
+
+
+export type CreateGenreMutation = { __typename?: 'Mutation', createGenre: { __typename?: 'Genre', databaseId: string, id: string } };
+
+export type DeleteGenreMutationVariables = Exact<{
+  input: DeleteGenreInput;
+}>;
+
+
+export type DeleteGenreMutation = { __typename?: 'Mutation', deleteGenre: { __typename?: 'Genre', id: string, databaseId: string } };
+
+export type GetGenreQueryVariables = Exact<{
+  input?: InputMaybe<GetGenreInput>;
+}>;
+
+
+export type GetGenreQuery = { __typename?: 'Query', getGenre: { __typename?: 'Genre', databaseId: string, id: string, description?: string | null, name: string, ratio?: number | null, color?: string | null } };
+
+export type GetGenresQueryVariables = Exact<{
+  input?: InputMaybe<GetGenresInput>;
+}>;
+
+
+export type GetGenresQuery = { __typename?: 'Query', getGenres: Array<{ __typename?: 'Genre', id: string, databaseId: string, description?: string | null, name: string, ratio?: number | null, color?: string | null, childGenres: Array<{ __typename?: 'Genre', id: string }>, parentGenre?: { __typename?: 'Genre', id: string } | null }> };
+
+export type UpdateGenreMutationVariables = Exact<{
+  input: UpdateGenreInput;
+}>;
+
+
+export type UpdateGenreMutation = { __typename?: 'Mutation', updateGenre: { __typename?: 'Genre', databaseId: string, id: string } };
+
+export type CreateGenreSetMutationVariables = Exact<{
+  input: CreateGenreSetInput;
+}>;
+
+
+export type CreateGenreSetMutation = { __typename?: 'Mutation', createGenreSet: { __typename?: 'GenreSet', databaseId: string, id: string } };
+
+export type DeleteGenreSetMutationVariables = Exact<{
+  input: DeleteGenreSetInput;
+}>;
+
+
+export type DeleteGenreSetMutation = { __typename?: 'Mutation', deleteGenreSet: { __typename?: 'GenreSet', id: string, databaseId: string } };
+
+export type GetGenreSetQueryVariables = Exact<{
+  input?: InputMaybe<GetGenreSetInput>;
+}>;
+
+
+export type GetGenreSetQuery = { __typename?: 'Query', getGenreSet: { __typename?: 'GenreSet', name: string, description?: string | null, id: string, databaseId: string } };
+
+export type GetGenreSetsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetGenreSetsQuery = { __typename?: 'Query', getGenreSets: Array<{ __typename?: 'GenreSet', id: string, name: string, description?: string | null, databaseId: string }> };
+
+export type UpdateGenreSetMutationVariables = Exact<{
+  input: UpdateGenreSetInput;
+}>;
+
+
+export type UpdateGenreSetMutation = { __typename?: 'Mutation', updateGenreSet: { __typename?: 'GenreSet', id: string, databaseId: string } };
+
+export type GetGenresFromQuizListQueryVariables = Exact<{
+  input?: InputMaybe<GetQuizListInput>;
+}>;
+
+
+export type GetGenresFromQuizListQuery = { __typename?: 'Query', getQuizList: { __typename?: 'QuizList', genreSet?: { __typename?: 'GenreSet', genres: Array<{ __typename?: 'Genre', color?: string | null, id: string, databaseId: string, description?: string | null, name: string, parentGenre?: { __typename?: 'Genre', id: string, databaseId: string } | null }> } | null } };
+
 export type CreateQuizMutationVariables = Exact<{
   input: CreateQuizInput;
 }>;
@@ -289,14 +490,14 @@ export type GetQuizQueryVariables = Exact<{
 }>;
 
 
-export type GetQuizQuery = { __typename?: 'Query', getQuiz: { __typename?: 'Quiz', explanation?: string | null, databaseId: string, answer?: string | null, otherAnswer?: string | null, source?: string | null, id: string, question?: string | null } };
+export type GetQuizQuery = { __typename?: 'Query', getQuiz: { __typename?: 'Quiz', explanation?: string | null, databaseId: string, answer?: string | null, otherAnswer?: string | null, source?: string | null, id: string, question?: string | null, genre?: { __typename?: 'Genre', name: string, id: string, databaseId: string } | null } };
 
 export type GetQuizzesQueryVariables = Exact<{
   input: GetQuizzesInput;
 }>;
 
 
-export type GetQuizzesQuery = { __typename?: 'Query', getQuizzes: Array<{ __typename?: 'Quiz', answer?: string | null, databaseId: string, explanation?: string | null, otherAnswer?: string | null, source?: string | null, id: string, question?: string | null }> };
+export type GetQuizzesQuery = { __typename?: 'Query', getQuizzes: Array<{ __typename?: 'Quiz', answer?: string | null, databaseId: string, explanation?: string | null, otherAnswer?: string | null, source?: string | null, id: string, question?: string | null, genre?: { __typename?: 'Genre', name: string, databaseId: string, id: string, color?: string | null } | null }> };
 
 export type UpdateQuizMutationVariables = Exact<{
   input: UpdateQuizInput;
@@ -319,19 +520,24 @@ export type DeleteQuizListMutationVariables = Exact<{
 
 export type DeleteQuizListMutation = { __typename?: 'Mutation', deleteQuizList: { __typename?: 'QuizList', id: string } };
 
+export type GetGenreSetsForQuizListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetGenreSetsForQuizListQuery = { __typename?: 'Query', getGenreSets: Array<{ __typename?: 'GenreSet', name: string, id: string, databaseId: string }> };
+
 export type GetQuizListQueryVariables = Exact<{
   input?: InputMaybe<GetQuizListInput>;
 }>;
 
 
-export type GetQuizListQuery = { __typename?: 'Query', getQuizList: { __typename?: 'QuizList', name: string, databaseId: string, description?: string | null, id: string } };
+export type GetQuizListQuery = { __typename?: 'Query', getQuizList: { __typename?: 'QuizList', name: string, databaseId: string, description?: string | null, id: string, genreSet?: { __typename?: 'GenreSet', name: string, databaseId: string } | null } };
 
 export type GetQuizListsQueryVariables = Exact<{
   input?: InputMaybe<GetQuizListsInput>;
 }>;
 
 
-export type GetQuizListsQuery = { __typename?: 'Query', getQuizLists: Array<{ __typename?: 'QuizList', description?: string | null, name: string, databaseId: string, id: string }> };
+export type GetQuizListsQuery = { __typename?: 'Query', getQuizLists: Array<{ __typename?: 'QuizList', description?: string | null, name: string, databaseId: string, id: string, genreSet?: { __typename?: 'GenreSet', name: string, id: string, databaseId: string } | null }> };
 
 export type UpdateQuizListMutationVariables = Exact<{
   input: UpdateQuizListInput;
@@ -353,6 +559,418 @@ export type UpdateLoginUserMutationVariables = Exact<{
 export type UpdateLoginUserMutation = { __typename?: 'Mutation', updateLoginUser: { __typename?: 'User', id: string } };
 
 
+export const CreateGenreDocument = gql`
+    mutation CreateGenre($input: CreateGenreInput!) {
+  createGenre(input: $input) {
+    databaseId
+    id
+  }
+}
+    `;
+export type CreateGenreMutationFn = Apollo.MutationFunction<CreateGenreMutation, CreateGenreMutationVariables>;
+
+/**
+ * __useCreateGenreMutation__
+ *
+ * To run a mutation, you first call `useCreateGenreMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateGenreMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createGenreMutation, { data, loading, error }] = useCreateGenreMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateGenreMutation(baseOptions?: Apollo.MutationHookOptions<CreateGenreMutation, CreateGenreMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateGenreMutation, CreateGenreMutationVariables>(CreateGenreDocument, options);
+      }
+export type CreateGenreMutationHookResult = ReturnType<typeof useCreateGenreMutation>;
+export type CreateGenreMutationResult = Apollo.MutationResult<CreateGenreMutation>;
+export type CreateGenreMutationOptions = Apollo.BaseMutationOptions<CreateGenreMutation, CreateGenreMutationVariables>;
+export const DeleteGenreDocument = gql`
+    mutation DeleteGenre($input: DeleteGenreInput!) {
+  deleteGenre(input: $input) {
+    id
+    databaseId
+  }
+}
+    `;
+export type DeleteGenreMutationFn = Apollo.MutationFunction<DeleteGenreMutation, DeleteGenreMutationVariables>;
+
+/**
+ * __useDeleteGenreMutation__
+ *
+ * To run a mutation, you first call `useDeleteGenreMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteGenreMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteGenreMutation, { data, loading, error }] = useDeleteGenreMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDeleteGenreMutation(baseOptions?: Apollo.MutationHookOptions<DeleteGenreMutation, DeleteGenreMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteGenreMutation, DeleteGenreMutationVariables>(DeleteGenreDocument, options);
+      }
+export type DeleteGenreMutationHookResult = ReturnType<typeof useDeleteGenreMutation>;
+export type DeleteGenreMutationResult = Apollo.MutationResult<DeleteGenreMutation>;
+export type DeleteGenreMutationOptions = Apollo.BaseMutationOptions<DeleteGenreMutation, DeleteGenreMutationVariables>;
+export const GetGenreDocument = gql`
+    query GetGenre($input: GetGenreInput) {
+  getGenre(input: $input) {
+    databaseId
+    id
+    description
+    name
+    ratio
+    color
+  }
+}
+    `;
+
+/**
+ * __useGetGenreQuery__
+ *
+ * To run a query within a React component, call `useGetGenreQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGenreQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGenreQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetGenreQuery(baseOptions?: Apollo.QueryHookOptions<GetGenreQuery, GetGenreQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGenreQuery, GetGenreQueryVariables>(GetGenreDocument, options);
+      }
+export function useGetGenreLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGenreQuery, GetGenreQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGenreQuery, GetGenreQueryVariables>(GetGenreDocument, options);
+        }
+export type GetGenreQueryHookResult = ReturnType<typeof useGetGenreQuery>;
+export type GetGenreLazyQueryHookResult = ReturnType<typeof useGetGenreLazyQuery>;
+export type GetGenreQueryResult = Apollo.QueryResult<GetGenreQuery, GetGenreQueryVariables>;
+export const GetGenresDocument = gql`
+    query GetGenres($input: GetGenresInput) {
+  getGenres(input: $input) {
+    childGenres {
+      id
+    }
+    id
+    databaseId
+    description
+    name
+    ratio
+    color
+    parentGenre {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetGenresQuery__
+ *
+ * To run a query within a React component, call `useGetGenresQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGenresQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGenresQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetGenresQuery(baseOptions?: Apollo.QueryHookOptions<GetGenresQuery, GetGenresQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGenresQuery, GetGenresQueryVariables>(GetGenresDocument, options);
+      }
+export function useGetGenresLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGenresQuery, GetGenresQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGenresQuery, GetGenresQueryVariables>(GetGenresDocument, options);
+        }
+export type GetGenresQueryHookResult = ReturnType<typeof useGetGenresQuery>;
+export type GetGenresLazyQueryHookResult = ReturnType<typeof useGetGenresLazyQuery>;
+export type GetGenresQueryResult = Apollo.QueryResult<GetGenresQuery, GetGenresQueryVariables>;
+export const UpdateGenreDocument = gql`
+    mutation UpdateGenre($input: UpdateGenreInput!) {
+  updateGenre(input: $input) {
+    databaseId
+    id
+  }
+}
+    `;
+export type UpdateGenreMutationFn = Apollo.MutationFunction<UpdateGenreMutation, UpdateGenreMutationVariables>;
+
+/**
+ * __useUpdateGenreMutation__
+ *
+ * To run a mutation, you first call `useUpdateGenreMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateGenreMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateGenreMutation, { data, loading, error }] = useUpdateGenreMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateGenreMutation(baseOptions?: Apollo.MutationHookOptions<UpdateGenreMutation, UpdateGenreMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateGenreMutation, UpdateGenreMutationVariables>(UpdateGenreDocument, options);
+      }
+export type UpdateGenreMutationHookResult = ReturnType<typeof useUpdateGenreMutation>;
+export type UpdateGenreMutationResult = Apollo.MutationResult<UpdateGenreMutation>;
+export type UpdateGenreMutationOptions = Apollo.BaseMutationOptions<UpdateGenreMutation, UpdateGenreMutationVariables>;
+export const CreateGenreSetDocument = gql`
+    mutation CreateGenreSet($input: CreateGenreSetInput!) {
+  createGenreSet(input: $input) {
+    databaseId
+    id
+  }
+}
+    `;
+export type CreateGenreSetMutationFn = Apollo.MutationFunction<CreateGenreSetMutation, CreateGenreSetMutationVariables>;
+
+/**
+ * __useCreateGenreSetMutation__
+ *
+ * To run a mutation, you first call `useCreateGenreSetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateGenreSetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createGenreSetMutation, { data, loading, error }] = useCreateGenreSetMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateGenreSetMutation(baseOptions?: Apollo.MutationHookOptions<CreateGenreSetMutation, CreateGenreSetMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateGenreSetMutation, CreateGenreSetMutationVariables>(CreateGenreSetDocument, options);
+      }
+export type CreateGenreSetMutationHookResult = ReturnType<typeof useCreateGenreSetMutation>;
+export type CreateGenreSetMutationResult = Apollo.MutationResult<CreateGenreSetMutation>;
+export type CreateGenreSetMutationOptions = Apollo.BaseMutationOptions<CreateGenreSetMutation, CreateGenreSetMutationVariables>;
+export const DeleteGenreSetDocument = gql`
+    mutation DeleteGenreSet($input: DeleteGenreSetInput!) {
+  deleteGenreSet(input: $input) {
+    id
+    databaseId
+  }
+}
+    `;
+export type DeleteGenreSetMutationFn = Apollo.MutationFunction<DeleteGenreSetMutation, DeleteGenreSetMutationVariables>;
+
+/**
+ * __useDeleteGenreSetMutation__
+ *
+ * To run a mutation, you first call `useDeleteGenreSetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteGenreSetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteGenreSetMutation, { data, loading, error }] = useDeleteGenreSetMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDeleteGenreSetMutation(baseOptions?: Apollo.MutationHookOptions<DeleteGenreSetMutation, DeleteGenreSetMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteGenreSetMutation, DeleteGenreSetMutationVariables>(DeleteGenreSetDocument, options);
+      }
+export type DeleteGenreSetMutationHookResult = ReturnType<typeof useDeleteGenreSetMutation>;
+export type DeleteGenreSetMutationResult = Apollo.MutationResult<DeleteGenreSetMutation>;
+export type DeleteGenreSetMutationOptions = Apollo.BaseMutationOptions<DeleteGenreSetMutation, DeleteGenreSetMutationVariables>;
+export const GetGenreSetDocument = gql`
+    query GetGenreSet($input: GetGenreSetInput) {
+  getGenreSet(input: $input) {
+    name
+    description
+    id
+    databaseId
+  }
+}
+    `;
+
+/**
+ * __useGetGenreSetQuery__
+ *
+ * To run a query within a React component, call `useGetGenreSetQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGenreSetQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGenreSetQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetGenreSetQuery(baseOptions?: Apollo.QueryHookOptions<GetGenreSetQuery, GetGenreSetQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGenreSetQuery, GetGenreSetQueryVariables>(GetGenreSetDocument, options);
+      }
+export function useGetGenreSetLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGenreSetQuery, GetGenreSetQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGenreSetQuery, GetGenreSetQueryVariables>(GetGenreSetDocument, options);
+        }
+export type GetGenreSetQueryHookResult = ReturnType<typeof useGetGenreSetQuery>;
+export type GetGenreSetLazyQueryHookResult = ReturnType<typeof useGetGenreSetLazyQuery>;
+export type GetGenreSetQueryResult = Apollo.QueryResult<GetGenreSetQuery, GetGenreSetQueryVariables>;
+export const GetGenreSetsDocument = gql`
+    query GetGenreSets {
+  getGenreSets {
+    id
+    name
+    description
+    databaseId
+  }
+}
+    `;
+
+/**
+ * __useGetGenreSetsQuery__
+ *
+ * To run a query within a React component, call `useGetGenreSetsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGenreSetsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGenreSetsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetGenreSetsQuery(baseOptions?: Apollo.QueryHookOptions<GetGenreSetsQuery, GetGenreSetsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGenreSetsQuery, GetGenreSetsQueryVariables>(GetGenreSetsDocument, options);
+      }
+export function useGetGenreSetsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGenreSetsQuery, GetGenreSetsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGenreSetsQuery, GetGenreSetsQueryVariables>(GetGenreSetsDocument, options);
+        }
+export type GetGenreSetsQueryHookResult = ReturnType<typeof useGetGenreSetsQuery>;
+export type GetGenreSetsLazyQueryHookResult = ReturnType<typeof useGetGenreSetsLazyQuery>;
+export type GetGenreSetsQueryResult = Apollo.QueryResult<GetGenreSetsQuery, GetGenreSetsQueryVariables>;
+export const UpdateGenreSetDocument = gql`
+    mutation UpdateGenreSet($input: UpdateGenreSetInput!) {
+  updateGenreSet(input: $input) {
+    id
+    databaseId
+  }
+}
+    `;
+export type UpdateGenreSetMutationFn = Apollo.MutationFunction<UpdateGenreSetMutation, UpdateGenreSetMutationVariables>;
+
+/**
+ * __useUpdateGenreSetMutation__
+ *
+ * To run a mutation, you first call `useUpdateGenreSetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateGenreSetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateGenreSetMutation, { data, loading, error }] = useUpdateGenreSetMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateGenreSetMutation(baseOptions?: Apollo.MutationHookOptions<UpdateGenreSetMutation, UpdateGenreSetMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateGenreSetMutation, UpdateGenreSetMutationVariables>(UpdateGenreSetDocument, options);
+      }
+export type UpdateGenreSetMutationHookResult = ReturnType<typeof useUpdateGenreSetMutation>;
+export type UpdateGenreSetMutationResult = Apollo.MutationResult<UpdateGenreSetMutation>;
+export type UpdateGenreSetMutationOptions = Apollo.BaseMutationOptions<UpdateGenreSetMutation, UpdateGenreSetMutationVariables>;
+export const GetGenresFromQuizListDocument = gql`
+    query GetGenresFromQuizList($input: GetQuizListInput) {
+  getQuizList(input: $input) {
+    genreSet {
+      genres {
+        color
+        parentGenre {
+          id
+          databaseId
+        }
+        id
+        databaseId
+        description
+        name
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetGenresFromQuizListQuery__
+ *
+ * To run a query within a React component, call `useGetGenresFromQuizListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGenresFromQuizListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGenresFromQuizListQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetGenresFromQuizListQuery(baseOptions?: Apollo.QueryHookOptions<GetGenresFromQuizListQuery, GetGenresFromQuizListQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGenresFromQuizListQuery, GetGenresFromQuizListQueryVariables>(GetGenresFromQuizListDocument, options);
+      }
+export function useGetGenresFromQuizListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGenresFromQuizListQuery, GetGenresFromQuizListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGenresFromQuizListQuery, GetGenresFromQuizListQueryVariables>(GetGenresFromQuizListDocument, options);
+        }
+export type GetGenresFromQuizListQueryHookResult = ReturnType<typeof useGetGenresFromQuizListQuery>;
+export type GetGenresFromQuizListLazyQueryHookResult = ReturnType<typeof useGetGenresFromQuizListLazyQuery>;
+export type GetGenresFromQuizListQueryResult = Apollo.QueryResult<GetGenresFromQuizListQuery, GetGenresFromQuizListQueryVariables>;
 export const CreateQuizDocument = gql`
     mutation CreateQuiz($input: CreateQuizInput!) {
   createQuiz(input: $input) {
@@ -431,6 +1049,11 @@ export const GetQuizDocument = gql`
     source
     id
     question
+    genre {
+      name
+      id
+      databaseId
+    }
   }
 }
     `;
@@ -472,6 +1095,12 @@ export const GetQuizzesDocument = gql`
     source
     id
     question
+    genre {
+      name
+      databaseId
+      id
+      color
+    }
   }
 }
     `;
@@ -606,12 +1235,52 @@ export function useDeleteQuizListMutation(baseOptions?: Apollo.MutationHookOptio
 export type DeleteQuizListMutationHookResult = ReturnType<typeof useDeleteQuizListMutation>;
 export type DeleteQuizListMutationResult = Apollo.MutationResult<DeleteQuizListMutation>;
 export type DeleteQuizListMutationOptions = Apollo.BaseMutationOptions<DeleteQuizListMutation, DeleteQuizListMutationVariables>;
+export const GetGenreSetsForQuizListDocument = gql`
+    query GetGenreSetsForQuizList {
+  getGenreSets {
+    name
+    id
+    databaseId
+  }
+}
+    `;
+
+/**
+ * __useGetGenreSetsForQuizListQuery__
+ *
+ * To run a query within a React component, call `useGetGenreSetsForQuizListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGenreSetsForQuizListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGenreSetsForQuizListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetGenreSetsForQuizListQuery(baseOptions?: Apollo.QueryHookOptions<GetGenreSetsForQuizListQuery, GetGenreSetsForQuizListQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGenreSetsForQuizListQuery, GetGenreSetsForQuizListQueryVariables>(GetGenreSetsForQuizListDocument, options);
+      }
+export function useGetGenreSetsForQuizListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGenreSetsForQuizListQuery, GetGenreSetsForQuizListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGenreSetsForQuizListQuery, GetGenreSetsForQuizListQueryVariables>(GetGenreSetsForQuizListDocument, options);
+        }
+export type GetGenreSetsForQuizListQueryHookResult = ReturnType<typeof useGetGenreSetsForQuizListQuery>;
+export type GetGenreSetsForQuizListLazyQueryHookResult = ReturnType<typeof useGetGenreSetsForQuizListLazyQuery>;
+export type GetGenreSetsForQuizListQueryResult = Apollo.QueryResult<GetGenreSetsForQuizListQuery, GetGenreSetsForQuizListQueryVariables>;
 export const GetQuizListDocument = gql`
     query GetQuizList($input: GetQuizListInput) {
   getQuizList(input: $input) {
     name
     databaseId
     description
+    genreSet {
+      name
+      databaseId
+    }
     id
   }
 }
@@ -651,6 +1320,11 @@ export const GetQuizListsDocument = gql`
     name
     databaseId
     id
+    genreSet {
+      name
+      id
+      databaseId
+    }
   }
 }
     `;

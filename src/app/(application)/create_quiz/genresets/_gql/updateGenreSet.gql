@@ -1,0 +1,6 @@
+mutation UpdateGenreSet($input: UpdateGenreSetInput!) {
+  updateGenreSet(input: $input) {
+    id
+    databaseId
+  }
+}

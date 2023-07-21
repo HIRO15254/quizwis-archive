@@ -64,7 +64,7 @@ model QuizList {
 
   quizzes Quiz[]
   genreSetId String?
-  genreSet GenreSet? @relation(fields: [genreSetId], references: [databaseId], onDelete: Cascade)
+  genreSet GenreSet? @relation(fields: [genreSetId], references: [databaseId], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -82,7 +82,7 @@ model Quiz {
   explanation String?
   source String?
 
-  genre Genre? @relation(fields: [genreId], references: [databaseId], onDelete: Cascade)
+  genre Genre? @relation(fields: [genreId], references: [databaseId], onDelete: SetNull)
 
   genreId String?
   quizlistId String
@@ -98,9 +98,10 @@ model Genre {
   genreSet GenreSet @relation(fields: [genreSetId], references: [databaseId], onDelete: Cascade)
   parentGenre Genre? @relation("GenreTree", fields: [parentGenreId], references: [databaseId], onDelete: Cascade)
 
+  color String?
   name String
   description String?
-  ratio Int? @default(0)
+  ratio Int @default(1)
 
   quizzes Quiz[]
   childGenres Genre[] @relation("GenreTree")
@@ -110,6 +111,8 @@ model Genre {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([genreSetId, name])
 }
 
 model GenreSet {

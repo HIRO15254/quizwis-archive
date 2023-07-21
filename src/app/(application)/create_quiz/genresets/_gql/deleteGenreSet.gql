@@ -1,0 +1,6 @@
+mutation DeleteGenreSet($input: DeleteGenreSetInput!) {
+  deleteGenreSet(input: $input) {
+    id
+    databaseId
+  }
+}

@@ -1,0 +1,8 @@
+query GetGenreSets {
+  getGenreSets {
+    id
+    name
+    description
+    databaseId
+  }
+}

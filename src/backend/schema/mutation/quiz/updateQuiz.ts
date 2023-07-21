@@ -11,6 +11,7 @@ const UpdateQuizInput = builder.inputType('UpdateQuizInput', {
     explanation: t.string(),
     otherAnswer: t.string(),
     source: t.string(),
+    genreName: t.string(),
   }),
 });
 
@@ -23,7 +24,10 @@ builder.mutationFields((t) => ({
     resolve: async (_query, _root, args, ctx, _info) => {
       const quiz = await prisma.quiz.findUniqueOrThrow({
         where: { databaseId: args.input?.quizDatabaseId ?? '' },
-        include: { user: true },
+        include: { user: true, quizList: { include: { genreSet: true } } },
+      });
+      const genre = await prisma.genre.findUnique({
+        where: { genreSetId_name: { genreSetId: quiz.quizList.genreSetId ?? '', name: args.input?.genreName ?? '' } },
       });
       if (quiz.user.userId !== ctx.currentUserId) {
         if (!await checkAuthority(ctx.currentUserId ?? '', 'ADMIN')) {
@@ -38,6 +42,7 @@ builder.mutationFields((t) => ({
           explanation: args.input?.explanation,
           otherAnswer: args.input?.otherAnswer,
           source: args.input?.source,
+          genre: { connect: { databaseId: genre?.databaseId ?? '' } },
         },
       });
       return ret;

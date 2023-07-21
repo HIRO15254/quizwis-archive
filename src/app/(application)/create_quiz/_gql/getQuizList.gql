@@ -1,8 +1,0 @@
-query GetQuizList($input: GetQuizListInput) {
-  getQuizList(input: $input) {
-    name
-    databaseId
-    description
-    id
-  }
-}

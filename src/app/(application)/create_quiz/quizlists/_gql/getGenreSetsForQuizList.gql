@@ -1,0 +1,7 @@
+query GetGenreSetsForQuizList {
+  getGenreSets {
+    name
+    id
+    databaseId
+  }
+}
