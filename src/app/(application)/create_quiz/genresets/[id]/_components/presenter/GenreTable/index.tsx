@@ -3,7 +3,8 @@
 // 各種import
 import {
   ActionIcon,
-  Button, Group, Skeleton, Stack, Table, Text, Tooltip,
+  Badge,
+  Button, Group, Skeleton, Stack, Table, Text, Tooltip, useMantineTheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
@@ -29,17 +30,30 @@ const GenreRow: React.FC<GenreRowProps> = (props) => {
     openUpdateGenreModal,
   } = props;
   const [opened, { toggle }] = useDisclosure(false);
+  const theme = useMantineTheme();
+
+  const bgColor = () => {
+    if (theme.colorScheme === 'dark') {
+      return theme.colors.dark[7 - nest];
+    }
+    if (nest === 0) {
+      return theme.white;
+    }
+    return theme.colors.gray[nest - 1];
+  };
 
   return (
     <>
-      <tr>
+      <tr style={{ backgroundColor: bgColor() }}>
         <td style={{ paddingLeft: nest * 20 }}>
           <Group>
             <IconPlus
               onClick={toggle}
               style={{ visibility: genre.children.length === 0 ? 'hidden' : undefined }}
             />
-            {genre.data.name}
+            <Badge color={genre.data.color ?? 'gray'} variant="light" size="lg">
+              {genre.data.name}
+            </Badge>
           </Group>
         </td>
         <td>
@@ -69,7 +83,7 @@ const GenreRow: React.FC<GenreRowProps> = (props) => {
                 variant="subtle"
                 color="blue"
                 size="lg"
-                onClick={() => openCreateGenreModal(genre.data.databaseId)}
+                onClick={() => openUpdateGenreModal(genre.data.databaseId)}
               >
                 <IconPencil />
               </ActionIcon>
@@ -131,7 +145,7 @@ export const GenreTable: React.FC<GenreTableProps> = (props) => {
           onClick={() => openCreateGenreModal()}
           leftIcon={<IconPlus />}
         >
-          新規ジャンルセット
+          新規ジャンル
         </Button>
       </Stack>
     );
@@ -151,7 +165,7 @@ export const GenreTable: React.FC<GenreTableProps> = (props) => {
           <tr>
             <th>ジャンル名</th>
             <th>説明</th>
-            <th>比率</th>
+            <th style={{ width: 60 }}>比率</th>
             <th style={{ width: 130 }}>操作</th>
           </tr>
         </thead>

@@ -2,7 +2,7 @@ import { isNotEmpty, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 
-import { useCreateGenreMutation } from 'gql';
+import { useCreateGenreMutation, useGetGenreLazyQuery } from 'gql';
 
 import type { CreateGenreFormType } from '../_components/presenter/CreateGenreModal';
 
@@ -16,12 +16,14 @@ export const useCreateGenreModal = (props: UseCreateGenreModalProps) => {
   const [opened, handlers] = useDisclosure();
   const [parentId, setParentId] = useState<string | null>(null);
   const [createGenre] = useCreateGenreMutation();
+  const [getGenre] = useGetGenreLazyQuery();
 
   const form = useForm<CreateGenreFormType>({
     initialValues: {
       name: '',
       description: '',
       ratio: 1,
+      color: 'gray',
     },
     validate: {
       name: isNotEmpty('このフィールドは必須です'),
@@ -34,8 +36,25 @@ export const useCreateGenreModal = (props: UseCreateGenreModalProps) => {
   };
 
   const onOpen = (newParentId?: string) => {
-    handlers.open();
     setParentId(newParentId || null);
+    if (newParentId) {
+      getGenre({
+        fetchPolicy: 'network-only',
+        variables: {
+          input: {
+            databaseId: newParentId,
+          },
+        },
+      }).then((res) => {
+        form.setValues({
+          name: '',
+          description: '',
+          ratio: 1,
+          color: res.data?.getGenre?.color ?? 'gray',
+        });
+      });
+    }
+    handlers.open();
   };
 
   const onSubmit = form.onSubmit(async (values) => {
@@ -47,6 +66,7 @@ export const useCreateGenreModal = (props: UseCreateGenreModalProps) => {
           name: values.name,
           description: values.description,
           ratio: values.ratio,
+          color: values.color,
         },
       },
     });

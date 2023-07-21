@@ -10,6 +10,7 @@ const UpdateGenreInput = builder.inputType('UpdateGenreInput', {
     name: t.string(),
     description: t.string(),
     ratio: t.int(),
+    color: t.string(),
   }),
 });
 
@@ -46,7 +47,8 @@ builder.mutationFields((t) => ({
         data: {
           name: args.input?.name ?? undefined,
           description: args.input?.description ?? '',
-          ratio: args.input?.ratio,
+          ratio: args.input?.ratio ?? undefined,
+          color: args.input?.color ?? undefined,
         },
       });
       return ret;

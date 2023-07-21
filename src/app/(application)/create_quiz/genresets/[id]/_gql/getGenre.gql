@@ -5,5 +5,6 @@ query GetGenre($input: GetGenreInput) {
     description
     name
     ratio
+    color
   }
 }

@@ -22,6 +22,7 @@ export const useUpdateGenreModal = (props: UseUpdateGenreModalProps) => {
       name: '',
       description: '',
       ratio: 1,
+      color: 'gray',
     },
     validate: {
       name: isNotEmpty('このフィールドは必須です'),
@@ -31,6 +32,7 @@ export const useUpdateGenreModal = (props: UseUpdateGenreModalProps) => {
   const onOpen = async (open_id: string) => {
     setDatabaseId(open_id);
     getGenre({
+      fetchPolicy: 'network-only',
       variables: {
         input: {
           databaseId: open_id,
@@ -41,6 +43,7 @@ export const useUpdateGenreModal = (props: UseUpdateGenreModalProps) => {
         name: res.data?.getGenre?.name ?? '',
         description: res.data?.getGenre?.description ?? '',
         ratio: res.data?.getGenre?.ratio ?? 1,
+        color: res.data?.getGenre?.color ?? 'gray',
       });
     });
     handlers.open();
@@ -53,6 +56,8 @@ export const useUpdateGenreModal = (props: UseUpdateGenreModalProps) => {
           databaseId,
           name: values.name,
           description: values.description,
+          ratio: values.ratio,
+          color: values.color,
         },
       },
     });

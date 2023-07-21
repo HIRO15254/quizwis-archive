@@ -98,6 +98,7 @@ model Genre {
   genreSet GenreSet @relation(fields: [genreSetId], references: [databaseId], onDelete: Cascade)
   parentGenre Genre? @relation("GenreTree", fields: [parentGenreId], references: [databaseId], onDelete: Cascade)
 
+  color String?
   name String
   description String?
   ratio Int @default(1)

@@ -10,6 +10,7 @@ const CreateGenreInput = builder.inputType('CreateGenreInput', {
     name: t.string({ required: true }),
     description: t.string(),
     ratio: t.int({ defaultValue: 1 }),
+    color: t.string(),
   }),
 });
 
@@ -43,8 +44,9 @@ builder.mutationFields((t) => ({
               },
             },
             name: args.input?.name,
-            description: args.input?.description ?? '',
-            ratio: args.input?.ratio,
+            description: args.input?.description ?? undefined,
+            ratio: args.input?.ratio ?? undefined,
+            color: args.input?.color ?? undefined,
           },
         });
         return ret;
@@ -57,8 +59,9 @@ builder.mutationFields((t) => ({
             },
           },
           name: args.input?.name,
-          description: args.input?.description ?? '',
-          ratio: args.input?.ratio,
+          description: args.input?.description ?? undefined,
+          ratio: args.input?.ratio ?? undefined,
+          color: args.input?.color ?? undefined,
         },
       });
       return ret;

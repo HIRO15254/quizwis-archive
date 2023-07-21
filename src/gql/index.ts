@@ -24,6 +24,7 @@ export type CopyGenreSetInput = {
 };
 
 export type CreateGenreInput = {
+  color?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   genreSetDatabaseId: Scalars['String']['input'];
   name: Scalars['String']['input'];
@@ -72,6 +73,7 @@ export type DeleteUserInput = {
 export type Genre = Node & {
   __typename?: 'Genre';
   childGenres: Array<Genre>;
+  color?: Maybe<Scalars['String']['output']>;
   databaseId: Scalars['String']['output'];
   description?: Maybe<Scalars['String']['output']>;
   genreSet: GenreSet;
@@ -330,6 +332,7 @@ export type QuizList = Node & {
 };
 
 export type UpdateGenreInput = {
+  color?: InputMaybe<Scalars['String']['input']>;
   databaseId: Scalars['String']['input'];
   description?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -410,14 +413,14 @@ export type GetGenreQueryVariables = Exact<{
 }>;
 
 
-export type GetGenreQuery = { __typename?: 'Query', getGenre: { __typename?: 'Genre', databaseId: string, id: string, description?: string | null, name?: string | null, ratio?: number | null } };
+export type GetGenreQuery = { __typename?: 'Query', getGenre: { __typename?: 'Genre', databaseId: string, id: string, description?: string | null, name?: string | null, ratio?: number | null, color?: string | null } };
 
 export type GetGenresQueryVariables = Exact<{
   input?: InputMaybe<GetGenresInput>;
 }>;
 
 
-export type GetGenresQuery = { __typename?: 'Query', getGenres: Array<{ __typename?: 'Genre', id: string, databaseId: string, description?: string | null, name?: string | null, ratio?: number | null, childGenres: Array<{ __typename?: 'Genre', id: string }>, parentGenre?: { __typename?: 'Genre', id: string } | null }> };
+export type GetGenresQuery = { __typename?: 'Query', getGenres: Array<{ __typename?: 'Genre', id: string, databaseId: string, description?: string | null, name?: string | null, ratio?: number | null, color?: string | null, childGenres: Array<{ __typename?: 'Genre', id: string }>, parentGenre?: { __typename?: 'Genre', id: string } | null }> };
 
 export type UpdateGenreMutationVariables = Exact<{
   input: UpdateGenreInput;
@@ -618,6 +621,7 @@ export const GetGenreDocument = gql`
     description
     name
     ratio
+    color
   }
 }
     `;
@@ -660,6 +664,7 @@ export const GetGenresDocument = gql`
     description
     name
     ratio
+    color
     parentGenre {
       id
     }
