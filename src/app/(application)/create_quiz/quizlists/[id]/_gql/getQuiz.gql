@@ -7,5 +7,10 @@ query GetQuiz($input: GetQuizInput) {
     source
     id
     question
+    genre {
+      name
+      id
+      databaseId
+    }
   }
 }

@@ -18,7 +18,10 @@ import { UpdateQuizListModal } from '../../presenter/UpdateQuizListModal';
  * クイズリストの一覧表示
  */
 export const QuizListTableContainer: React.FC = () => {
-  const [reload, { loading, data }] = useGetQuizListsLazyQuery({ fetchPolicy: 'network-only' });
+  const [
+    reload,
+    { loading, data, called },
+  ] = useGetQuizListsLazyQuery({ fetchPolicy: 'network-only' });
   const {
     opened: createQuizListModalOpened,
     handlers: createQuizListModalHandlers,
@@ -71,7 +74,7 @@ export const QuizListTableContainer: React.FC = () => {
         />
         <QuizListTable
           data={data?.getQuizLists ?? []}
-          loading={loading}
+          loading={loading || !called}
           openCreateQuizListModal={createQuizListModalHandlers.open}
           openDeleteQuizListModal={deleteQuizListModalHandlers.open}
           openEditQuizListModal={updateQuizListModalHandlers.open}

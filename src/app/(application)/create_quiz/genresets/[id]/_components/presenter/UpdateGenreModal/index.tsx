@@ -71,7 +71,7 @@ export const UpdateGenreModal: React.FC<UpdateGenreModalProps> = (props) => {
           <NumberInput
             label="ジャンルの出題比率"
             min={0}
-            description="サブジャンルの場合、メインジャンルに対する出題比率を指定します。"
+            description="サブジャンルの場合、親ジャンル内での出題比率を指定します。"
             {...form.getInputProps('ratio')}
           />
           <Text size="sm">

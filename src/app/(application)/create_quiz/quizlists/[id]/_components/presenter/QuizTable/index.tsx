@@ -5,6 +5,7 @@
 // 各種import
 import {
   ActionIcon,
+  Badge,
   Button, Group, Skeleton, Stack, Table, Text, Tooltip,
 } from '@mantine/core';
 import {
@@ -16,6 +17,7 @@ import React from 'react';
 import { AdditionalInfoEditIcon } from '../AdditionalInfoEditIcon';
 import { AdditionalInfoIcon } from '../AdditionalInfoIcon';
 import { ExplanationEditor } from '../Editors/ExplanationEditor';
+import { GenreSelector, GenreSelectorProps } from '../Editors/GenreSelector';
 import { InlineAnswerEditor } from '../Editors/InlineAnswerEditor';
 import { InlineQuestionEditor } from '../Editors/InlineQuestionEditor';
 import { OtherAnswerEditor } from '../Editors/OtherAnswerEditor';
@@ -30,6 +32,11 @@ interface QuizData {
   otherAnswer?: string | null | undefined;
   explanation?: string | null | undefined;
   source?: string | null | undefined;
+  genre?: {
+    databaseId: string;
+    name: string;
+    color?: string | null | undefined;
+  } | null | undefined;
 }
 
 interface QuizTableProps {
@@ -41,6 +48,9 @@ interface QuizTableProps {
   setEditingQuizId: (databaseId: string) => void;
   createNewQuiz: () => void;
   openDeleteQuizModal: (databaseId: string) => void;
+  genreSelectorData: GenreSelectorProps['genres'];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  genreSelectorFormProps: { [key: string]: any };
 }
 
 /**
@@ -56,6 +66,8 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
     setEditingQuizId,
     createNewQuiz,
     openDeleteQuizModal,
+    genreSelectorData,
+    genreSelectorFormProps,
   } = props;
 
   // 部分的なコンポーネントの宣言
@@ -68,6 +80,9 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
           </td>
           <td>
             <InlineAnswerEditor editor={editors.answer} />
+          </td>
+          <td>
+            <GenreSelector genres={genreSelectorData} {...genreSelectorFormProps} />
           </td>
           <td>
             <Group spacing={3}>
@@ -126,6 +141,16 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
         </td>
         <td>
           <div dangerouslySetInnerHTML={{ __html: quiz.answer ?? '' }} />
+        </td>
+        <td>
+          {quiz.genre && (
+            <Badge color={quiz.genre.color ?? 'gray'} size="lg">
+              {quiz.genre.name}
+            </Badge>
+          )}
+          {!quiz.genre && (
+            <Text c="dimmed">未設定</Text>
+          )}
         </td>
         <td>
           <Group spacing={3}>
@@ -196,7 +221,8 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
         <thead>
           <tr>
             <th>問題文</th>
-            <th style={{ width: '25%' }}>解答</th>
+            <th style={{ width: '20%' }}>解答</th>
+            <th style={{ width: '15%' }}>ジャンル</th>
             <th style={{ width: 100 }}>追加情報</th>
             <th style={{ width: 100 }}>操作</th>
           </tr>

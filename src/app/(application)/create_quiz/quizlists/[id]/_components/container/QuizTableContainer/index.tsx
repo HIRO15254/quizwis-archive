@@ -43,6 +43,8 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
     createQuiz,
     editingQuizId,
     setEditingQuizId,
+    genreSelectorData,
+    genreSelectorFormProps,
   } = useInlineQuizEditor({ reload, listId });
   const {
     opened: deleteQuizModalOpened,
@@ -73,6 +75,8 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
           setEditingQuizId={setEditingQuizId}
           createNewQuiz={createQuiz}
           openDeleteQuizModal={deleteQuizModalHandlers.open}
+          genreSelectorData={genreSelectorData ?? []}
+          genreSelectorFormProps={genreSelectorFormProps}
         />
       </Paper>
     </Group>

@@ -5,7 +5,12 @@ import { Editor, EditorOptions, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { useState } from 'react';
 
-import { useCreateQuizMutation, useUpdateQuizMutation, useGetQuizLazyQuery } from 'gql';
+import {
+  useCreateQuizMutation,
+  useUpdateQuizMutation,
+  useGetQuizLazyQuery,
+  useGetGenresFromQuizListQuery,
+} from 'gql';
 import { Ruby } from 'util/tiptap/ruby';
 
 interface UseInlineQuizEditorProps {
@@ -26,6 +31,7 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
       otherAnswer: '',
       explanation: '',
       source: '',
+      genre: '',
     },
   });
 
@@ -61,6 +67,21 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
     },
   });
 
+  const { data: genres } = useGetGenresFromQuizListQuery({
+    fetchPolicy: 'network-only',
+    variables: {
+      input: {
+        databaseId: listId,
+      },
+    },
+  });
+  const genreSelectorData = genres?.getQuizList?.genreSet?.genres.map((genre) => ({
+    value: genre.name,
+    label: genre.name,
+    color: genre.color,
+  }));
+  const genreSelectorFormProps = form.getInputProps('genre');
+
   const questionEditor = useEditor(editorOptions('question'));
   const answerEditor = useEditor(editorOptions('answer'));
   const otherAnswerEditor = useEditor(editorOptions('otherAnswer'));
@@ -90,6 +111,7 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
       otherAnswerEditor?.commands.setContent(quiz?.otherAnswer ?? '', true);
       explanationEditor?.commands.setContent(quiz?.explanation ?? '', true);
       sourceEditor?.commands.setContent(quiz?.source ?? '', true);
+      form.setFieldValue('genre', quiz?.genre?.name ?? '');
     });
   };
 
@@ -104,6 +126,7 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
             otherAnswer: form.values.otherAnswer !== '<p></p>' ? form.values.otherAnswer : null,
             explanation: form.values.explanation !== '<p></p>' ? form.values.explanation : null,
             source: form.values.source !== '<p></p>' ? form.values.source : null,
+            genreName: form.values.genre ?? null,
           },
         },
       }).then(() => {
@@ -119,5 +142,7 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
     setEditingQuizId: newSetEditingQuizId,
     createQuiz: createNewQuiz,
     onSubmit,
+    genreSelectorData,
+    genreSelectorFormProps,
   };
 };

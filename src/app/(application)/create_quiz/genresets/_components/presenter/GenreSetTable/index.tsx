@@ -117,7 +117,7 @@ export const GenreSetTable: React.FC<GenreSetTableProps> = (props) => {
           <tr>
             <th style={{ minWidth: 80 }}>セット名</th>
             <th>説明</th>
-            <th style={{ minWidth: 120 }}>操作</th>
+            <th style={{ width: 120 }}>操作</th>
           </tr>
         </thead>
         <tbody>
