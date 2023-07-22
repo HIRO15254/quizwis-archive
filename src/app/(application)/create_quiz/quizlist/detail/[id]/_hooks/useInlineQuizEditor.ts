@@ -67,7 +67,7 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
     },
   });
 
-  const { data: genres } = useGetGenresFromQuizListQuery({
+  const { data: genreData } = useGetGenresFromQuizListQuery({
     fetchPolicy: 'network-only',
     variables: {
       input: {
@@ -75,11 +75,24 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
       },
     },
   });
-  const genreSelectorData = genres?.getQuizList?.genreSet?.genres.map((genre) => ({
-    value: genre.name,
-    label: genre.name,
-    color: genre.color,
-  }));
+
+  const genres = genreData?.getQuizList?.genreSet?.genres;
+  const genreSelectorData = genres?.map((genre) => {
+    let val = genre.name;
+    let parentId = genre.parentGenre?.databaseId;
+    while (parentId) {
+      const oldParentId = parentId;
+      const parent = genres?.find((g) => g.databaseId === oldParentId);
+      val = `${parent?.name} ${val}`;
+      parentId = parent?.parentGenre?.databaseId;
+    }
+    return ({
+      value: genre.name,
+      searchText: val,
+      label: genre.name,
+      color: genre.color,
+    });
+  });
   const genreSelectorFormProps = form.getInputProps('genre');
 
   const questionEditor = useEditor(editorOptions('question'));

@@ -22,7 +22,7 @@ export const useCreateGenreModal = (props: UseCreateGenreModalProps) => {
     initialValues: {
       name: '',
       description: '',
-      ratio: 1,
+      ratio: 5,
       color: 'gray',
     },
     validate: {
@@ -49,7 +49,7 @@ export const useCreateGenreModal = (props: UseCreateGenreModalProps) => {
         form.setValues({
           name: '',
           description: '',
-          ratio: 1,
+          ratio: 5,
           color: res.data?.getGenre?.color ?? 'gray',
         });
       });
