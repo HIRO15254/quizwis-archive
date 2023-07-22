@@ -7,8 +7,12 @@ import { RichTextEditor, useRichTextEditorContext } from '@mantine/tiptap';
 import { IconLanguageHiragana } from '@tabler/icons-react';
 import React from 'react';
 
+interface FormUsingRubyProps {
+  text: string;
+}
+
 interface RubyFormProps {
-  form: UseFormReturnType<any>;
+  form: UseFormReturnType<FormUsingRubyProps>;
   onSubmit: () => void;
   target: string;
 }

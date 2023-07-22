@@ -8,8 +8,8 @@ import React from 'react';
 import { Responsive } from 'components/layout/Responsive';
 import { colors } from 'styles/colors';
 
-import { NavBarLinksGroup } from '../NavBarLinksGroup';
 import { mockData } from './mockData';
+import { NavBarLinksGroup } from '../NavBarLinksGroup';
 
 interface MainNavBarProps {
   opened: boolean;

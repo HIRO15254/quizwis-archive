@@ -1,5 +1,5 @@
-import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
+import { getServerSession } from 'next-auth';
 import React from 'react';
 
 import LoginForm from './_components/LoginForm';

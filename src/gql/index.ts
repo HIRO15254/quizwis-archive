@@ -124,7 +124,10 @@ export type GetQuizListsInput = {
 };
 
 export type GetQuizzesInput = {
+  cursorDatabaseId?: InputMaybe<Scalars['String']['input']>;
+  page?: Scalars['Int']['input'];
   quizListDatabaseId?: InputMaybe<Scalars['String']['input']>;
+  take?: Scalars['Int']['input'];
 };
 
 export type GetUserInput = {
@@ -327,6 +330,7 @@ export type QuizList = Node & {
   genreSet?: Maybe<GenreSet>;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
+  quizCount: Scalars['Int']['output'];
   quizzes: Array<Quiz>;
   user: User;
 };
@@ -417,6 +421,13 @@ export type GetGenreQueryVariables = Exact<{
 
 export type GetGenreQuery = { __typename?: 'Query', getGenre: { __typename?: 'Genre', databaseId: string, id: string, description?: string | null, name: string, ratio?: number | null, color?: string | null } };
 
+export type GetGenreSetNameQueryVariables = Exact<{
+  input?: InputMaybe<GetGenreSetInput>;
+}>;
+
+
+export type GetGenreSetNameQuery = { __typename?: 'Query', getGenreSet: { __typename?: 'GenreSet', name: string, id: string, databaseId: string } };
+
 export type GetGenresQueryVariables = Exact<{
   input?: InputMaybe<GetGenresInput>;
 }>;
@@ -491,6 +502,13 @@ export type GetQuizQueryVariables = Exact<{
 
 
 export type GetQuizQuery = { __typename?: 'Query', getQuiz: { __typename?: 'Quiz', explanation?: string | null, databaseId: string, answer?: string | null, otherAnswer?: string | null, source?: string | null, id: string, question?: string | null, genre?: { __typename?: 'Genre', name: string, id: string, databaseId: string } | null } };
+
+export type GetQuizCountQueryVariables = Exact<{
+  input?: InputMaybe<GetQuizListInput>;
+}>;
+
+
+export type GetQuizCountQuery = { __typename?: 'Query', getQuizList: { __typename?: 'QuizList', id: string, databaseId: string, quizCount: number } };
 
 export type GetQuizzesQueryVariables = Exact<{
   input: GetQuizzesInput;
@@ -667,6 +685,43 @@ export function useGetGenreLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
 export type GetGenreQueryHookResult = ReturnType<typeof useGetGenreQuery>;
 export type GetGenreLazyQueryHookResult = ReturnType<typeof useGetGenreLazyQuery>;
 export type GetGenreQueryResult = Apollo.QueryResult<GetGenreQuery, GetGenreQueryVariables>;
+export const GetGenreSetNameDocument = gql`
+    query GetGenreSetName($input: GetGenreSetInput) {
+  getGenreSet(input: $input) {
+    name
+    id
+    databaseId
+  }
+}
+    `;
+
+/**
+ * __useGetGenreSetNameQuery__
+ *
+ * To run a query within a React component, call `useGetGenreSetNameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGenreSetNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGenreSetNameQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetGenreSetNameQuery(baseOptions?: Apollo.QueryHookOptions<GetGenreSetNameQuery, GetGenreSetNameQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGenreSetNameQuery, GetGenreSetNameQueryVariables>(GetGenreSetNameDocument, options);
+      }
+export function useGetGenreSetNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGenreSetNameQuery, GetGenreSetNameQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGenreSetNameQuery, GetGenreSetNameQueryVariables>(GetGenreSetNameDocument, options);
+        }
+export type GetGenreSetNameQueryHookResult = ReturnType<typeof useGetGenreSetNameQuery>;
+export type GetGenreSetNameLazyQueryHookResult = ReturnType<typeof useGetGenreSetNameLazyQuery>;
+export type GetGenreSetNameQueryResult = Apollo.QueryResult<GetGenreSetNameQuery, GetGenreSetNameQueryVariables>;
 export const GetGenresDocument = gql`
     query GetGenres($input: GetGenresInput) {
   getGenres(input: $input) {
@@ -1085,6 +1140,43 @@ export function useGetQuizLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ge
 export type GetQuizQueryHookResult = ReturnType<typeof useGetQuizQuery>;
 export type GetQuizLazyQueryHookResult = ReturnType<typeof useGetQuizLazyQuery>;
 export type GetQuizQueryResult = Apollo.QueryResult<GetQuizQuery, GetQuizQueryVariables>;
+export const GetQuizCountDocument = gql`
+    query GetQuizCount($input: GetQuizListInput) {
+  getQuizList(input: $input) {
+    id
+    databaseId
+    quizCount
+  }
+}
+    `;
+
+/**
+ * __useGetQuizCountQuery__
+ *
+ * To run a query within a React component, call `useGetQuizCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetQuizCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetQuizCountQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetQuizCountQuery(baseOptions?: Apollo.QueryHookOptions<GetQuizCountQuery, GetQuizCountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetQuizCountQuery, GetQuizCountQueryVariables>(GetQuizCountDocument, options);
+      }
+export function useGetQuizCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetQuizCountQuery, GetQuizCountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetQuizCountQuery, GetQuizCountQueryVariables>(GetQuizCountDocument, options);
+        }
+export type GetQuizCountQueryHookResult = ReturnType<typeof useGetQuizCountQuery>;
+export type GetQuizCountLazyQueryHookResult = ReturnType<typeof useGetQuizCountLazyQuery>;
+export type GetQuizCountQueryResult = Apollo.QueryResult<GetQuizCountQuery, GetQuizCountQueryVariables>;
 export const GetQuizzesDocument = gql`
     query GetQuizzes($input: GetQuizzesInput!) {
   getQuizzes(input: $input) {
