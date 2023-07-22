@@ -10,6 +10,7 @@ export interface GenreSelectorProps {
   genres: {
     value: string;
     label: string;
+    searchText: string;
     color?: string | null | undefined;
   }[];
 }
@@ -51,7 +52,11 @@ export const GenreSelector: React.FC<GenreSelectorProps> = (props) => {
       clearable
       itemComponent={ItemBadge}
       data={genres}
-      filter={(query, item) => item.label?.toLowerCase().includes(query.toLowerCase()) ?? false}
+      filter={(query, item) => {
+        console.log(query, item);
+        const ret = item.searchText?.toLowerCase().includes(query.toLowerCase()) ?? false;
+        return ret;
+      }}
       {...others}
     />
   );

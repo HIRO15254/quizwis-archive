@@ -15,7 +15,7 @@ builder.queryField('getGenreSet', (t) => t.prismaField({
   resolve: async (_query, _root, args, ctx, _info) => {
     const genreSet = await prisma.genreSet.findUniqueOrThrow({
       where: { databaseId: args.input?.databaseId ?? '' },
-      include: { user: true },
+      include: { user: true, genres: { orderBy: { createdAt: 'asc' } } },
     });
     if (genreSet.user.userId !== ctx.currentUserId) {
       if (!await checkAuthority(ctx.currentUserId ?? '', 'ADMIN')) {

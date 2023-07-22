@@ -15,13 +15,17 @@ builder.queryField('getGenres', (t) => t.prismaField({
   resolve: async (_query, _root, args, ctx, _info) => {
     const genreSet = await prisma.genreSet.findUniqueOrThrow({
       where: { databaseId: args.input?.genreSetDatabaseId ?? '' },
-      include: { user: true, genres: true },
+      include: { user: true },
     });
     if (genreSet.user.userId !== ctx.currentUserId) {
       if (!await checkAuthority(ctx.currentUserId ?? '', 'ADMIN')) {
         throw new Error('権限がありません。');
       }
     }
-    return genreSet.genres;
+    const ret = await prisma.genre.findMany({
+      where: { genreSetId: args.input?.genreSetDatabaseId ?? '' },
+      orderBy: { createdAt: 'asc' },
+    });
+    return ret;
   },
 }));
