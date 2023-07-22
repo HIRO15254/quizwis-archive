@@ -2,9 +2,11 @@
 
 // 各種import
 import {
-  Badge, Group, Select,
+  Group, Select,
 } from '@mantine/core';
 import React, { forwardRef } from 'react';
+
+import { GenreBadge } from 'components/common/GenreBadge';
 
 export interface GenreSelectorProps {
   genres: {
@@ -32,7 +34,7 @@ const ItemBadge = forwardRef<HTMLDivElement, ItemBadgeProps>((props, ref) => {
   return (
     <div ref={ref} style={{ padding: '0.25rem' }} {...others}>
       <Group w="min-content">
-        <Badge key={value} color={color ?? 'gray'} size="lg" fullWidth>{label}</Badge>
+        <GenreBadge key={value} color={color ?? 'gray'}>{label}</GenreBadge>
       </Group>
     </div>
   );
