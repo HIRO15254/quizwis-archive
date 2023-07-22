@@ -2,7 +2,7 @@
 
 // 各種import
 import {
-  Badge, Select,
+  Badge, Group, Select,
 } from '@mantine/core';
 import React, { forwardRef } from 'react';
 
@@ -30,8 +30,10 @@ const ItemBadge = forwardRef<HTMLDivElement, ItemBadgeProps>((props, ref) => {
   } = props;
 
   return (
-    <div ref={ref} {...others}>
-      <Badge key={value} color={color ?? 'gray'} size="lg">{label}</Badge>
+    <div ref={ref} style={{ padding: '0.25rem' }} {...others}>
+      <Group w="min-content">
+        <Badge key={value} color={color ?? 'gray'} size="lg" fullWidth>{label}</Badge>
+      </Group>
     </div>
   );
 });
@@ -49,13 +51,16 @@ export const GenreSelector: React.FC<GenreSelectorProps> = (props) => {
     <Select
       size="md"
       searchable
-      clearable
+      allowDeselect
       itemComponent={ItemBadge}
       data={genres}
+      rightSectionWidth={1}
+      rightSection={<span />}
       filter={(query, item) => {
         const ret = item.searchText?.toLowerCase().includes(query.toLowerCase()) ?? false;
         return ret;
       }}
+      styles={{ input: { fontSize: '0.8rem' } }}
       {...others}
     />
   );

@@ -55,6 +55,7 @@ export const UpdateGenreModal: React.FC<UpdateGenreModalProps> = (props) => {
           <TextInput
             withAsterisk
             label="ジャンル名"
+            description="10文字以下を推奨します"
             {...form.getInputProps('name')}
           />
           <Textarea
