@@ -417,6 +417,13 @@ export type GetGenreQueryVariables = Exact<{
 
 export type GetGenreQuery = { __typename?: 'Query', getGenre: { __typename?: 'Genre', databaseId: string, id: string, description?: string | null, name: string, ratio?: number | null, color?: string | null } };
 
+export type GetGenreSetNameQueryVariables = Exact<{
+  input?: InputMaybe<GetGenreSetInput>;
+}>;
+
+
+export type GetGenreSetNameQuery = { __typename?: 'Query', getGenreSet: { __typename?: 'GenreSet', name: string, id: string, databaseId: string } };
+
 export type GetGenresQueryVariables = Exact<{
   input?: InputMaybe<GetGenresInput>;
 }>;
@@ -667,6 +674,43 @@ export function useGetGenreLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
 export type GetGenreQueryHookResult = ReturnType<typeof useGetGenreQuery>;
 export type GetGenreLazyQueryHookResult = ReturnType<typeof useGetGenreLazyQuery>;
 export type GetGenreQueryResult = Apollo.QueryResult<GetGenreQuery, GetGenreQueryVariables>;
+export const GetGenreSetNameDocument = gql`
+    query GetGenreSetName($input: GetGenreSetInput) {
+  getGenreSet(input: $input) {
+    name
+    id
+    databaseId
+  }
+}
+    `;
+
+/**
+ * __useGetGenreSetNameQuery__
+ *
+ * To run a query within a React component, call `useGetGenreSetNameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGenreSetNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGenreSetNameQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetGenreSetNameQuery(baseOptions?: Apollo.QueryHookOptions<GetGenreSetNameQuery, GetGenreSetNameQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGenreSetNameQuery, GetGenreSetNameQueryVariables>(GetGenreSetNameDocument, options);
+      }
+export function useGetGenreSetNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGenreSetNameQuery, GetGenreSetNameQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGenreSetNameQuery, GetGenreSetNameQueryVariables>(GetGenreSetNameDocument, options);
+        }
+export type GetGenreSetNameQueryHookResult = ReturnType<typeof useGetGenreSetNameQuery>;
+export type GetGenreSetNameLazyQueryHookResult = ReturnType<typeof useGetGenreSetNameLazyQuery>;
+export type GetGenreSetNameQueryResult = Apollo.QueryResult<GetGenreSetNameQuery, GetGenreSetNameQueryVariables>;
 export const GetGenresDocument = gql`
     query GetGenres($input: GetGenresInput) {
   getGenres(input: $input) {

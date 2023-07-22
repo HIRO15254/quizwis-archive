@@ -1,7 +1,9 @@
 'use client';
 
 // 各種import
-import { Title, Paper, Group } from '@mantine/core';
+import {
+  Title, Paper, Group, Anchor,
+} from '@mantine/core';
 import React, { useEffect } from 'react';
 
 import { useGetQuizListQuery, useGetQuizzesLazyQuery } from 'gql';
@@ -60,7 +62,10 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
   return (
     <Group position="center" pb="sm">
       <Paper w="100%" maw={1200} p="xl" shadow="xs">
-        <Title order={1}>{`〈${quizListName?.getQuizList.name ?? ''}〉問題一覧`}</Title>
+        <Anchor href="/create_quiz/quizlist/list" unstyled>
+          {'< 問題リスト一覧に戻る'}
+        </Anchor>
+        <Title order={1} mt="md">{quizListName?.getQuizList.name ?? ''}</Title>
         <DeleteQuizModal
           onClose={deleteQuizModalHandlers.close}
           opened={deleteQuizModalOpened}

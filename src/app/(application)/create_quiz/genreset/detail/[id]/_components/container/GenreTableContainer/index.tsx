@@ -1,9 +1,11 @@
 'use client';
 
-import { Group, Paper, Title } from '@mantine/core';
+import {
+  Anchor, Group, Paper, Title,
+} from '@mantine/core';
 import React, { useEffect } from 'react';
 
-import { useGetGenresLazyQuery } from 'gql';
+import { useGetGenreSetNameQuery, useGetGenresLazyQuery } from 'gql';
 
 import { useCreateGenreModal } from '../../../_hooks/useCreateGenreModal';
 import { useDeleteGenreModal } from '../../../_hooks/useDeleteGenreModal';
@@ -27,6 +29,14 @@ export const GenreTableContainer: React.FC<GenreTableContainerProps> = (props) =
       variables: { input: { genreSetDatabaseId: setId } },
     },
   );
+  const { data: genreSetName } = useGetGenreSetNameQuery({
+    variables: {
+      input: {
+        databaseId: setId,
+      },
+    },
+  });
+
   const {
     opened: createGenreModalOpened,
     handlers: createGenreModalHandlers,
@@ -53,7 +63,10 @@ export const GenreTableContainer: React.FC<GenreTableContainerProps> = (props) =
   return (
     <Group position="center" pb="sm">
       <Paper w="100%" maw={800} p="xl" shadow="xs">
-        <Title order={1}>ジャンル一覧</Title>
+        <Anchor href="/create_quiz/genreset/list" unstyled>
+          {'< ジャンルセット一覧に戻る'}
+        </Anchor>
+        <Title order={1} mt="md">{genreSetName?.getGenreSet.name ?? ''}</Title>
         <CreateGenreModal
           opened={createGenreModalOpened}
           onClose={createGenreModalHandlers.close}
