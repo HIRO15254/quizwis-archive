@@ -4,7 +4,7 @@
 import {
   ActionIcon,
   Badge,
-  Button, Group, Skeleton, Stack, Table, Text, Tooltip, useMantineTheme,
+  Button, Flex, Group, Skeleton, Stack, Table, Text, Tooltip, useMantineTheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
@@ -46,15 +46,17 @@ const GenreRow: React.FC<GenreRowProps> = (props) => {
     <>
       <tr style={{ backgroundColor: bgColor() }}>
         <td style={{ paddingLeft: nest * 20 }}>
-          <Group>
+          <Flex w="fit-content" maw="100%">
             <IconPlus
               onClick={toggle}
               style={{ visibility: genre.children.length === 0 ? 'hidden' : undefined }}
             />
-            <Badge color={genre.data.color ?? 'gray'} variant="light" size="lg">
-              {genre.data.name}
-            </Badge>
-          </Group>
+            <Group w="fit-content">
+              <Badge color={genre.data.color ?? 'gray'} variant="light" size="lg" fullWidth>
+                {genre.data.name.length > 10 ? `${genre.data.name.slice(0, 9)}...` : genre.data.name}
+              </Badge>
+            </Group>
+          </Flex>
         </td>
         <td>
           {genre.data.description ? (
@@ -163,7 +165,7 @@ export const GenreTable: React.FC<GenreTableProps> = (props) => {
       <Table>
         <thead>
           <tr>
-            <th>ジャンル名</th>
+            <th style={{ width: 220 }}>ジャンル名</th>
             <th>説明</th>
             <th style={{ width: 60 }}>比率</th>
             <th style={{ width: 130 }}>操作</th>

@@ -154,9 +154,11 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
         </td>
         <td>
           {quiz.genre && (
-            <Badge color={quiz.genre.color ?? 'gray'} size="lg">
-              {quiz.genre.name}
-            </Badge>
+            <Group w="max-content">
+              <Badge color={quiz.genre.color ?? 'gray'} size="lg" fullWidth>
+                {quiz.genre.name}
+              </Badge>
+            </Group>
           )}
           {!quiz.genre && (
             <Text c="dimmed">未設定</Text>
@@ -238,8 +240,8 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
         <thead>
           <tr>
             <th>問題文</th>
-            <th style={{ width: '20%' }}>解答</th>
-            <th style={{ width: '15%' }}>ジャンル</th>
+            <th style={{ width: '15%' }}>解答</th>
+            <th style={{ width: 200 }}>ジャンル</th>
             <th style={{ width: 100 }}>追加情報</th>
             <th style={{ width: 100 }}>操作</th>
           </tr>
