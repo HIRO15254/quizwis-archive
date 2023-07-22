@@ -3,12 +3,13 @@
 // 各種import
 import {
   ActionIcon,
-  Badge,
-  Button, Flex, Group, Skeleton, Stack, Table, Text, Tooltip, useMantineTheme,
+  Button, Group, Skeleton, Stack, Table, Text, Tooltip, useMantineTheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
 import React from 'react';
+
+import { GenreBadge } from 'components/common/GenreBadge';
 
 import { GenreTree } from '../../../_util/genreListToTree';
 
@@ -46,17 +47,15 @@ const GenreRow: React.FC<GenreRowProps> = (props) => {
     <>
       <tr style={{ backgroundColor: bgColor() }}>
         <td style={{ paddingLeft: nest * 20 }}>
-          <Flex w="fit-content" maw="100%">
+          <Group noWrap>
             <IconPlus
               onClick={toggle}
               style={{ visibility: genre.children.length === 0 ? 'hidden' : undefined }}
             />
-            <Group w="fit-content">
-              <Badge color={genre.data.color ?? 'gray'} variant="light" size="lg" fullWidth>
-                {genre.data.name.length > 10 ? `${genre.data.name.slice(0, 9)}...` : genre.data.name}
-              </Badge>
-            </Group>
-          </Flex>
+            <GenreBadge color={genre.data.color ?? 'gray'}>
+              {genre.data.name}
+            </GenreBadge>
+          </Group>
         </td>
         <td>
           {genre.data.description ? (

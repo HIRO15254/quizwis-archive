@@ -10,13 +10,14 @@ import {
   Text,
   Textarea,
   NumberInput,
-  Badge,
   MANTINE_COLORS,
   NativeSelect,
 } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
-// 各種import
 import React from 'react';
+
+import { GenreBadge } from 'components/common/GenreBadge';
+// 各種import
 
 // Propsの型定義
 export interface CreateGenreFormType {
@@ -78,9 +79,9 @@ export const CreateGenreModal: React.FC<CreateGenreModalProps> = (props) => {
           <Text size="sm">
             プレビュー
             <br />
-            <Badge variant="light" color={form.values.color}>
+            <GenreBadge color={form.values.color}>
               {form.values.name}
-            </Badge>
+            </GenreBadge>
           </Text>
           <Group position="right">
             <Button type="submit">

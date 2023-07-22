@@ -14,6 +14,8 @@ import {
 import { Editor } from '@tiptap/react';
 import React from 'react';
 
+import { GenreBadge } from 'components/common/GenreBadge';
+
 import { AdditionalInfoEditIcon } from '../AdditionalInfoEditIcon';
 import { AdditionalInfoIcon } from '../AdditionalInfoIcon';
 import { ExplanationEditor } from '../Editors/ExplanationEditor';
@@ -154,11 +156,9 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
         </td>
         <td>
           {quiz.genre && (
-            <Group w="max-content">
-              <Badge color={quiz.genre.color ?? 'gray'} size="lg" fullWidth>
-                {quiz.genre.name}
-              </Badge>
-            </Group>
+            <GenreBadge color={quiz.genre.color ?? 'gray'}>
+              {quiz.genre.name}
+            </GenreBadge>
           )}
           {!quiz.genre && (
             <Text c="dimmed">未設定</Text>

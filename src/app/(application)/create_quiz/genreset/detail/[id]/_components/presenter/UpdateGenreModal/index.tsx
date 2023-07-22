@@ -78,8 +78,8 @@ export const UpdateGenreModal: React.FC<UpdateGenreModalProps> = (props) => {
           <Text size="sm">
             プレビュー
             <br />
-            <Badge variant="light" color={form.values.color}>
-              {form.values.name}
+            <Badge variant="light" color={form.values.color} size="lg">
+              {form.values.name.length > 10 ? `${form.values.name.slice(0, 9)}...` : form.values.name}
             </Badge>
           </Text>
           <Group position="right">
