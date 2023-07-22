@@ -23,7 +23,7 @@ builder.queryField('getQuizzes', (t) => t.prismaField({
         include: { user: true },
       });
       if (quizList.user.userId !== ctx.currentUserId) {
-        if (!checkAuthority(ctx.currentUserId, quizList.user.userId)) {
+        if (!checkAuthority(ctx.currentUserId, 'ADMIN')) {
           throw new Error('権限がありません。');
         }
       }
