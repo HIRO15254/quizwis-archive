@@ -14,7 +14,7 @@ export const metadata = {
   description: 'template for next.js app',
 };
 
-const RootLayout: React.FC<RootLayoutProps> = async (props) => {
+const RootLayout: React.FC<RootLayoutProps> = (props) => {
   const { children } = props;
 
   const { colorScheme, setColorScheme } = useColorSchemeCookie();

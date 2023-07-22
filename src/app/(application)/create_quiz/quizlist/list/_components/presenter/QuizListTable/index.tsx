@@ -10,61 +10,75 @@ import { IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
 import React from 'react';
 
 // Propsの型定義
-interface GenreSetData {
+interface QuizListData {
   id: string;
   databaseId: string;
   name: string;
   description?: string | null | undefined;
+  genreSet?: {
+    databaseId: string;
+    name: string;
+  } | null | undefined;
 }
 
-interface GenreSetTableProps {
+interface QuizListTableProps {
   loading: boolean;
-  data: GenreSetData[];
-  openCreateGenreSetModal: () => void;
-  openDeleteGenreSetModal: (databaseId: string) => void;
-  openEditGenreSetModal: (databaseId: string) => void;
+  data: QuizListData[];
+  openCreateQuizListModal: () => void;
+  openDeleteQuizListModal: (databaseId: string) => void;
+  openEditQuizListModal: (databaseId: string) => void;
 }
 
 /**
  * 説明
  */
-export const GenreSetTable: React.FC<GenreSetTableProps> = (props) => {
+export const QuizListTable: React.FC<QuizListTableProps> = (props) => {
   const {
     data,
     loading,
-    openCreateGenreSetModal,
-    openDeleteGenreSetModal,
-    openEditGenreSetModal,
+    openCreateQuizListModal,
+    openDeleteQuizListModal,
+    openEditQuizListModal,
   } = props;
 
   // 部分的なコンポーネントの宣言
   const rows = data.map((quizList) => (
     <tr key={quizList.id}>
       <td>
-        <Anchor href={`genresets/${quizList.databaseId}`}>
+        <Anchor href={`./detail/${quizList.databaseId}`}>
           {quizList.name}
         </Anchor>
       </td>
       <td>
-        { quizList.description
-          && (
+        { quizList.description && (
           <Text>
             {quizList.description}
           </Text>
-          )}
-        { !quizList.description
-          && (
+        )}
+        { !quizList.description && (
           <Text c="dimmed">
             説明文はありません
           </Text>
-          )}
+        )}
+      </td>
+      <td>
+        { quizList.genreSet && (
+          <Anchor href={`../genreset/detail/${quizList.genreSet.databaseId}`}>
+            {quizList.genreSet.name}
+          </Anchor>
+        )}
+        { !quizList.genreSet && (
+          <Text c="dimmed">
+            未割り当て
+          </Text>
+        )}
       </td>
       <td>
         <Group spacing={3}>
           <ActionIcon
             size="lg"
             color="blue"
-            onClick={() => openEditGenreSetModal(quizList.databaseId)}
+            onClick={() => openEditQuizListModal(quizList.databaseId)}
           >
             <Tooltip label="編集">
               <IconPencil size="1.5rem" stroke={1.4} />
@@ -72,7 +86,7 @@ export const GenreSetTable: React.FC<GenreSetTableProps> = (props) => {
           </ActionIcon>
           <ActionIcon
             size="lg"
-            onClick={() => openDeleteGenreSetModal(quizList.databaseId)}
+            onClick={() => openDeleteQuizListModal(quizList.databaseId)}
             color="red"
           >
             <Tooltip label="削除">
@@ -88,12 +102,12 @@ export const GenreSetTable: React.FC<GenreSetTableProps> = (props) => {
   if (!loading && data.length === 0) {
     return (
       <Stack align="center" m="sm">
-        <Text size="lg">ジャンルセットがありません</Text>
+        <Text size="lg">問題リストがありません</Text>
         <Button
-          onClick={openCreateGenreSetModal}
+          onClick={openCreateQuizListModal}
           leftIcon={<IconPlus />}
         >
-          新規ジャンルセット
+          新規問題リスト
         </Button>
       </Stack>
     );
@@ -102,10 +116,10 @@ export const GenreSetTable: React.FC<GenreSetTableProps> = (props) => {
     <Skeleton visible={loading}>
       <Group position="right">
         <Button
-          onClick={openCreateGenreSetModal}
+          onClick={openCreateQuizListModal}
           leftIcon={<IconPlus />}
         >
-          新規ジャンルセット
+          新規問題リスト
         </Button>
       </Group>
       <Table
@@ -115,8 +129,9 @@ export const GenreSetTable: React.FC<GenreSetTableProps> = (props) => {
       >
         <thead>
           <tr>
-            <th style={{ minWidth: 80 }}>セット名</th>
+            <th style={{ minWidth: 80 }}>リスト名</th>
             <th>説明</th>
+            <th>使用ジャンルセット</th>
             <th style={{ width: 120 }}>操作</th>
           </tr>
         </thead>

@@ -1,6 +1,6 @@
-import { getServerSession } from 'next-auth';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { getServerSession } from 'next-auth';
 import React from 'react';
 
 import { MainAppShell } from 'app/_components/MainAppShell';
