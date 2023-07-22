@@ -53,7 +53,6 @@ export const GenreSelector: React.FC<GenreSelectorProps> = (props) => {
       itemComponent={ItemBadge}
       data={genres}
       filter={(query, item) => {
-        console.log(query, item);
         const ret = item.searchText?.toLowerCase().includes(query.toLowerCase()) ?? false;
         return ret;
       }}
