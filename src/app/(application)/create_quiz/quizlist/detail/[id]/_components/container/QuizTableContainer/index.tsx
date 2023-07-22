@@ -4,12 +4,13 @@
 import {
   Title, Paper, Group, Anchor,
 } from '@mantine/core';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
-import { useGetQuizListQuery, useGetQuizzesLazyQuery } from 'gql';
+import { useGetQuizCountLazyQuery, useGetQuizListQuery, useGetQuizzesLazyQuery } from 'gql';
 
 import { useDeleteQuizModal } from '../../../_hooks/useDeleteQuizModal';
 import { useInlineQuizEditor } from '../../../_hooks/useInlineQuizEditor';
+import { usePageNation } from '../../../_hooks/usePageNation';
 import { DeleteQuizModal } from '../../presenter/DeleteQuizModal';
 import { QuizTable } from '../../presenter/QuizTable';
 
@@ -23,14 +24,18 @@ interface QuizTableContainerProps {
 export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => {
   const { listId } = props;
 
-  const [reload, { loading, data, called }] = useGetQuizzesLazyQuery({
+  const [reloadQuizzes, { loading, data, called }] = useGetQuizzesLazyQuery({
+    fetchPolicy: 'network-only',
+  });
+  const [reloadQuizCount, { data: quizCountData }] = useGetQuizCountLazyQuery({
     fetchPolicy: 'network-only',
     variables: {
       input: {
-        quizListDatabaseId: listId,
+        databaseId: listId,
       },
     },
   });
+
   const { data: quizListName } = useGetQuizListQuery({
     variables: {
       input: {
@@ -38,6 +43,40 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
       },
     },
   });
+
+  const {
+    page, setPage, dataPerPage, setDataPerPage, maxPage,
+  } = usePageNation({
+    dataCount: quizCountData?.getQuizList.quizCount ?? 0,
+    onChangePage: (newPage: number, newDataPerPage?: number) => {
+      reloadQuizzes({
+        variables: {
+          input: {
+            quizListDatabaseId: listId,
+            take: newDataPerPage ?? dataPerPage,
+            page: newPage,
+          },
+        },
+      });
+    },
+  });
+
+  const reload = useCallback(() => {
+    reloadQuizzes({
+      variables: {
+        input: {
+          quizListDatabaseId: listId,
+          take: dataPerPage,
+          page,
+        },
+      },
+    });
+    reloadQuizCount();
+  }, [dataPerPage, listId, page, reloadQuizCount, reloadQuizzes]);
+
+  useEffect(() => {
+    reload();
+  }, [reload]);
 
   const {
     onSubmit,
@@ -53,10 +92,6 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
     handlers: deleteQuizModalHandlers,
     onDelete: onDeleteQuiz,
   } = useDeleteQuizModal({ reload });
-
-  useEffect(() => {
-    reload();
-  }, [reload]);
 
   // 実際のコンポーネント
   return (
@@ -82,6 +117,11 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
           openDeleteQuizModal={deleteQuizModalHandlers.open}
           genreSelectorData={genreSelectorData ?? []}
           genreSelectorFormProps={genreSelectorFormProps}
+          dataPerPage={dataPerPage}
+          setDataPerPage={setDataPerPage}
+          page={page}
+          setNewPage={setPage}
+          totalPage={maxPage}
         />
       </Paper>
     </Group>

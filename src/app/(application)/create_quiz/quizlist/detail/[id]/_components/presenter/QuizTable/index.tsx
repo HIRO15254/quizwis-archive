@@ -6,7 +6,7 @@
 import {
   ActionIcon,
   Badge,
-  Button, Group, Skeleton, Stack, Table, Text, Tooltip,
+  Button, Group, NativeSelect, Pagination, Skeleton, Stack, Table, Text, Tooltip,
 } from '@mantine/core';
 import {
   IconArrowsSplit, IconBook2, IconCheck, IconNote, IconPencil, IconPlus, IconTrash,
@@ -51,6 +51,11 @@ interface QuizTableProps {
   genreSelectorData: GenreSelectorProps['genres'];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   genreSelectorFormProps: { [key: string]: any };
+  dataPerPage: number;
+  setDataPerPage: (newDataPerPage: number) => void;
+  totalPage: number;
+  page: number;
+  setNewPage: (newPage: number) => void;
 }
 
 /**
@@ -68,6 +73,11 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
     openDeleteQuizModal,
     genreSelectorData,
     genreSelectorFormProps,
+    dataPerPage,
+    setDataPerPage,
+    totalPage,
+    page,
+    setNewPage,
   } = props;
 
   // 部分的なコンポーネントの宣言
@@ -202,6 +212,13 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
   return (
     <Skeleton visible={loading}>
       <Group position="right">
+        <Text>表示件数</Text>
+        <NativeSelect
+          value={dataPerPage}
+          onChange={(e) => setDataPerPage(Number(e.currentTarget.value))}
+          style={{ width: 70 }}
+          data={['10', '20', '50', '100']}
+        />
         <Button
           onClick={createNewQuiz}
           leftIcon={<IconPlus />}
@@ -231,6 +248,9 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
           {rows}
         </tbody>
       </Table>
+      <Group position="center" mt="md">
+        <Pagination total={totalPage} value={page} onChange={setNewPage} withEdges />
+      </Group>
     </Skeleton>
   );
 };

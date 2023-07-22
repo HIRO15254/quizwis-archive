@@ -26,9 +26,12 @@ builder.mutationFields((t) => ({
         where: { databaseId: args.input?.quizDatabaseId ?? '' },
         include: { user: true, quizList: { include: { genreSet: true } } },
       });
-      const genre = await prisma.genre.findUnique({
-        where: { genreSetId_name: { genreSetId: quiz.quizList.genreSetId ?? '', name: args.input?.genreName ?? '' } },
-      });
+      let newGenre;
+      if (args.input?.genreName !== undefined) {
+        newGenre = await prisma.genre.findUnique({
+          where: { genreSetId_name: { genreSetId: quiz.quizList.genreSetId ?? '', name: args.input?.genreName ?? '' } },
+        });
+      }
       if (quiz.user.userId !== ctx.currentUserId) {
         if (!await checkAuthority(ctx.currentUserId ?? '', 'ADMIN')) {
           throw new Error('権限がありません。');
@@ -42,7 +45,7 @@ builder.mutationFields((t) => ({
           explanation: args.input?.explanation,
           otherAnswer: args.input?.otherAnswer,
           source: args.input?.source,
-          genre: { connect: { databaseId: genre?.databaseId ?? '' } },
+          genre: newGenre ? { connect: { databaseId: newGenre?.databaseId ?? '' } } : { disconnect: true },
         },
       });
       return ret;
