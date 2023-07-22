@@ -4,7 +4,7 @@ import {
 } from '@tabler/icons-react';
 
 export const mockData = [
-  { label: 'トップページ', icon: IconHome, link: '/' },
+  { label: 'ダッシュボード', icon: IconHome, link: '/dashboard' },
   {
     label: '問題作成',
     icon: IconSquareRoundedLetterQ,

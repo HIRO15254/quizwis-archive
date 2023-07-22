@@ -56,7 +56,14 @@ export const MainHeader: React.FC<MainHeaderProps> = (props) => {
           <MainHeaderLoginButton />
         )}
         {session && (
-          <MainHeaderUserMenu session={session} />
+          <Group>
+            {noBurger && (
+              <Anchor mr="lg" href="/dashboard">
+                アプリケーションへ移動
+              </Anchor>
+            )}
+            <MainHeaderUserMenu session={session} />
+          </Group>
         )}
       </Group>
     </Header>
