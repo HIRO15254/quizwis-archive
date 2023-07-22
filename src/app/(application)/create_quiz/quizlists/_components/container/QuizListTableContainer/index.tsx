@@ -74,7 +74,7 @@ export const QuizListTableContainer: React.FC = () => {
         />
         <QuizListTable
           data={data?.getQuizLists ?? []}
-          loading={loading || !called}
+          loading={(!data && loading) || !called}
           openCreateQuizListModal={createQuizListModalHandlers.open}
           openDeleteQuizListModal={deleteQuizListModalHandlers.open}
           openEditQuizListModal={updateQuizListModalHandlers.open}

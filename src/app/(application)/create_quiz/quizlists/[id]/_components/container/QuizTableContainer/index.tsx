@@ -21,7 +21,7 @@ interface QuizTableContainerProps {
 export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => {
   const { listId } = props;
 
-  const [reload, { loading, data }] = useGetQuizzesLazyQuery({
+  const [reload, { loading, data, called }] = useGetQuizzesLazyQuery({
     fetchPolicy: 'network-only',
     variables: {
       input: {
@@ -60,7 +60,7 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
   return (
     <Group position="center" pb="sm">
       <Paper w="100%" maw={1200} p="xl" shadow="xs">
-        <Title order={1}>{`〈${quizListName?.getQuizList.name}〉問題一覧`}</Title>
+        <Title order={1}>{`〈${quizListName?.getQuizList.name ?? ''}〉問題一覧`}</Title>
         <DeleteQuizModal
           onClose={deleteQuizModalHandlers.close}
           opened={deleteQuizModalOpened}
@@ -70,7 +70,7 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
           onSubmit={onSubmit}
           editors={editors}
           data={data?.getQuizzes ?? []}
-          loading={!data && loading}
+          loading={(!data && loading) || !called}
           editingQuizId={editingQuizId}
           setEditingQuizId={setEditingQuizId}
           createNewQuiz={createQuiz}

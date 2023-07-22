@@ -18,7 +18,7 @@ import { UpdateGenreSetModal } from '../../presenter/UpdateGenreSetModal';
  * クイズリストの一覧表示
  */
 export const GenreSetTableContainer: React.FC = () => {
-  const [reload, { loading, data }] = useGetGenreSetsLazyQuery({ fetchPolicy: 'network-only' });
+  const [reload, { loading, data, called }] = useGetGenreSetsLazyQuery({ fetchPolicy: 'network-only' });
   const {
     opened: createGenreSetModalOpened,
     handlers: createGenreSetModalHandlers,
@@ -67,7 +67,7 @@ export const GenreSetTableContainer: React.FC = () => {
         />
         <GenreSetTable
           data={data?.getGenreSets ?? []}
-          loading={loading}
+          loading={(!data && loading) || !called}
           openCreateGenreSetModal={createGenreSetModalHandlers.open}
           openDeleteGenreSetModal={deleteGenreSetModalHandlers.open}
           openEditGenreSetModal={updateGenreSetModalHandlers.open}
