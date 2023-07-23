@@ -15,7 +15,7 @@ export const useUpdateGenreModal = (props: UseUpdateGenreModalProps) => {
   const { reload } = props;
   const [opened, handlers] = useDisclosure();
   const [updateGenre] = useUpdateGenreMutation();
-  const [getGenre, { loading }] = useGetGenreLazyQuery();
+  const [getGenre, { loading }] = useGetGenreLazyQuery({ fetchPolicy: 'cache-and-network' });
   const [databaseId, setDatabaseId] = useState<string>('');
 
   const form = useForm<GenreFormType>({
@@ -34,7 +34,6 @@ export const useUpdateGenreModal = (props: UseUpdateGenreModalProps) => {
     setDatabaseId(openDatabaseId);
     handlers.open();
     getGenre({
-      fetchPolicy: 'cache-and-network',
       variables: { input: { databaseId: openDatabaseId } },
       onCompleted: (res) => {
         form.setValues({

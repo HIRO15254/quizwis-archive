@@ -15,7 +15,7 @@ export const useUpdateGenreSetModal = (props: UseUpdateGenreSetModalProps) => {
   const { reload } = props;
   const [opened, handlers] = useDisclosure();
   const [updateGenreSet] = useUpdateGenreSetMutation();
-  const [getGenreSet, { loading }] = useGetGenreSetLazyQuery();
+  const [getGenreSet, { loading }] = useGetGenreSetLazyQuery({ fetchPolicy: 'cache-and-network' });
   const [databaseId, setDatabaseId] = useState<string>('');
 
   const form = useForm<GenreSetFormType>({
