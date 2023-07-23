@@ -3,22 +3,27 @@ import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 
 import { useCreateGenreMutation, useGetGenreLazyQuery } from 'gql';
+import { errorNotification, successNotification } from 'util/notifications';
 
-import type { CreateGenreFormType } from '../_components/presenter/CreateGenreModal';
+import type { GenreFormType } from '../_types/GenreFormType';
 
 type UseCreateGenreModalProps = {
   reload: () => void;
   genreSetDatabaseId: string;
 };
 
+/**
+ * ジャンルを新規作成するためのモーダル
+ */
 export const useCreateGenreModal = (props: UseCreateGenreModalProps) => {
   const { reload, genreSetDatabaseId } = props;
+
   const [opened, handlers] = useDisclosure();
   const [parentId, setParentId] = useState<string | null>(null);
   const [createGenre] = useCreateGenreMutation();
   const [getGenre] = useGetGenreLazyQuery();
 
-  const form = useForm<CreateGenreFormType>({
+  const form = useForm<GenreFormType>({
     initialValues: {
       name: '',
       description: '',
@@ -30,13 +35,14 @@ export const useCreateGenreModal = (props: UseCreateGenreModalProps) => {
     },
   });
 
-  const onClose = () => {
+  const close = () => {
     form.reset();
     handlers.close();
   };
 
-  const onOpen = (newParentId?: string) => {
+  const open = (newParentId?: string) => {
     setParentId(newParentId || null);
+    handlers.open();
     if (newParentId) {
       getGenre({
         fetchPolicy: 'network-only',
@@ -45,41 +51,46 @@ export const useCreateGenreModal = (props: UseCreateGenreModalProps) => {
             databaseId: newParentId,
           },
         },
-      }).then((res) => {
-        form.setValues({
-          name: '',
-          description: '',
-          ratio: 5,
-          color: res.data?.getGenre?.color ?? 'gray',
-        });
+        onCompleted: (res) => {
+          form.setValues({ color: res.getGenre?.color ?? 'gray' });
+        },
       });
     }
-    handlers.open();
   };
 
   const onSubmit = form.onSubmit(async (values) => {
+    close();
     await createGenre({
       variables: {
         input: {
           genreSetDatabaseId,
           parentGenreDatabaseId: parentId || undefined,
-          name: values.name,
-          description: values.description,
-          ratio: values.ratio,
-          color: values.color,
+          ...values,
         },
       },
+      onCompleted: () => {
+        successNotification({ message: 'ジャンルを作成しました' });
+        reload();
+      },
+      onError: () => {
+        errorNotification({ message: 'ジャンルの作成に失敗しました' });
+      },
     });
-    reload();
-    onClose();
   });
 
   const newHandlers = {
-    open: onOpen,
-    close: onClose,
+    ...handlers,
+    open,
+    close,
   };
 
   return {
-    opened, handlers: newHandlers, form, onSubmit,
+    genreFormModalProps: {
+      opened,
+      close,
+      onSubmit,
+      form,
+    },
+    handlers: newHandlers,
   };
 };

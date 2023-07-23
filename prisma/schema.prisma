@@ -57,7 +57,7 @@ model User {
 model QuizList {
   databaseId String @id @default(cuid())
   name String
-  description String?
+  description String
 
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -76,15 +76,15 @@ model Quiz {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   quizList QuizList @relation(fields: [quizlistId], references: [databaseId], onDelete: Cascade)
 
-  question String?
-  answer String?
-  otherAnswer String?
-  explanation String?
-  source String?
+  question String
+  answer String
+  otherAnswer String
+  explanation String
+  source String
 
   genre Genre? @relation(fields: [genreId], references: [databaseId], onDelete: SetNull)
-
   genreId String?
+
   quizlistId String
   userId String
 
@@ -98,9 +98,9 @@ model Genre {
   genreSet GenreSet @relation(fields: [genreSetId], references: [databaseId], onDelete: Cascade)
   parentGenre Genre? @relation("GenreTree", fields: [parentGenreId], references: [databaseId], onDelete: Cascade)
 
-  color String?
+  color String
   name String
-  description String?
+  description String
   ratio Int @default(1)
 
   quizzes Quiz[]
@@ -121,7 +121,7 @@ model GenreSet {
   genres Genre[]
 
   name String
-  description String?
+  description String
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

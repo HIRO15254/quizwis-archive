@@ -35,6 +35,7 @@ export const MainAppShell: React.FC<MainAppShellProps> = (props) => {
       styles={{
         main: {
           background: colors.pageBackground(theme),
+          paddingLeft: !noNavbar ? 300 : undefined,
         },
       }}
       navbarOffsetBreakpoint={noNavbar ? 100000 : MANTINE_SMARTPHONE_BREAKPOINT}

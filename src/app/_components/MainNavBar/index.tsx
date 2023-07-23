@@ -6,6 +6,7 @@ import {
 import React from 'react';
 
 import { Responsive } from 'components/layout/Responsive';
+import { MANTINE_SMARTPHONE_BREAKPOINT } from 'config/layoutConfig';
 import { colors } from 'styles/colors';
 
 import { mockData } from './mockData';
@@ -40,7 +41,7 @@ export const MainNavBar: React.FC<MainNavBarProps> = (props) => {
       <Responsive.SmartPhone>
         <Transition mounted={opened} transition="scale-x" duration={200}>
           {(styles) => (
-            <Navbar p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }} style={{ ...styles }}>
+            <Navbar p="md" hiddenBreakpoint={MANTINE_SMARTPHONE_BREAKPOINT} width={{ sm: 300, lg: '100%' }} style={{ ...styles }}>
               <Navbar.Section grow className={classes.links} component={ScrollArea}>
                 <div className={classes.linksInner}>{links}</div>
               </Navbar.Section>
@@ -49,7 +50,7 @@ export const MainNavBar: React.FC<MainNavBarProps> = (props) => {
         </Transition>
       </Responsive.SmartPhone>
       <Responsive.Desktop>
-        <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
+        <Navbar p="md" hiddenBreakpoint={MANTINE_SMARTPHONE_BREAKPOINT} hidden={!opened} w={300}>
           <Navbar.Section grow className={classes.links} component={ScrollArea}>
             <div className={classes.linksInner}>{links}</div>
           </Navbar.Section>

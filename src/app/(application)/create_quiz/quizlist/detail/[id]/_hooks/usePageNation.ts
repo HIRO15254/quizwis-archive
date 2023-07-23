@@ -33,10 +33,13 @@ export const usePageNation = (props: UsePageNationProps) => {
   }, [dataCount, dataPerPage, maxPage, page, newSetPage]);
 
   return {
-    page,
-    setPage: newSetPage,
+    paginationProps: {
+      total: page,
+      value: maxPage,
+      onChange: newSetPage,
+    },
     dataPerPage,
     setDataPerPage: newSetDataPerPage,
-    maxPage,
+    page,
   };
 };

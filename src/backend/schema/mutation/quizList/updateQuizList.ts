@@ -1,5 +1,6 @@
 import { prisma } from '../../../../lib/prisma';
 import { checkAuthority } from '../../../util/checkAuthority';
+import { nullToEmpty } from '../../../util/nullToEmpty';
 import { builder } from '../../builder';
 
 const UpdateQuizListInput = builder.inputType('UpdateQuizListInput', {
@@ -19,11 +20,11 @@ builder.mutationFields((t) => ({
     },
     resolve: async (_query, _root, args, ctx, _info) => {
       const quizList = await prisma.quizList.findUniqueOrThrow({
-        where: { databaseId: args.input?.databaseId ?? '' },
+        where: { databaseId: args.input.databaseId },
         include: { user: true, genreSet: true, quizzes: true },
       });
       if (quizList?.user.userId !== ctx.currentUserId) {
-        if (!await checkAuthority(ctx.currentUserId ?? '', 'ADMIN')) {
+        if (!await checkAuthority(ctx.currentUserId, 'ADMIN')) {
           throw new Error('権限がありません。');
         }
       }
@@ -48,7 +49,7 @@ builder.mutationFields((t) => ({
           });
         });
         await prisma.quizList.update({
-          where: { databaseId: args.input?.databaseId ?? '' },
+          where: { databaseId: args.input.databaseId },
           data: {
             genreSet: {
               connect: {
@@ -59,10 +60,10 @@ builder.mutationFields((t) => ({
         });
       }
       const ret = await prisma.quizList.update({
-        where: { databaseId: args.input?.databaseId ?? '' },
+        where: { databaseId: args.input.databaseId },
         data: {
-          name: args.input?.name ?? '',
-          description: args.input?.description ?? '',
+          name: nullToEmpty(args.input.name),
+          description: nullToEmpty(args.input.description),
         },
       });
       return ret;

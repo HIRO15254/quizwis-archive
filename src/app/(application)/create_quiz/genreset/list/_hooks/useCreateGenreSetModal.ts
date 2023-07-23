@@ -2,8 +2,9 @@ import { isNotEmpty, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 
 import { useCreateGenreSetMutation } from 'gql';
+import { errorNotification, successNotification } from 'util/notifications';
 
-import type { CreateGenreSetFormType } from '../_components/presenter/CreateGenreSetModal';
+import type { GenreSetFormType } from '../_types/GenreSetFormType';
 
 type UseCreateGenreSetModalProps = {
   reload: () => void;
@@ -14,7 +15,7 @@ export const useCreateGenreSetModal = (props: UseCreateGenreSetModalProps) => {
   const [opened, handlers] = useDisclosure();
   const [createGenreSet] = useCreateGenreSetMutation();
 
-  const form = useForm<CreateGenreSetFormType>({
+  const form = useForm<GenreSetFormType>({
     initialValues: {
       name: '',
       description: '',
@@ -24,12 +25,13 @@ export const useCreateGenreSetModal = (props: UseCreateGenreSetModalProps) => {
     },
   });
 
-  const onClose = () => {
+  const close = () => {
     form.reset();
     handlers.close();
   };
 
   const onSubmit = form.onSubmit(async (values) => {
+    close();
     await createGenreSet({
       variables: {
         input: {
@@ -37,17 +39,28 @@ export const useCreateGenreSetModal = (props: UseCreateGenreSetModalProps) => {
           description: values.description,
         },
       },
+      onCompleted: () => {
+        successNotification({ message: 'ジャンルセットを作成しました' });
+        reload();
+      },
+      onError: () => {
+        errorNotification({ message: 'ジャンルセットの作成に失敗しました' });
+      },
     });
-    reload();
-    onClose();
   });
 
   const newHandlers = {
-    open: handlers.open,
-    close: onClose,
+    ...handlers,
+    close,
   };
 
   return {
-    opened, handlers: newHandlers, form, onSubmit,
+    modalProps: {
+      opened,
+      close,
+      onSubmit,
+      form,
+    },
+    handlers: newHandlers,
   };
 };

@@ -5,7 +5,7 @@ import { GenreSet } from '../../object/genreSet';
 const CreateGenreSetInput = builder.inputType('CreateGenreSetInput', {
   fields: (t) => ({
     name: t.string({ required: true }),
-    description: t.string(),
+    description: t.string({ required: true }),
   }),
 });
 
@@ -20,11 +20,11 @@ builder.mutationFields((t) => ({
         data: {
           user: {
             connect: {
-              userId: ctx.currentUserId ?? '',
+              userId: ctx.currentUserId,
             },
           },
-          name: args.input?.name,
-          description: args.input?.description ?? '',
+          name: args.input.name,
+          description: args.input.description,
         },
       });
       return ret;

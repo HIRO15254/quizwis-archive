@@ -5,16 +5,15 @@ import {
 } from '@mantine/core';
 import React, { useEffect } from 'react';
 
-import { useGetGenreSetNameQuery, useGetGenresLazyQuery } from 'gql';
+import { useGetGenreDetailPageDataLazyQuery } from 'gql';
 
 import { useCreateGenreModal } from '../../../_hooks/useCreateGenreModal';
 import { useDeleteGenreModal } from '../../../_hooks/useDeleteGenreModal';
 import { useUpdateGenreModal } from '../../../_hooks/useUpdateGenreModal';
 import { genreListToTree } from '../../../_util/genreListToTree';
-import { CreateGenreModal } from '../../presenter/CreateGenreModal';
 import { DeleteGenreModal } from '../../presenter/DeleteGenreModal';
+import { GenreFormModal } from '../../presenter/GenreFormModal';
 import { GenreTable } from '../../presenter/GenreTable';
-import { UpdateGenreModal } from '../../presenter/UpdateGenreModal';
 
 interface GenreTableContainerProps {
   setId: string;
@@ -23,38 +22,26 @@ interface GenreTableContainerProps {
 export const GenreTableContainer: React.FC<GenreTableContainerProps> = (props) => {
   const { setId } = props;
 
-  const [reload, { data, loading, called }] = useGetGenresLazyQuery(
-    {
-      fetchPolicy: 'network-only',
-      variables: { input: { genreSetDatabaseId: setId } },
-    },
-  );
-  const { data: genreSetName } = useGetGenreSetNameQuery({
-    variables: {
-      input: {
-        databaseId: setId,
-      },
-    },
+  const [reload, { data, loading, called }] = useGetGenreDetailPageDataLazyQuery({
+    fetchPolicy: 'cache-and-network',
+    variables: { input: { databaseId: setId } },
   });
 
   const {
-    opened: createGenreModalOpened,
-    handlers: createGenreModalHandlers,
-    form: createGenreForm,
-    onSubmit: onSubmitCreateGenreForm,
-  } = useCreateGenreModal({ genreSetDatabaseId: setId, reload });
-  const {
-    opened: deleteGenreModalOpened,
+    modalProps: deleteGenreModalProps,
     handlers: deleteGenreModalHandlers,
-    name: deleteGenreName,
-    onDelete: onDeleteGenre,
   } = useDeleteGenreModal({ reload });
   const {
-    opened: updateGenreModalOpened,
+    genreFormModalProps: createGenreModalProps,
+    handlers: createGenreModalHandlers,
+  } = useCreateGenreModal({ genreSetDatabaseId: setId, reload });
+  const {
+    genreFormModalProps: updateGenreModalProps,
     handlers: updateGenreModalHandlers,
-    onSubmit: onSubmitUpdateGenreForm,
-    form: updateGenreForm,
   } = useUpdateGenreModal({ reload });
+
+  const genresData = data?.getGenreSet.genres;
+  const genreSetName = data?.getGenreSet.name;
 
   useEffect(() => {
     reload();
@@ -66,31 +53,18 @@ export const GenreTableContainer: React.FC<GenreTableContainerProps> = (props) =
         <Anchor href="/create_quiz/genreset/list" unstyled>
           {'< ジャンルセット一覧に戻る'}
         </Anchor>
-        <Title order={1} mt="md">{genreSetName?.getGenreSet.name ?? ''}</Title>
-        <CreateGenreModal
-          opened={createGenreModalOpened}
-          onClose={createGenreModalHandlers.close}
-          form={createGenreForm}
-          onSubmit={onSubmitCreateGenreForm}
-        />
-        <DeleteGenreModal
-          name={deleteGenreName}
-          opened={deleteGenreModalOpened}
-          onClose={deleteGenreModalHandlers.close}
-          onDelete={onDeleteGenre}
-        />
-        <UpdateGenreModal
-          opened={updateGenreModalOpened}
-          onClose={updateGenreModalHandlers.close}
-          form={updateGenreForm}
-          onSubmit={onSubmitUpdateGenreForm}
-        />
+        <Title order={1} mt="md">{genreSetName ?? ''}</Title>
+        <DeleteGenreModal title="ジャンル削除" confirmText="削除" {...deleteGenreModalProps} />
+        <GenreFormModal title="新規ジャンル作成" submitText="作成" {...createGenreModalProps} />
+        <GenreFormModal title="ジャンル情報更新" submitText="更新" {...updateGenreModalProps} />
         <GenreTable
           loading={(!data && loading) || !called}
-          data={genreListToTree(data?.getGenres || [])}
-          openCreateGenreModal={createGenreModalHandlers.open}
-          openDeleteGenreModal={deleteGenreModalHandlers.open}
-          openUpdateGenreModal={updateGenreModalHandlers.open}
+          data={genreListToTree(genresData || [])}
+          operations={{
+            create: createGenreModalHandlers.open,
+            update: updateGenreModalHandlers.open,
+            delete: deleteGenreModalHandlers.open,
+          }}
         />
       </Paper>
     </Group>

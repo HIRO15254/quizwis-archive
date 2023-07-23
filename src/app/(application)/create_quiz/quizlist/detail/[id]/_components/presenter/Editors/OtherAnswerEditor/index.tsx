@@ -38,9 +38,9 @@ export const OtherAnswerEditor: React.FC<OtherAnswerEditorProps> = (props) => {
               <IconTriangle size="1rem" stroke={1.5} />
             </RichTextEditor.Control>
             <RichTextEditor.Control
-              onClick={() => editor.commands.insertContent('即バツ: ')}
-              aria-label="即バツ"
-              title="即バツ"
+              onClick={() => editor.commands.insertContent('不正解: ')}
+              aria-label="不正解"
+              title="不正解"
             >
               <IconX size="1rem" stroke={1.5} />
             </RichTextEditor.Control>

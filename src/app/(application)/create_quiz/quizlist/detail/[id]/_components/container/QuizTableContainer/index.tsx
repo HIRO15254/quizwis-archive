@@ -45,7 +45,7 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
   });
 
   const {
-    page, setPage, dataPerPage, setDataPerPage, maxPage,
+    paginationProps, dataPerPage, setDataPerPage, page,
   } = usePageNation({
     dataCount: quizCountData?.getQuizList.quizCount ?? 0,
     onChangePage: (newPage: number, newDataPerPage?: number) => {
@@ -79,18 +79,15 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
   }, [reload]);
 
   const {
-    onSubmit,
-    editors,
-    createQuiz,
+    inlineQuizEditorProps,
+    create,
+    update,
     editingQuizId,
-    setEditingQuizId,
-    genreSelectorData,
-    genreSelectorFormProps,
   } = useInlineQuizEditor({ reload, listId });
+
   const {
-    opened: deleteQuizModalOpened,
+    modalProps: deleteQuizModalProps,
     handlers: deleteQuizModalHandlers,
-    onDelete: onDeleteQuiz,
   } = useDeleteQuizModal({ reload });
 
   // 実際のコンポーネント
@@ -101,27 +98,20 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
           {'< 問題リスト一覧に戻る'}
         </Anchor>
         <Title order={1} mt="md">{quizListName?.getQuizList.name ?? ''}</Title>
-        <DeleteQuizModal
-          onClose={deleteQuizModalHandlers.close}
-          opened={deleteQuizModalOpened}
-          onDelete={onDeleteQuiz}
-        />
+        <DeleteQuizModal {...deleteQuizModalProps} title="問題削除" confirmText="削除" confirmColor="red" />
         <QuizTable
-          onSubmit={onSubmit}
-          editors={editors}
+          inlineQuizEditorProps={inlineQuizEditorProps}
+          operations={{
+            create,
+            update,
+            delete: deleteQuizModalHandlers.open,
+          }}
+          editingQuizId={editingQuizId}
           data={data?.getQuizzes ?? []}
           loading={(!data && loading) || !called}
-          editingQuizId={editingQuizId}
-          setEditingQuizId={setEditingQuizId}
-          createNewQuiz={createQuiz}
-          openDeleteQuizModal={deleteQuizModalHandlers.open}
-          genreSelectorData={genreSelectorData ?? []}
-          genreSelectorFormProps={genreSelectorFormProps}
           dataPerPage={dataPerPage}
           setDataPerPage={setDataPerPage}
-          page={page}
-          setNewPage={setPage}
-          totalPage={maxPage}
+          paginationProps={paginationProps}
         />
       </Paper>
     </Group>

@@ -4,26 +4,18 @@
 
 // 各種import
 import {
-  ActionIcon,
-  Badge,
-  Button, Group, NativeSelect, Pagination, Skeleton, Stack, Table, Text, Tooltip,
+  Button, Group, NativeSelect, Pagination, PaginationProps, Skeleton, Stack, Table, Text,
 } from '@mantine/core';
 import {
-  IconArrowsSplit, IconBook2, IconCheck, IconNote, IconPencil, IconPlus, IconTrash,
+  IconArrowsSplit, IconBook2, IconNote, IconPencil, IconPlus, IconTrash,
 } from '@tabler/icons-react';
-import { Editor } from '@tiptap/react';
 import React from 'react';
 
 import { GenreBadge } from 'components/common/GenreBadge';
+import { TableActionIcon } from 'components/common/TableActionICon';
 
-import { AdditionalInfoEditIcon } from '../AdditionalInfoEditIcon';
 import { AdditionalInfoIcon } from '../AdditionalInfoIcon';
-import { ExplanationEditor } from '../Editors/ExplanationEditor';
-import { GenreSelector, GenreSelectorProps } from '../Editors/GenreSelector';
-import { InlineAnswerEditor } from '../Editors/InlineAnswerEditor';
-import { InlineQuestionEditor } from '../Editors/InlineQuestionEditor';
-import { OtherAnswerEditor } from '../Editors/OtherAnswerEditor';
-import { SourceEditor } from '../Editors/SourceEditor';
+import { InlineQuizEditor, InlineQuizEditorProps } from '../InlineQuizEditor';
 
 // Propsの型定義
 interface QuizData {
@@ -42,22 +34,18 @@ interface QuizData {
 }
 
 interface QuizTableProps {
-  onSubmit: () => void;
-  editors: { [key: string]: Editor };
+  inlineQuizEditorProps: InlineQuizEditorProps;
+  editingQuizId: string | null | undefined;
+  operations: {
+    create: () => void;
+    delete: (databaseId: string) => void;
+    update: (databaseId: string) => void;
+  }
   loading: boolean;
   data: QuizData[];
-  editingQuizId: string | null | undefined;
-  setEditingQuizId: (databaseId: string) => void;
-  createNewQuiz: () => void;
-  openDeleteQuizModal: (databaseId: string) => void;
-  genreSelectorData: GenreSelectorProps['genres'];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  genreSelectorFormProps: { [key: string]: any };
   dataPerPage: number;
   setDataPerPage: (newDataPerPage: number) => void;
-  totalPage: number;
-  page: number;
-  setNewPage: (newPage: number) => void;
+  paginationProps: PaginationProps;
 }
 
 /**
@@ -65,21 +53,14 @@ interface QuizTableProps {
  */
 export const QuizTable: React.FC<QuizTableProps> = (props) => {
   const {
-    onSubmit,
-    editors,
+    inlineQuizEditorProps,
+    editingQuizId,
+    operations,
     data,
     loading,
-    editingQuizId,
-    setEditingQuizId,
-    createNewQuiz,
-    openDeleteQuizModal,
-    genreSelectorData,
-    genreSelectorFormProps,
     dataPerPage,
     setDataPerPage,
-    totalPage,
-    page,
-    setNewPage,
+    paginationProps,
   } = props;
 
   // 部分的なコンポーネントの宣言
@@ -87,62 +68,7 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
     if (quiz.databaseId === editingQuizId) {
       return (
         <tr key={quiz.id}>
-          <td>
-            <InlineQuestionEditor editor={editors.question} />
-          </td>
-          <td>
-            <InlineAnswerEditor editor={editors.answer} />
-          </td>
-          <td>
-            <GenreSelector genres={genreSelectorData} {...genreSelectorFormProps} />
-          </td>
-          <td>
-            <Group spacing={3}>
-              <AdditionalInfoEditIcon
-                label="別解"
-                editor={editors.otherAnswer}
-                Icon={IconArrowsSplit}
-              >
-                <OtherAnswerEditor editor={editors.otherAnswer} />
-              </AdditionalInfoEditIcon>
-              <AdditionalInfoEditIcon
-                label="解説"
-                editor={editors.explanation}
-                Icon={IconNote}
-              >
-                <ExplanationEditor editor={editors.explanation} />
-              </AdditionalInfoEditIcon>
-              <AdditionalInfoEditIcon
-                label="出典"
-                editor={editors.source}
-                Icon={IconBook2}
-              >
-                <SourceEditor editor={editors.source} />
-              </AdditionalInfoEditIcon>
-            </Group>
-          </td>
-          <td>
-            <Group spacing={3}>
-              <ActionIcon
-                size="lg"
-                color="green"
-                onClick={onSubmit}
-              >
-                <Tooltip label="確定">
-                  <IconCheck size="1.5rem" stroke={1.4} />
-                </Tooltip>
-              </ActionIcon>
-              <ActionIcon
-                size="lg"
-                onClick={() => openDeleteQuizModal(quiz.databaseId)}
-                color="red"
-              >
-                <Tooltip label="削除">
-                  <IconTrash size="1.5rem" stroke={1.4} />
-                </Tooltip>
-              </ActionIcon>
-            </Group>
-          </td>
+          <InlineQuizEditor {...inlineQuizEditorProps} />
         </tr>
       );
     }
@@ -165,32 +91,25 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
           )}
         </td>
         <td>
-          <Group spacing={3}>
+          <Group spacing={3} noWrap>
             <AdditionalInfoIcon tooltipLabel="別解" data={quiz.otherAnswer} Icon={IconArrowsSplit} />
             <AdditionalInfoIcon tooltipLabel="解説" data={quiz.explanation} Icon={IconNote} />
             <AdditionalInfoIcon tooltipLabel="出典" data={quiz.source} Icon={IconBook2} />
           </Group>
         </td>
         <td>
-          <Group spacing={3}>
-            <ActionIcon
-              size="lg"
-              color="blue"
-              onClick={() => setEditingQuizId(quiz.databaseId)}
-            >
-              <Tooltip label="編集">
-                <IconPencil size="1.5rem" stroke={1.4} />
-              </Tooltip>
-            </ActionIcon>
-            <ActionIcon
-              size="lg"
-              onClick={() => openDeleteQuizModal(quiz.databaseId)}
+          <Group spacing={3} noWrap>
+            <TableActionIcon
+              tooltip="編集"
+              Icon={IconPencil}
+              onClick={() => operations.update(quiz.databaseId)}
+            />
+            <TableActionIcon
+              tooltip="削除"
+              Icon={IconTrash}
+              onClick={() => operations.delete(quiz.databaseId)}
               color="red"
-            >
-              <Tooltip label="削除">
-                <IconTrash size="1.5rem" stroke={1.4} />
-              </Tooltip>
-            </ActionIcon>
+            />
           </Group>
         </td>
       </tr>
@@ -203,7 +122,7 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
       <Stack align="center" m="sm">
         <Text size="lg">問題がありません</Text>
         <Button
-          onClick={createNewQuiz}
+          onClick={() => operations.create()}
           leftIcon={<IconPlus />}
         >
           問題を追加
@@ -222,7 +141,7 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
           data={['10', '20', '50', '100']}
         />
         <Button
-          onClick={createNewQuiz}
+          onClick={() => operations.create()}
           leftIcon={<IconPlus />}
         >
           問題を追加
@@ -231,19 +150,15 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
       <Table
         mt="md"
         highlightOnHover
-        fontSize="md"
-        align="center"
-        w="100%"
-        style={{ tableLayout: 'fixed' }}
         verticalSpacing={0}
       >
         <thead>
           <tr>
             <th>問題文</th>
             <th style={{ width: '15%' }}>解答</th>
-            <th style={{ width: 200 }}>ジャンル</th>
-            <th style={{ width: 100 }}>追加情報</th>
-            <th style={{ width: 100 }}>操作</th>
+            <th style={{ width: '11rem' }}>ジャンル</th>
+            <th style={{ width: 0 }}>追加情報</th>
+            <th style={{ width: 0 }}>操作</th>
           </tr>
         </thead>
         <tbody>
@@ -251,7 +166,7 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
         </tbody>
       </Table>
       <Group position="center" mt="md">
-        <Pagination total={totalPage} value={page} onChange={setNewPage} withEdges />
+        <Pagination {...paginationProps} withEdges />
       </Group>
     </Skeleton>
   );

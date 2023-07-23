@@ -4,7 +4,7 @@ import { builder } from '../../builder';
 const CreateQuizListInput = builder.inputType('CreateQuizListInput', {
   fields: (t) => ({
     name: t.string({ required: true }),
-    description: t.string(),
+    description: t.string({ required: true }),
     genreSetId: t.string(),
   }),
 });
@@ -30,11 +30,11 @@ builder.mutationFields((t) => ({
           data: {
             user: {
               connect: {
-                userId: ctx.currentUserId ?? '',
+                userId: ctx.currentUserId,
               },
             },
-            name: args.input?.name ?? '',
-            description: args.input?.description ?? '',
+            name: args.input.name,
+            description: args.input.description,
             genreSet: {
               connect: {
                 databaseId: args.input.genreSetId,
@@ -48,11 +48,11 @@ builder.mutationFields((t) => ({
         data: {
           user: {
             connect: {
-              userId: ctx.currentUserId ?? '',
+              userId: ctx.currentUserId,
             },
           },
-          name: args.input?.name ?? '',
-          description: args.input?.description ?? '',
+          name: args.input.name,
+          description: args.input.description,
         },
       });
       return ret;

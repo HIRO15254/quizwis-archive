@@ -4,80 +4,63 @@
 import { Title, Paper, Group } from '@mantine/core';
 import React, { useEffect } from 'react';
 
-import { useGetQuizListsLazyQuery } from 'gql';
+import { useGetGenreSetsForQuizListQuery, useGetQuizListsLazyQuery } from 'gql';
 
 import { useCreateQuizListModal } from '../../../_hooks/useCreateQuizListModal';
 import { useDeleteQuizListModal } from '../../../_hooks/useDeleteQuizListModal';
 import { useUpdateQuizListModal } from '../../../_hooks/useUpdateQuizListModal';
-import { CreateQuizListModal } from '../../presenter/CreateQuizListModal';
 import { DeleteQuizListModal } from '../../presenter/DeleteQuizListModal';
+import { QuizListFormModal } from '../../presenter/QuizListFormModal';
 import { QuizListTable } from '../../presenter/QuizListTable';
-import { UpdateQuizListModal } from '../../presenter/UpdateQuizListModal';
 
 /**
  * クイズリストの一覧表示
  */
 export const QuizListTableContainer: React.FC = () => {
   const [
-    reload,
-    { loading, data, called },
+    reload, { loading, data, called },
   ] = useGetQuizListsLazyQuery({ fetchPolicy: 'network-only' });
+  const { data: genreSetQueryData } = useGetGenreSetsForQuizListQuery({ fetchPolicy: 'cache-and-network' });
   const {
-    opened: createQuizListModalOpened,
+    modalProps: createQuizListModalProps,
     handlers: createQuizListModalHandlers,
-    form: createQuizListModalForm,
-    onSubmit: onCreateQuizListFormSubmit,
-    genreSets: createQuizListModalGenreSets,
   } = useCreateQuizListModal({ reload });
   const {
-    opened: deleteQuizListModalOpened,
+    modalProps: deleteQuizListModalProps,
     handlers: deleteQuizListModalHandlers,
-    name: deleteQuizListModalName,
-    onDelete: onDeleteQuizList,
   } = useDeleteQuizListModal({ reload });
   const {
-    opened: updateQuizListModalOpened,
+    modalProps: updateQuizListModalProps,
     handlers: updateQuizListModalHandlers,
-    onSubmit: onUpdateQuizListFormSubmit,
-    form: updateQuizListModalForm,
-    genreSets: updateQuizListModalGenreSets,
   } = useUpdateQuizListModal({ reload });
 
   useEffect(() => {
     reload();
   }, [reload]);
 
+  const genreSets = [{ value: '', label: 'なし' }].concat(
+    genreSetQueryData?.getGenreSets.map((genreSet) => ({
+      value: genreSet.databaseId,
+      label: genreSet.name,
+    })) ?? [],
+  );
+
   // 実際のコンポーネント
   return (
     <Group position="center" pb="sm">
       <Paper w="100%" maw={800} p="xl" shadow="xs">
         <Title order={1}>問題リスト一覧</Title>
-        <CreateQuizListModal
-          opened={createQuizListModalOpened}
-          form={createQuizListModalForm}
-          onClose={createQuizListModalHandlers.close}
-          onSubmit={onCreateQuizListFormSubmit}
-          genreSets={createQuizListModalGenreSets()}
-        />
-        <DeleteQuizListModal
-          name={deleteQuizListModalName}
-          opened={deleteQuizListModalOpened}
-          onClose={deleteQuizListModalHandlers.close}
-          onDelete={onDeleteQuizList}
-        />
-        <UpdateQuizListModal
-          opened={updateQuizListModalOpened}
-          form={updateQuizListModalForm}
-          onClose={updateQuizListModalHandlers.close}
-          onSubmit={onUpdateQuizListFormSubmit}
-          genreSets={updateQuizListModalGenreSets()}
-        />
+        <QuizListFormModal title="新規問題リスト" submitText="作成" genreSets={genreSets} {...createQuizListModalProps} />
+        <QuizListFormModal title="問題リストの編集" submitText="更新" genreSets={genreSets} {...updateQuizListModalProps} />
+        <DeleteQuizListModal title="問題リストの削除" confirmText="削除" confirmColor="red" {...deleteQuizListModalProps} />
         <QuizListTable
           data={data?.getQuizLists ?? []}
           loading={(!data && loading) || !called}
-          openCreateQuizListModal={createQuizListModalHandlers.open}
-          openDeleteQuizListModal={deleteQuizListModalHandlers.open}
-          openEditQuizListModal={updateQuizListModalHandlers.open}
+          operation={{
+            create: createQuizListModalHandlers.open,
+            delete: deleteQuizListModalHandlers.open,
+            update: updateQuizListModalHandlers.open,
+          }}
         />
       </Paper>
     </Group>

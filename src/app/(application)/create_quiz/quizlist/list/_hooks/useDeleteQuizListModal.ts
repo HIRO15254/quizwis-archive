@@ -2,6 +2,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 
 import { useDeleteQuizListMutation, useGetQuizListLazyQuery } from 'gql';
+import { errorNotification, successNotification } from 'util/notifications';
 
 type UseDeleteQuizListModalProps = {
   reload: () => void;
@@ -16,37 +17,51 @@ export const useDeleteQuizListModal = (props: UseDeleteQuizListModalProps) => {
   const [name, setName] = useState<string>('');
   const [databaseId, setDatabaseId] = useState<string>('');
 
-  const onOpen = async (open_id: string) => {
+  const open = (open_id: string) => {
+    handlers.open();
     setDatabaseId(open_id);
-    const quizList = await getQuizList({
+    getQuizList({
       variables: {
         input: {
           databaseId: open_id,
         },
       },
+      onCompleted: (res) => {
+        setName(res.getQuizList.name);
+      },
     });
-    setName(quizList.data?.getQuizList?.name ?? '');
-    handlers.open();
   };
 
-  const onDelete = async () => {
-    await deleteQuizList({
+  const newHandlers = {
+    ...handlers,
+    open,
+  };
+
+  const onDelete = () => {
+    handlers.close();
+    deleteQuizList({
       variables: {
         input: {
           databaseId,
         },
       },
+      onCompleted: () => {
+        successNotification({ message: 'クイズリストを削除しました' });
+        reload();
+      },
+      onError: () => {
+        errorNotification({ message: 'クイズリストの削除に失敗しました' });
+      },
     });
-    reload();
-    handlers.close();
-  };
-
-  const newHandlers = {
-    open: onOpen,
-    close: handlers.close,
   };
 
   return {
-    opened, handlers: newHandlers, name, onDelete,
+    modalProps: {
+      opened,
+      close: handlers.close,
+      name,
+      onConfirm: onDelete,
+    },
+    handlers: newHandlers,
   };
 };

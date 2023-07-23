@@ -3,8 +3,9 @@ import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 
 import { useUpdateGenreMutation, useGetGenreLazyQuery } from 'gql';
+import { errorNotification, successNotification } from 'util/notifications';
 
-import { UpdateGenreFormType } from '../_components/presenter/UpdateGenreModal';
+import type { GenreFormType } from '../_types/GenreFormType';
 
 type UseUpdateGenreModalProps = {
   reload: () => void;
@@ -14,10 +15,10 @@ export const useUpdateGenreModal = (props: UseUpdateGenreModalProps) => {
   const { reload } = props;
   const [opened, handlers] = useDisclosure();
   const [updateGenre] = useUpdateGenreMutation();
-  const [getGenre] = useGetGenreLazyQuery();
+  const [getGenre, { loading }] = useGetGenreLazyQuery();
   const [databaseId, setDatabaseId] = useState<string>('');
 
-  const form = useForm<UpdateGenreFormType>({
+  const form = useForm<GenreFormType>({
     initialValues: {
       name: '',
       description: '',
@@ -29,48 +30,56 @@ export const useUpdateGenreModal = (props: UseUpdateGenreModalProps) => {
     },
   });
 
-  const onOpen = async (open_id: string) => {
-    setDatabaseId(open_id);
-    getGenre({
-      fetchPolicy: 'network-only',
-      variables: {
-        input: {
-          databaseId: open_id,
-        },
-      },
-    }).then((res) => {
-      form.setValues({
-        name: res.data?.getGenre?.name ?? '',
-        description: res.data?.getGenre?.description ?? '',
-        ratio: res.data?.getGenre?.ratio ?? 1,
-        color: res.data?.getGenre?.color ?? 'gray',
-      });
-    });
+  const open = async (openDatabaseId: string) => {
+    setDatabaseId(openDatabaseId);
     handlers.open();
+    getGenre({
+      fetchPolicy: 'cache-and-network',
+      variables: { input: { databaseId: openDatabaseId } },
+      onCompleted: (res) => {
+        form.setValues({
+          name: res.getGenre.name,
+          description: res.getGenre.description,
+          ratio: res.getGenre.ratio,
+          color: res.getGenre.color,
+        });
+      },
+    });
   };
 
   const onSubmit = form.onSubmit(async (values) => {
-    await updateGenre({
+    handlers.close();
+    form.reset();
+    updateGenre({
       variables: {
         input: {
           databaseId,
-          name: values.name,
-          description: values.description,
-          ratio: values.ratio,
-          color: values.color,
+          ...values,
         },
       },
+      onCompleted: () => {
+        successNotification({ message: '更新しました' });
+        reload();
+      },
+      onError: () => {
+        errorNotification({ message: '更新に失敗しました' });
+      },
     });
-    reload();
-    handlers.close();
   });
 
   const newHandlers = {
-    open: onOpen,
-    close: handlers.close,
+    ...handlers,
+    open,
   };
 
   return {
-    opened, handlers: newHandlers, form, onSubmit,
+    genreFormModalProps: {
+      opened,
+      close: handlers.close,
+      onSubmit,
+      form,
+      loading,
+    },
+    handlers: newHandlers,
   };
 };

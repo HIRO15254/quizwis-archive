@@ -17,11 +17,11 @@ builder.mutationFields((t) => ({
     },
     resolve: async (_query, _root, args, ctx, _info) => {
       const genreSet = await prisma.genreSet.findUniqueOrThrow({
-        where: { databaseId: args.input?.databaseId ?? '' },
+        where: { databaseId: args.input.databaseId },
         include: { user: true },
       });
       if (genreSet.user.userId !== ctx.currentUserId) {
-        if (!await checkAuthority(ctx.currentUserId ?? '', 'ADMIN')) {
+        if (!await checkAuthority(ctx.currentUserId, 'ADMIN')) {
           throw new Error('権限がありません。');
         }
       }
@@ -31,7 +31,7 @@ builder.mutationFields((t) => ({
           description: genreSet.description,
           user: {
             connect: {
-              userId: ctx.currentUserId ?? '',
+              userId: ctx.currentUserId,
             },
           },
         },
@@ -50,6 +50,7 @@ builder.mutationFields((t) => ({
             name: genre.name,
             description: genre.description,
             ratio: genre.ratio,
+            color: genre.color,
           },
         });
       });

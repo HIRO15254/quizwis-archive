@@ -1,7 +1,0 @@
-query GetGenreSetName($input: GetGenreSetInput) {
-  getGenreSet(input: $input) {
-    name
-    id
-    databaseId
-  }
-}
