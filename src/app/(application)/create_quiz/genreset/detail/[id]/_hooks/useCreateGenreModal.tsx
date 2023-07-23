@@ -3,6 +3,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 
 import { useCreateGenreMutation, useGetGenreLazyQuery } from 'gql';
+import { errorNotification, successNotification } from 'util/notifications';
 
 import type { GenreFormType } from '../_types/GenreFormType';
 
@@ -41,6 +42,7 @@ export const useCreateGenreModal = (props: UseCreateGenreModalProps) => {
 
   const open = (newParentId?: string) => {
     setParentId(newParentId || null);
+    handlers.open();
     if (newParentId) {
       getGenre({
         fetchPolicy: 'network-only',
@@ -49,19 +51,15 @@ export const useCreateGenreModal = (props: UseCreateGenreModalProps) => {
             databaseId: newParentId,
           },
         },
-      }).then((res) => {
-        form.setValues({
-          name: '',
-          description: '',
-          ratio: 5,
-          color: res.data?.getGenre?.color ?? 'gray',
-        });
+        onCompleted: (res) => {
+          form.setValues({ color: res.getGenre?.color ?? 'gray' });
+        },
       });
     }
-    handlers.open();
   };
 
   const onSubmit = form.onSubmit(async (values) => {
+    close();
     await createGenre({
       variables: {
         input: {
@@ -70,12 +68,18 @@ export const useCreateGenreModal = (props: UseCreateGenreModalProps) => {
           ...values,
         },
       },
+      onCompleted: () => {
+        successNotification({ message: 'ジャンルを作成しました' });
+        reload();
+      },
+      onError: () => {
+        errorNotification({ message: 'ジャンルの作成に失敗しました' });
+      },
     });
-    reload();
-    close();
   });
 
   const newHandlers = {
+    ...handlers,
     open,
     close,
   };

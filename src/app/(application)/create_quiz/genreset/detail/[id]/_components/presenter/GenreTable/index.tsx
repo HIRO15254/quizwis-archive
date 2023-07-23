@@ -67,26 +67,22 @@ const GenreRow: React.FC<GenreRowProps> = (props) => {
           <Text>{genre.data.ratio}</Text>
         </td>
         <td>
-          <Group spacing={2}>
+          <Group spacing={2} noWrap>
             <TableActionIcon
               tooltip="サブジャンルを追加"
               onClick={() => operations.create(genre.data.databaseId)}
-            >
-              <IconPlus />
-            </TableActionIcon>
+              Icon={IconPlus}
+            />
             <TableActionIcon
               tooltip="編集"
               onClick={() => operations.update(genre.data.databaseId)}
-            >
-              <IconPencil />
-            </TableActionIcon>
+              Icon={IconPencil}
+            />
             <TableActionIcon
               tooltip="削除"
               color="red"
-              onClick={() => operations.delete(genre.data.databaseId)}
-            >
-              <IconTrash />
-            </TableActionIcon>
+              Icon={IconTrash}
+            />
           </Group>
         </td>
       </tr>
@@ -150,10 +146,10 @@ export const GenreTable: React.FC<GenreTableProps> = (props) => {
       <Table>
         <thead>
           <tr>
-            <th style={{ width: 220 }}>ジャンル名</th>
+            <th style={{ width: 'fix-content' }}>ジャンル名</th>
             <th>説明</th>
-            <th style={{ width: 60 }}>比率</th>
-            <th style={{ width: 130 }}>操作</th>
+            <th style={{ width: 0, whiteSpace: 'nowrap' }}>比率</th>
+            <th style={{ width: 0 }}>操作</th>
           </tr>
         </thead>
         <tbody>

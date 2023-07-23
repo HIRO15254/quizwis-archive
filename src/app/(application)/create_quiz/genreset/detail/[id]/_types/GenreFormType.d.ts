@@ -1,6 +1,6 @@
-export interface GenreFormType {
+export type GenreFormType = {
   name: string;
-  description?: string | null | undefined;
+  description: string;
   color: string;
   ratio: number;
-}
+};

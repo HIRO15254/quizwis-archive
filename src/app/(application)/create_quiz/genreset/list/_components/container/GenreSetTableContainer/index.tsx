@@ -9,34 +9,26 @@ import { useGetGenreSetsLazyQuery } from 'gql';
 import { useCreateGenreSetModal } from '../../../_hooks/useCreateGenreSetModal';
 import { useDeleteGenreSetModal } from '../../../_hooks/useDeleteGenreSetModal';
 import { useUpdateGenreSetModal } from '../../../_hooks/useUpdateGenreSetModal';
-import { CreateGenreSetModal } from '../../presenter/CreateGenreSetModal';
 import { DeleteGenreSetModal } from '../../presenter/DeleteGenreSetModal';
+import { GenreSetFormModal } from '../../presenter/GenreSetFormModal';
 import { GenreSetTable } from '../../presenter/GenreSetTable';
-import { UpdateGenreSetModal } from '../../presenter/UpdateGenreSetModal';
-
 /**
  * クイズリストの一覧表示
  */
 export const GenreSetTableContainer: React.FC = () => {
   const [reload, { loading, data, called }] = useGetGenreSetsLazyQuery({ fetchPolicy: 'network-only' });
   const {
-    opened: createGenreSetModalOpened,
+    modalProps: createGenreSetModalProps,
     handlers: createGenreSetModalHandlers,
-    form: createGenreSetForm,
-    onSubmit: onSubmitCreateGenreSetForm,
   } = useCreateGenreSetModal({ reload });
   const {
-    opened: deleteGenreSetModalOpened,
-    handlers: deleteGenreSetModalHandlers,
-    name: deleteGenreSetName,
-    onDelete: onDeleteGenreSet,
-  } = useDeleteGenreSetModal({ reload });
-  const {
-    opened: updateGenreSetModalOpened,
+    modalProps: updateGenreSetModalProps,
     handlers: updateGenreSetModalHandlers,
-    onSubmit: onSubmitUpdateGenreSetForm,
-    form: updateGenreSetForm,
   } = useUpdateGenreSetModal({ reload });
+  const {
+    modalProps: deleteGenreSetModalProps,
+    handlers: deleteGenreSetModalHandlers,
+  } = useDeleteGenreSetModal({ reload });
 
   useEffect(() => {
     reload();
@@ -47,30 +39,17 @@ export const GenreSetTableContainer: React.FC = () => {
     <Group position="center" pb="sm">
       <Paper w="100%" maw={800} p="xl" shadow="xs">
         <Title order={1}>ジャンルセット一覧</Title>
-        <CreateGenreSetModal
-          opened={createGenreSetModalOpened}
-          onClose={createGenreSetModalHandlers.close}
-          form={createGenreSetForm}
-          onSubmit={onSubmitCreateGenreSetForm}
-        />
-        <DeleteGenreSetModal
-          name={deleteGenreSetName}
-          opened={deleteGenreSetModalOpened}
-          onClose={deleteGenreSetModalHandlers.close}
-          onDelete={onDeleteGenreSet}
-        />
-        <UpdateGenreSetModal
-          opened={updateGenreSetModalOpened}
-          form={updateGenreSetForm}
-          onClose={updateGenreSetModalHandlers.close}
-          onSubmit={onSubmitUpdateGenreSetForm}
-        />
+        <GenreSetFormModal title="新規ジャンルセット作成" submitText="作成" {...createGenreSetModalProps} />
+        <GenreSetFormModal title="ジャンルセット情報更新" submitText="更新" {...updateGenreSetModalProps} />
+        <DeleteGenreSetModal title="ジャンルセット削除" confirmText="削除" confirmColor="red" {...deleteGenreSetModalProps} />
         <GenreSetTable
           data={data?.getGenreSets ?? []}
           loading={(!data && loading) || !called}
-          openCreateGenreSetModal={createGenreSetModalHandlers.open}
-          openDeleteGenreSetModal={deleteGenreSetModalHandlers.open}
-          openEditGenreSetModal={updateGenreSetModalHandlers.open}
+          operations={{
+            create: createGenreSetModalHandlers.open,
+            update: updateGenreSetModalHandlers.open,
+            delete: deleteGenreSetModalHandlers.open,
+          }}
         />
       </Paper>
     </Group>

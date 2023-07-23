@@ -2,6 +2,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 
 import { useDeleteGenreSetMutation, useGetGenreSetLazyQuery } from 'gql';
+import { errorNotification, successNotification } from 'util/notifications';
 
 type UseDeleteGenreSetModalProps = {
   reload: () => void;
@@ -16,37 +17,51 @@ export const useDeleteGenreSetModal = (props: UseDeleteGenreSetModalProps) => {
   const [name, setName] = useState<string>('');
   const [databaseId, setDatabaseId] = useState<string>('');
 
-  const onOpen = async (open_id: string) => {
+  const open = async (open_id: string) => {
     setDatabaseId(open_id);
-    const genreSet = await getGenreSet({
+    handlers.open();
+    getGenreSet({
       variables: {
         input: {
           databaseId: open_id,
         },
       },
+      onCompleted: (res) => {
+        setName(res.getGenreSet.name);
+      },
     });
-    setName(genreSet.data?.getGenreSet?.name ?? '');
-    handlers.open();
   };
 
   const onDelete = async () => {
+    handlers.close();
     await deleteGenreSet({
       variables: {
         input: {
           databaseId,
         },
       },
+      onCompleted: () => {
+        successNotification({ message: 'ジャンルセットを削除しました' });
+        reload();
+      },
+      onError: () => {
+        errorNotification({ message: 'ジャンルセットの削除に失敗しました' });
+      },
     });
-    reload();
-    handlers.close();
   };
 
   const newHandlers = {
-    open: onOpen,
-    close: handlers.close,
+    ...handlers,
+    open,
   };
 
   return {
-    opened, handlers: newHandlers, name, onDelete,
+    modalProps: {
+      opened,
+      close: handlers.close,
+      onConfirm: onDelete,
+      name,
+    },
+    handlers: newHandlers,
   };
 };

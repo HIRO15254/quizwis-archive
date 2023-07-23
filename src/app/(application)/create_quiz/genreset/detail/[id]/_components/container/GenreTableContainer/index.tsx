@@ -60,9 +60,11 @@ export const GenreTableContainer: React.FC<GenreTableContainerProps> = (props) =
         <GenreTable
           loading={(!data && loading) || !called}
           data={genreListToTree(genresData || [])}
-          openCreateGenreModal={createGenreModalHandlers.open}
-          openDeleteGenreModal={deleteGenreModalHandlers.open}
-          openUpdateGenreModal={updateGenreModalHandlers.open}
+          operations={{
+            create: createGenreModalHandlers.open,
+            update: updateGenreModalHandlers.open,
+            delete: deleteGenreModalHandlers.open,
+          }}
         />
       </Paper>
     </Group>

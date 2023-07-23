@@ -1,13 +1,14 @@
 'use client';
 
 import { ActionIcon, ActionIconProps, Tooltip } from '@mantine/core';
+import { TablerIconsProps } from '@tabler/icons-react';
 import React from 'react';
 
 // Propsの型定義
 interface TableActionIconProps extends ActionIconProps {
   tooltip: string;
   onClick?: () => void;
-  children?: React.ReactNode;
+  Icon: React.FC<TablerIconsProps>;
 }
 
 /**
@@ -17,7 +18,7 @@ export const TableActionIcon: React.FC<TableActionIconProps> = (props) => {
   const {
     tooltip,
     onClick,
-    children,
+    Icon,
   } = props;
 
   return (
@@ -29,7 +30,7 @@ export const TableActionIcon: React.FC<TableActionIconProps> = (props) => {
         onClick={onClick}
         {...props}
       >
-        {children}
+        <Icon size="1.5rem" stroke={1.4} />
       </ActionIcon>
     </Tooltip>
   );

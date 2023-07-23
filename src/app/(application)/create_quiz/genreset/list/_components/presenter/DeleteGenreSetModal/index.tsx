@@ -1,20 +1,15 @@
 'use client';
 
 import {
-  Button,
-  Group,
-  Modal,
   Text,
-  Title,
 } from '@mantine/core';
-// 各種import
 import React from 'react';
 
-interface DeleteGenreSetModalProps {
+import { ConfirmModal, ConfirmModalProps } from 'components/common/ConfirmModal';
+// 各種import
+
+interface DeleteGenreSetModalProps extends ConfirmModalProps {
   name: string;
-  opened: boolean;
-  onClose: () => void;
-  onDelete: () => void;
 }
 
 /**
@@ -23,36 +18,18 @@ interface DeleteGenreSetModalProps {
 export const DeleteGenreSetModal: React.FC<DeleteGenreSetModalProps> = (props) => {
   const {
     name,
-    opened,
-    onClose,
-    onDelete,
+    ...other
   } = props;
 
   return (
-    <Modal
-      opened={opened}
-      onClose={onClose}
-      title={<Title order={3}>ジャンルセット削除</Title>}
+    <ConfirmModal
+      {...other}
     >
       <Text>
         {`ジャンルセット「${name}」を本当に削除しますか？`}
         <br />
         削除した場合、このジャンルセットが使用されているすべての問題リストはジャンルなしになります。
       </Text>
-      <Group position="right" mt="md">
-        <Button
-          color="gray"
-          onClick={onClose}
-        >
-          キャンセル
-        </Button>
-        <Button
-          color="red"
-          onClick={onDelete}
-        >
-          削除
-        </Button>
-      </Group>
-    </Modal>
+    </ConfirmModal>
   );
 };

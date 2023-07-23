@@ -121,7 +121,7 @@ model GenreSet {
   genres Genre[]
 
   name String
-  description String?
+  description String
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

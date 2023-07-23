@@ -87,7 +87,7 @@ export type Genre = Node & {
 export type GenreSet = Node & {
   __typename?: 'GenreSet';
   databaseId: Scalars['String']['output'];
-  description?: Maybe<Scalars['String']['output']>;
+  description: Scalars['String']['output'];
   genres: Array<Genre>;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
@@ -400,13 +400,6 @@ export enum UserRole {
   User = 'USER'
 }
 
-export type GetGenreDetailPageDataQueryVariables = Exact<{
-  input?: InputMaybe<GetGenreSetInput>;
-}>;
-
-
-export type GetGenreDetailPageDataQuery = { __typename?: 'Query', getGenreSet: { __typename?: 'GenreSet', id: string, databaseId: string, name: string, genres: Array<{ __typename?: 'Genre', id: string, databaseId: string, name: string, description: string, ratio: number, color: string, parentGenre?: { __typename?: 'Genre', id: string } | null, childGenres: Array<{ __typename?: 'Genre', id: string }> }> } };
-
 export type CreateGenreMutationVariables = Exact<{
   input: CreateGenreInput;
 }>;
@@ -428,19 +421,12 @@ export type GetGenreQueryVariables = Exact<{
 
 export type GetGenreQuery = { __typename?: 'Query', getGenre: { __typename?: 'Genre', databaseId: string, id: string, description: string, name: string, ratio: number, color: string } };
 
-export type GetGenreSetNameQueryVariables = Exact<{
+export type GetGenreDetailPageDataQueryVariables = Exact<{
   input?: InputMaybe<GetGenreSetInput>;
 }>;
 
 
-export type GetGenreSetNameQuery = { __typename?: 'Query', getGenreSet: { __typename?: 'GenreSet', name: string, id: string, databaseId: string } };
-
-export type GetGenresQueryVariables = Exact<{
-  input?: InputMaybe<GetGenresInput>;
-}>;
-
-
-export type GetGenresQuery = { __typename?: 'Query', getGenres: Array<{ __typename?: 'Genre', id: string, databaseId: string, description: string, name: string, ratio: number, color: string, childGenres: Array<{ __typename?: 'Genre', id: string }>, parentGenre?: { __typename?: 'Genre', id: string } | null }> };
+export type GetGenreDetailPageDataQuery = { __typename?: 'Query', getGenreSet: { __typename?: 'GenreSet', id: string, databaseId: string, name: string, genres: Array<{ __typename?: 'Genre', id: string, databaseId: string, name: string, description: string, ratio: number, color: string, parentGenre?: { __typename?: 'Genre', id: string } | null, childGenres: Array<{ __typename?: 'Genre', id: string }> }> } };
 
 export type UpdateGenreMutationVariables = Exact<{
   input: UpdateGenreInput;
@@ -468,12 +454,12 @@ export type GetGenreSetQueryVariables = Exact<{
 }>;
 
 
-export type GetGenreSetQuery = { __typename?: 'Query', getGenreSet: { __typename?: 'GenreSet', name: string, description?: string | null, id: string, databaseId: string } };
+export type GetGenreSetQuery = { __typename?: 'Query', getGenreSet: { __typename?: 'GenreSet', name: string, description: string, id: string, databaseId: string } };
 
 export type GetGenreSetsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetGenreSetsQuery = { __typename?: 'Query', getGenreSets: Array<{ __typename?: 'GenreSet', id: string, name: string, description?: string | null, databaseId: string }> };
+export type GetGenreSetsQuery = { __typename?: 'Query', getGenreSets: Array<{ __typename?: 'GenreSet', id: string, name: string, description: string, databaseId: string }> };
 
 export type UpdateGenreSetMutationVariables = Exact<{
   input: UpdateGenreSetInput;
@@ -584,57 +570,6 @@ export type UpdateLoginUserMutationVariables = Exact<{
 export type UpdateLoginUserMutation = { __typename?: 'Mutation', updateLoginUser: { __typename?: 'User', id: string } };
 
 
-export const GetGenreDetailPageDataDocument = gql`
-    query GetGenreDetailPageData($input: GetGenreSetInput) {
-  getGenreSet(input: $input) {
-    id
-    databaseId
-    name
-    genres {
-      id
-      databaseId
-      name
-      description
-      ratio
-      color
-      parentGenre {
-        id
-      }
-      childGenres {
-        id
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useGetGenreDetailPageDataQuery__
- *
- * To run a query within a React component, call `useGetGenreDetailPageDataQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetGenreDetailPageDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetGenreDetailPageDataQuery({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useGetGenreDetailPageDataQuery(baseOptions?: Apollo.QueryHookOptions<GetGenreDetailPageDataQuery, GetGenreDetailPageDataQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetGenreDetailPageDataQuery, GetGenreDetailPageDataQueryVariables>(GetGenreDetailPageDataDocument, options);
-      }
-export function useGetGenreDetailPageDataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGenreDetailPageDataQuery, GetGenreDetailPageDataQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetGenreDetailPageDataQuery, GetGenreDetailPageDataQueryVariables>(GetGenreDetailPageDataDocument, options);
-        }
-export type GetGenreDetailPageDataQueryHookResult = ReturnType<typeof useGetGenreDetailPageDataQuery>;
-export type GetGenreDetailPageDataLazyQueryHookResult = ReturnType<typeof useGetGenreDetailPageDataLazyQuery>;
-export type GetGenreDetailPageDataQueryResult = Apollo.QueryResult<GetGenreDetailPageDataQuery, GetGenreDetailPageDataQueryVariables>;
 export const CreateGenreDocument = gql`
     mutation CreateGenre($input: CreateGenreInput!) {
   createGenre(input: $input) {
@@ -743,89 +678,57 @@ export function useGetGenreLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
 export type GetGenreQueryHookResult = ReturnType<typeof useGetGenreQuery>;
 export type GetGenreLazyQueryHookResult = ReturnType<typeof useGetGenreLazyQuery>;
 export type GetGenreQueryResult = Apollo.QueryResult<GetGenreQuery, GetGenreQueryVariables>;
-export const GetGenreSetNameDocument = gql`
-    query GetGenreSetName($input: GetGenreSetInput) {
+export const GetGenreDetailPageDataDocument = gql`
+    query getGenreDetailPageData($input: GetGenreSetInput) {
   getGenreSet(input: $input) {
-    name
     id
     databaseId
-  }
-}
-    `;
-
-/**
- * __useGetGenreSetNameQuery__
- *
- * To run a query within a React component, call `useGetGenreSetNameQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetGenreSetNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetGenreSetNameQuery({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useGetGenreSetNameQuery(baseOptions?: Apollo.QueryHookOptions<GetGenreSetNameQuery, GetGenreSetNameQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetGenreSetNameQuery, GetGenreSetNameQueryVariables>(GetGenreSetNameDocument, options);
+    name
+    genres {
+      id
+      databaseId
+      name
+      description
+      ratio
+      color
+      parentGenre {
+        id
       }
-export function useGetGenreSetNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGenreSetNameQuery, GetGenreSetNameQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetGenreSetNameQuery, GetGenreSetNameQueryVariables>(GetGenreSetNameDocument, options);
-        }
-export type GetGenreSetNameQueryHookResult = ReturnType<typeof useGetGenreSetNameQuery>;
-export type GetGenreSetNameLazyQueryHookResult = ReturnType<typeof useGetGenreSetNameLazyQuery>;
-export type GetGenreSetNameQueryResult = Apollo.QueryResult<GetGenreSetNameQuery, GetGenreSetNameQueryVariables>;
-export const GetGenresDocument = gql`
-    query GetGenres($input: GetGenresInput) {
-  getGenres(input: $input) {
-    childGenres {
-      id
-    }
-    id
-    databaseId
-    description
-    name
-    ratio
-    color
-    parentGenre {
-      id
+      childGenres {
+        id
+      }
     }
   }
 }
     `;
 
 /**
- * __useGetGenresQuery__
+ * __useGetGenreDetailPageDataQuery__
  *
- * To run a query within a React component, call `useGetGenresQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetGenresQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetGenreDetailPageDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGenreDetailPageDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetGenresQuery({
+ * const { data, loading, error } = useGetGenreDetailPageDataQuery({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useGetGenresQuery(baseOptions?: Apollo.QueryHookOptions<GetGenresQuery, GetGenresQueryVariables>) {
+export function useGetGenreDetailPageDataQuery(baseOptions?: Apollo.QueryHookOptions<GetGenreDetailPageDataQuery, GetGenreDetailPageDataQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetGenresQuery, GetGenresQueryVariables>(GetGenresDocument, options);
+        return Apollo.useQuery<GetGenreDetailPageDataQuery, GetGenreDetailPageDataQueryVariables>(GetGenreDetailPageDataDocument, options);
       }
-export function useGetGenresLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGenresQuery, GetGenresQueryVariables>) {
+export function useGetGenreDetailPageDataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGenreDetailPageDataQuery, GetGenreDetailPageDataQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetGenresQuery, GetGenresQueryVariables>(GetGenresDocument, options);
+          return Apollo.useLazyQuery<GetGenreDetailPageDataQuery, GetGenreDetailPageDataQueryVariables>(GetGenreDetailPageDataDocument, options);
         }
-export type GetGenresQueryHookResult = ReturnType<typeof useGetGenresQuery>;
-export type GetGenresLazyQueryHookResult = ReturnType<typeof useGetGenresLazyQuery>;
-export type GetGenresQueryResult = Apollo.QueryResult<GetGenresQuery, GetGenresQueryVariables>;
+export type GetGenreDetailPageDataQueryHookResult = ReturnType<typeof useGetGenreDetailPageDataQuery>;
+export type GetGenreDetailPageDataLazyQueryHookResult = ReturnType<typeof useGetGenreDetailPageDataLazyQuery>;
+export type GetGenreDetailPageDataQueryResult = Apollo.QueryResult<GetGenreDetailPageDataQuery, GetGenreDetailPageDataQueryVariables>;
 export const UpdateGenreDocument = gql`
     mutation UpdateGenre($input: UpdateGenreInput!) {
   updateGenre(input: $input) {

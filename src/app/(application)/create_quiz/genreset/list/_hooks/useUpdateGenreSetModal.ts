@@ -3,8 +3,9 @@ import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 
 import { useUpdateGenreSetMutation, useGetGenreSetLazyQuery } from 'gql';
+import { errorNotification, successNotification } from 'util/notifications';
 
-import { UpdateGenreSetFormType } from '../_components/presenter/UpdateGenreSetModal';
+import type { GenreSetFormType } from '../_types/GenreSetFormType';
 
 type UseUpdateGenreSetModalProps = {
   reload: () => void;
@@ -14,10 +15,10 @@ export const useUpdateGenreSetModal = (props: UseUpdateGenreSetModalProps) => {
   const { reload } = props;
   const [opened, handlers] = useDisclosure();
   const [updateGenreSet] = useUpdateGenreSetMutation();
-  const [getGenreSet] = useGetGenreSetLazyQuery();
+  const [getGenreSet, { loading }] = useGetGenreSetLazyQuery();
   const [databaseId, setDatabaseId] = useState<string>('');
 
-  const form = useForm<UpdateGenreSetFormType>({
+  const form = useForm<GenreSetFormType>({
     initialValues: {
       name: '',
       description: '',
@@ -27,25 +28,27 @@ export const useUpdateGenreSetModal = (props: UseUpdateGenreSetModalProps) => {
     },
   });
 
-  const onOpen = async (open_id: string) => {
+  const open = async (open_id: string) => {
     setDatabaseId(open_id);
+    handlers.open();
     getGenreSet({
       variables: {
         input: {
           databaseId: open_id,
         },
       },
-    }).then((res) => {
-      form.setValues({
-        name: res.data?.getGenreSet?.name ?? '',
-        description: res.data?.getGenreSet?.description ?? '',
-      });
+      onCompleted: (res) => {
+        form.setValues({
+          name: res.getGenreSet.name,
+          description: res.getGenreSet.description,
+        });
+      },
     });
-    handlers.open();
   };
 
-  const onSubmit = form.onSubmit(async (values) => {
-    await updateGenreSet({
+  const onSubmit = form.onSubmit((values) => {
+    handlers.close();
+    updateGenreSet({
       variables: {
         input: {
           databaseId,
@@ -53,17 +56,29 @@ export const useUpdateGenreSetModal = (props: UseUpdateGenreSetModalProps) => {
           description: values.description,
         },
       },
+      onCompleted: () => {
+        successNotification({ message: 'ジャンルセットを更新しました' });
+        reload();
+      },
+      onError: () => {
+        errorNotification({ message: 'ジャンルセットの更新に失敗しました' });
+      },
     });
-    reload();
-    handlers.close();
   });
 
   const newHandlers = {
-    open: onOpen,
-    close: handlers.close,
+    ...handlers,
+    open,
   };
 
   return {
-    opened, handlers: newHandlers, form, onSubmit,
+    modalProps: {
+      opened,
+      close: handlers.close,
+      onSubmit,
+      form,
+      loading,
+    },
+    handlers: newHandlers,
   };
 };

@@ -1,9 +1,9 @@
 import { isNotEmpty, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
-import { showNotification } from '@mantine/notifications';
 import { useState } from 'react';
 
 import { useUpdateGenreMutation, useGetGenreLazyQuery } from 'gql';
+import { errorNotification, successNotification } from 'util/notifications';
 
 import type { GenreFormType } from '../_types/GenreFormType';
 
@@ -32,14 +32,19 @@ export const useUpdateGenreModal = (props: UseUpdateGenreModalProps) => {
 
   const open = async (openDatabaseId: string) => {
     setDatabaseId(openDatabaseId);
+    handlers.open();
     getGenre({
       fetchPolicy: 'cache-and-network',
       variables: { input: { databaseId: openDatabaseId } },
       onCompleted: (res) => {
-        form.setValues(res.getGenre);
+        form.setValues({
+          name: res.getGenre.name,
+          description: res.getGenre.description,
+          ratio: res.getGenre.ratio,
+          color: res.getGenre.color,
+        });
       },
     });
-    handlers.open();
   };
 
   const onSubmit = form.onSubmit(async (values) => {
@@ -52,19 +57,19 @@ export const useUpdateGenreModal = (props: UseUpdateGenreModalProps) => {
           ...values,
         },
       },
-    }).then(() => {
-      showNotification({
-        title: '更新成功',
-        message: 'ジャンルを更新しました',
-        color: 'blue',
-      });
-      reload();
+      onCompleted: () => {
+        successNotification({ message: '更新しました' });
+        reload();
+      },
+      onError: () => {
+        errorNotification({ message: '更新に失敗しました' });
+      },
     });
   });
 
   const newHandlers = {
+    ...handlers,
     open,
-    close: handlers.close,
   };
 
   return {

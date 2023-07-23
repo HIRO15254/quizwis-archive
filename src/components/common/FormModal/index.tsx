@@ -32,7 +32,7 @@ export const FormModal: React.FC<FormModalProps> = (props) => {
 
   useHotkeys([
     ['esc', close],
-    ['ctrl+enter', onSubmit],
+    ['mod+Enter', onSubmit],
   ]);
 
   return (

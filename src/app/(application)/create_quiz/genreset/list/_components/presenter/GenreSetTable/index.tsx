@@ -2,12 +2,12 @@
 
 // 各種import
 import {
-  ActionIcon,
-  Anchor,
-  Button, Group, Skeleton, Stack, Table, Text, Tooltip,
+  Anchor, Button, Group, Skeleton, Stack, Table, Text,
 } from '@mantine/core';
 import { IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
 import React from 'react';
+
+import { TableActionIcon } from 'components/common/TableActionICon';
 
 // Propsの型定義
 interface GenreSetData {
@@ -20,9 +20,11 @@ interface GenreSetData {
 interface GenreSetTableProps {
   loading: boolean;
   data: GenreSetData[];
-  openCreateGenreSetModal: () => void;
-  openDeleteGenreSetModal: (databaseId: string) => void;
-  openEditGenreSetModal: (databaseId: string) => void;
+  operations: {
+    create: () => void;
+    delete: (databaseId: string) => void;
+    update: (databaseId: string) => void;
+  };
 }
 
 /**
@@ -32,9 +34,7 @@ export const GenreSetTable: React.FC<GenreSetTableProps> = (props) => {
   const {
     data,
     loading,
-    openCreateGenreSetModal,
-    openDeleteGenreSetModal,
-    openEditGenreSetModal,
+    operations,
   } = props;
 
   // 部分的なコンポーネントの宣言
@@ -60,37 +60,29 @@ export const GenreSetTable: React.FC<GenreSetTableProps> = (props) => {
           )}
       </td>
       <td>
-        <Group spacing={3}>
-          <ActionIcon
-            size="lg"
-            color="blue"
-            onClick={() => openEditGenreSetModal(quizList.databaseId)}
-          >
-            <Tooltip label="編集">
-              <IconPencil size="1.5rem" stroke={1.4} />
-            </Tooltip>
-          </ActionIcon>
-          <ActionIcon
-            size="lg"
-            onClick={() => openDeleteGenreSetModal(quizList.databaseId)}
+        <Group spacing={3} noWrap>
+          <TableActionIcon
+            tooltip="編集"
+            onClick={() => operations.update(quizList.databaseId)}
+            Icon={IconPencil}
+          />
+          <TableActionIcon
+            tooltip="削除"
             color="red"
-          >
-            <Tooltip label="削除">
-              <IconTrash size="1.5rem" stroke={1.4} />
-            </Tooltip>
-          </ActionIcon>
+            onClick={() => operations.delete(quizList.databaseId)}
+            Icon={IconTrash}
+          />
         </Group>
       </td>
     </tr>
   ));
 
-  // 実際のコンポーネント
   if (!loading && data.length === 0) {
     return (
       <Stack align="center" m="sm">
         <Text size="lg">ジャンルセットがありません</Text>
         <Button
-          onClick={openCreateGenreSetModal}
+          onClick={operations.create}
           leftIcon={<IconPlus />}
         >
           新規ジャンルセット
@@ -102,7 +94,7 @@ export const GenreSetTable: React.FC<GenreSetTableProps> = (props) => {
     <Skeleton visible={loading}>
       <Group position="right">
         <Button
-          onClick={openCreateGenreSetModal}
+          onClick={operations.create}
           leftIcon={<IconPlus />}
         >
           新規ジャンルセット
@@ -115,9 +107,9 @@ export const GenreSetTable: React.FC<GenreSetTableProps> = (props) => {
       >
         <thead>
           <tr>
-            <th style={{ minWidth: 80 }}>セット名</th>
+            <th>セット名</th>
             <th>説明</th>
-            <th style={{ width: 120 }}>操作</th>
+            <th style={{ width: 0 }}>操作</th>
           </tr>
         </thead>
         <tbody>

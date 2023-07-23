@@ -2,6 +2,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 
 import { useDeleteGenreMutation, useGetGenreLazyQuery } from 'gql';
+import { errorNotification, successNotification } from 'util/notifications';
 
 type UseDeleteGenreModalProps = {
   reload: () => void;
@@ -30,20 +31,26 @@ export const useDeleteGenreModal = (props: UseDeleteGenreModalProps) => {
   };
 
   const onDelete = async () => {
+    handlers.close();
     await deleteGenre({
       variables: {
         input: {
           databaseId,
         },
       },
+      onCompleted: () => {
+        successNotification({ message: 'ジャンルを削除しました' });
+        reload();
+      },
+      onError: () => {
+        errorNotification({ message: 'ジャンルの削除に失敗しました' });
+      },
     });
-    reload();
-    handlers.close();
   };
 
   const newHandlers = {
+    ...handlers,
     open,
-    close: handlers.close,
   };
 
   return {
