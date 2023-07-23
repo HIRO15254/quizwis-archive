@@ -7,6 +7,7 @@ import React from 'react';
 // Propsの型定義
 interface GenreBadgeProps extends BadgeProps {
   children: string;
+  noTooltip?: boolean;
 }
 
 /**
@@ -15,10 +16,18 @@ interface GenreBadgeProps extends BadgeProps {
 export const GenreBadge: React.FC<GenreBadgeProps> = (props) => {
   const {
     children,
+    noTooltip,
     ...others
   } = props;
 
   if (children.length > 10) {
+    if (noTooltip) {
+      return (
+        <Badge variant="light" size="lg" {...others}>
+          {`${children.slice(0, 9)}...`}
+        </Badge>
+      );
+    }
     return (
       <Tooltip label={children}>
         <Badge variant="light" size="lg" {...others}>

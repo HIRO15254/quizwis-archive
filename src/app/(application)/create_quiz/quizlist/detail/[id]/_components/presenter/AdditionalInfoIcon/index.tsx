@@ -20,7 +20,7 @@ export const AdditionalInfoIcon = (props: AdditionalInfoIconProps) => {
 
   const theme = useMantineTheme();
 
-  if (data) {
+  if (data && data !== '<p></p>') {
     return (
       <HoverCard shadow="md" {...rest}>
         <HoverCard.Target>

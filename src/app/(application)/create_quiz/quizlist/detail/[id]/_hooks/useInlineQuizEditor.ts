@@ -1,7 +1,7 @@
 import { useForm } from '@mantine/form';
 import { Link } from '@mantine/tiptap';
 import Underline from '@tiptap/extension-underline';
-import { Editor, EditorOptions, useEditor } from '@tiptap/react';
+import { EditorOptions, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { useState } from 'react';
 
@@ -11,7 +11,10 @@ import {
   useGetQuizLazyQuery,
   useGetGenresFromQuizListQuery,
 } from 'gql';
+import { errorNotification, successNotification } from 'util/notifications';
 import { Ruby } from 'util/tiptap/ruby';
+
+import { Editors } from '../_types/Editors';
 
 interface UseInlineQuizEditorProps {
   reload: () => void;
@@ -46,13 +49,6 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
   const [getQuiz] = useGetQuizLazyQuery({
     fetchPolicy: 'network-only',
   });
-
-  const createNewQuiz = () => {
-    createQuiz().then((created) => {
-      setEditingQuizId(created.data?.createQuiz?.databaseId ?? null);
-      reload();
-    });
-  };
 
   const editorOptions = (path: string): Partial<EditorOptions> => ({
     extensions: [StarterKit, Ruby, Link, Underline],
@@ -92,7 +88,7 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
       label: genre.name,
       color: genre.color,
     });
-  });
+  }) ?? [];
   const genreSelectorFormProps = form.getInputProps('genre');
 
   const questionEditor = useEditor(editorOptions('question'));
@@ -107,7 +103,7 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
     otherAnswer: otherAnswerEditor,
     explanation: explanationEditor,
     source: sourceEditor,
-  } as { [key: string]: Editor };
+  } as Editors;
 
   const newSetEditingQuizId = (id: string | null) => {
     setEditingQuizId(id);
@@ -117,45 +113,65 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
           databaseId: id ?? '',
         },
       },
-    }).then((res) => {
-      const quiz = res.data?.getQuiz;
-      questionEditor?.commands.setContent(quiz?.question ?? '', true);
-      answerEditor?.commands.setContent(quiz?.answer ?? '', true);
-      otherAnswerEditor?.commands.setContent(quiz?.otherAnswer ?? '', true);
-      explanationEditor?.commands.setContent(quiz?.explanation ?? '', true);
-      sourceEditor?.commands.setContent(quiz?.source ?? '', true);
-      form.setFieldValue('genre', quiz?.genre?.name ?? '');
+      onCompleted: (res) => {
+        const quiz = res.getQuiz;
+        questionEditor?.commands.setContent(quiz?.question ?? '', true);
+        answerEditor?.commands.setContent(quiz?.answer ?? '', true);
+        otherAnswerEditor?.commands.setContent(quiz?.otherAnswer ?? '', true);
+        explanationEditor?.commands.setContent(quiz?.explanation ?? '', true);
+        sourceEditor?.commands.setContent(quiz?.source ?? '', true);
+        form.setFieldValue('genre', quiz?.genre?.name ?? '');
+      },
+    });
+  };
+
+  const createNewQuiz = () => {
+    createQuiz({
+      onCompleted: (res) => {
+        newSetEditingQuizId(res.createQuiz.databaseId ?? null);
+        reload();
+      },
     });
   };
 
   const onSubmit = () => {
     if (editingQuizId) {
+      newSetEditingQuizId(null);
       updateQuiz({
         variables: {
           input: {
             quizDatabaseId: editingQuizId,
-            question: form.values.question !== '<p></p>' ? form.values.question : null,
-            answer: form.values.answer !== '<p></p>' ? form.values.answer : null,
-            otherAnswer: form.values.otherAnswer !== '<p></p>' ? form.values.otherAnswer : null,
-            explanation: form.values.explanation !== '<p></p>' ? form.values.explanation : null,
-            source: form.values.source !== '<p></p>' ? form.values.source : null,
-            genreName: form.values.genre ?? null,
+            question: form.values.question,
+            answer: form.values.answer,
+            otherAnswer: form.values.otherAnswer,
+            explanation: form.values.explanation,
+            source: form.values.source,
+            genreName: form.values.genre,
           },
         },
-      }).then(() => {
-        newSetEditingQuizId(null);
-        reload();
+        onCompleted: () => {
+          successNotification({ message: 'クイズを更新しました' });
+          reload();
+        },
+        onError: () => {
+          errorNotification({ message: 'クイズの更新に失敗しました' });
+        },
       });
     }
   };
 
   return {
-    editors,
+    inlineQuizEditorProps: {
+      databaseId: editingQuizId,
+      editors,
+      operation: {
+        update: onSubmit,
+      },
+      genreSelectorData,
+      genreSelectorFormProps,
+    },
+    update: newSetEditingQuizId,
+    create: createNewQuiz,
     editingQuizId,
-    setEditingQuizId: newSetEditingQuizId,
-    createQuiz: createNewQuiz,
-    onSubmit,
-    genreSelectorData,
-    genreSelectorFormProps,
   };
 };
