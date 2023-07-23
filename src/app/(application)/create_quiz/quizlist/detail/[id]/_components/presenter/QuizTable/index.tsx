@@ -150,6 +150,7 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
       <Table
         mt="md"
         highlightOnHover
+        fontSize="md"
         verticalSpacing={0}
       >
         <thead>
