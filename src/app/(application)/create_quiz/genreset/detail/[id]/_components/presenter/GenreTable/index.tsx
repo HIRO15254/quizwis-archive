@@ -2,33 +2,32 @@
 
 // 各種import
 import {
-  ActionIcon,
-  Button, Group, Skeleton, Stack, Table, Text, Tooltip, useMantineTheme,
+  Button, Group, Skeleton, Stack, Table, Text, useMantineTheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
 import React from 'react';
 
 import { GenreBadge } from 'components/common/GenreBadge';
+import { TableActionIcon } from 'components/common/TableActionICon';
 
 import { GenreTree } from '../../../_util/genreListToTree';
 
-// Propsの型定義
 interface GenreRowProps {
   genre: GenreTree;
   nest: number;
-  openCreateGenreModal: (parentId?: string) => void;
-  openDeleteGenreModal: (databaseId: string) => void;
-  openUpdateGenreModal: (databaseId: string) => void;
+  operations: {
+    create: (parentId?: string) => void;
+    update: (databaseId: string) => void;
+    delete: (databaseId: string) => void;
+  }
 }
 
 const GenreRow: React.FC<GenreRowProps> = (props) => {
   const {
     genre,
     nest,
-    openCreateGenreModal,
-    openDeleteGenreModal,
-    openUpdateGenreModal,
+    operations,
   } = props;
   const [opened, { toggle }] = useDisclosure(false);
   const theme = useMantineTheme();
@@ -52,7 +51,7 @@ const GenreRow: React.FC<GenreRowProps> = (props) => {
               onClick={toggle}
               style={{ visibility: genre.children.length === 0 ? 'hidden' : undefined }}
             />
-            <GenreBadge color={genre.data.color ?? 'gray'}>
+            <GenreBadge color={genre.data.color}>
               {genre.data.name}
             </GenreBadge>
           </Group>
@@ -69,36 +68,25 @@ const GenreRow: React.FC<GenreRowProps> = (props) => {
         </td>
         <td>
           <Group spacing={2}>
-            <Tooltip label="サブジャンルを追加">
-              <ActionIcon
-                variant="subtle"
-                color="blue"
-                size="lg"
-                onClick={() => openCreateGenreModal(genre.data.databaseId)}
-              >
-                <IconPlus />
-              </ActionIcon>
-            </Tooltip>
-            <Tooltip label="編集">
-              <ActionIcon
-                variant="subtle"
-                color="blue"
-                size="lg"
-                onClick={() => openUpdateGenreModal(genre.data.databaseId)}
-              >
-                <IconPencil />
-              </ActionIcon>
-            </Tooltip>
-            <Tooltip label="削除">
-              <ActionIcon
-                variant="subtle"
-                color="red"
-                size="lg"
-                onClick={() => openDeleteGenreModal(genre.data.databaseId)}
-              >
-                <IconTrash />
-              </ActionIcon>
-            </Tooltip>
+            <TableActionIcon
+              tooltip="サブジャンルを追加"
+              onClick={() => operations.create(genre.data.databaseId)}
+            >
+              <IconPlus />
+            </TableActionIcon>
+            <TableActionIcon
+              tooltip="編集"
+              onClick={() => operations.update(genre.data.databaseId)}
+            >
+              <IconPencil />
+            </TableActionIcon>
+            <TableActionIcon
+              tooltip="削除"
+              color="red"
+              onClick={() => operations.delete(genre.data.databaseId)}
+            >
+              <IconTrash />
+            </TableActionIcon>
           </Group>
         </td>
       </tr>
@@ -107,9 +95,7 @@ const GenreRow: React.FC<GenreRowProps> = (props) => {
           key={child.data.id}
           genre={child}
           nest={nest + 1}
-          openCreateGenreModal={openCreateGenreModal}
-          openDeleteGenreModal={openDeleteGenreModal}
-          openUpdateGenreModal={openUpdateGenreModal}
+          operations={operations}
         />
       ))}
     </>
@@ -118,22 +104,22 @@ const GenreRow: React.FC<GenreRowProps> = (props) => {
 
 interface GenreTableProps {
   data: GenreTree[];
-  openCreateGenreModal: (parentId?: string) => void;
-  openDeleteGenreModal: (databaseId: string) => void;
-  openUpdateGenreModal: (databaseId: string) => void;
   loading: boolean;
+  operations: {
+    create: (parentId?: string) => void;
+    update: (databaseId: string) => void;
+    delete: (databaseId: string) => void;
+  }
 }
 
 /**
- * 説明
+ * ジャンル一覧ページのテーブル
  */
 export const GenreTable: React.FC<GenreTableProps> = (props) => {
   const {
     data,
-    openCreateGenreModal,
-    openDeleteGenreModal,
-    openUpdateGenreModal,
     loading,
+    operations,
   } = props;
 
   // reactのhookの宣言
@@ -143,7 +129,7 @@ export const GenreTable: React.FC<GenreTableProps> = (props) => {
       <Stack align="center" m="sm">
         <Text size="lg">ジャンルがありません</Text>
         <Button
-          onClick={() => openCreateGenreModal()}
+          onClick={() => operations.create()}
           leftIcon={<IconPlus />}
         >
           新規ジャンル
@@ -155,7 +141,7 @@ export const GenreTable: React.FC<GenreTableProps> = (props) => {
     <Skeleton visible={loading}>
       <Group position="right" pb="sm">
         <Button
-          onClick={() => openCreateGenreModal()}
+          onClick={() => operations.create()}
           leftIcon={<IconPlus />}
         >
           ジャンルを追加
@@ -176,9 +162,7 @@ export const GenreTable: React.FC<GenreTableProps> = (props) => {
               key={genre.data.id}
               genre={genre}
               nest={0}
-              openCreateGenreModal={openCreateGenreModal}
-              openDeleteGenreModal={openDeleteGenreModal}
-              openUpdateGenreModal={openUpdateGenreModal}
+              operations={operations}
             />
           ))}
         </tbody>

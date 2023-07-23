@@ -4,21 +4,25 @@ import { useState } from 'react';
 
 import { useCreateGenreMutation, useGetGenreLazyQuery } from 'gql';
 
-import type { CreateGenreFormType } from '../_components/presenter/CreateGenreModal';
+import type { GenreFormType } from '../_types/GenreFormType';
 
 type UseCreateGenreModalProps = {
   reload: () => void;
   genreSetDatabaseId: string;
 };
 
+/**
+ * ジャンルを新規作成するためのモーダル
+ */
 export const useCreateGenreModal = (props: UseCreateGenreModalProps) => {
   const { reload, genreSetDatabaseId } = props;
+
   const [opened, handlers] = useDisclosure();
   const [parentId, setParentId] = useState<string | null>(null);
   const [createGenre] = useCreateGenreMutation();
   const [getGenre] = useGetGenreLazyQuery();
 
-  const form = useForm<CreateGenreFormType>({
+  const form = useForm<GenreFormType>({
     initialValues: {
       name: '',
       description: '',
@@ -30,12 +34,12 @@ export const useCreateGenreModal = (props: UseCreateGenreModalProps) => {
     },
   });
 
-  const onClose = () => {
+  const close = () => {
     form.reset();
     handlers.close();
   };
 
-  const onOpen = (newParentId?: string) => {
+  const open = (newParentId?: string) => {
     setParentId(newParentId || null);
     if (newParentId) {
       getGenre({
@@ -63,23 +67,26 @@ export const useCreateGenreModal = (props: UseCreateGenreModalProps) => {
         input: {
           genreSetDatabaseId,
           parentGenreDatabaseId: parentId || undefined,
-          name: values.name,
-          description: values.description,
-          ratio: values.ratio,
-          color: values.color,
+          ...values,
         },
       },
     });
     reload();
-    onClose();
+    close();
   });
 
   const newHandlers = {
-    open: onOpen,
-    close: onClose,
+    open,
+    close,
   };
 
   return {
-    opened, handlers: newHandlers, form, onSubmit,
+    genreFormModalProps: {
+      opened,
+      close,
+      onSubmit,
+      form,
+    },
+    handlers: newHandlers,
   };
 };

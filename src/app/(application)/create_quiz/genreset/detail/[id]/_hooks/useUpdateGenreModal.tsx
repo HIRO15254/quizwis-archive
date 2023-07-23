@@ -1,10 +1,11 @@
 import { isNotEmpty, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
+import { showNotification } from '@mantine/notifications';
 import { useState } from 'react';
 
 import { useUpdateGenreMutation, useGetGenreLazyQuery } from 'gql';
 
-import { UpdateGenreFormType } from '../_components/presenter/UpdateGenreModal';
+import type { GenreFormType } from '../_types/GenreFormType';
 
 type UseUpdateGenreModalProps = {
   reload: () => void;
@@ -14,10 +15,10 @@ export const useUpdateGenreModal = (props: UseUpdateGenreModalProps) => {
   const { reload } = props;
   const [opened, handlers] = useDisclosure();
   const [updateGenre] = useUpdateGenreMutation();
-  const [getGenre] = useGetGenreLazyQuery();
+  const [getGenre, { loading }] = useGetGenreLazyQuery();
   const [databaseId, setDatabaseId] = useState<string>('');
 
-  const form = useForm<UpdateGenreFormType>({
+  const form = useForm<GenreFormType>({
     initialValues: {
       name: '',
       description: '',
@@ -29,48 +30,51 @@ export const useUpdateGenreModal = (props: UseUpdateGenreModalProps) => {
     },
   });
 
-  const onOpen = async (open_id: string) => {
-    setDatabaseId(open_id);
+  const open = async (openDatabaseId: string) => {
+    setDatabaseId(openDatabaseId);
     getGenre({
-      fetchPolicy: 'network-only',
-      variables: {
-        input: {
-          databaseId: open_id,
-        },
+      fetchPolicy: 'cache-and-network',
+      variables: { input: { databaseId: openDatabaseId } },
+      onCompleted: (res) => {
+        form.setValues(res.getGenre);
       },
-    }).then((res) => {
-      form.setValues({
-        name: res.data?.getGenre?.name ?? '',
-        description: res.data?.getGenre?.description ?? '',
-        ratio: res.data?.getGenre?.ratio ?? 1,
-        color: res.data?.getGenre?.color ?? 'gray',
-      });
     });
     handlers.open();
   };
 
   const onSubmit = form.onSubmit(async (values) => {
-    await updateGenre({
+    handlers.close();
+    form.reset();
+    updateGenre({
       variables: {
         input: {
           databaseId,
-          name: values.name,
-          description: values.description,
-          ratio: values.ratio,
-          color: values.color,
+          ...values,
         },
       },
+    }).then(() => {
+      showNotification({
+        title: '更新成功',
+        message: 'ジャンルを更新しました',
+        color: 'blue',
+      });
+      reload();
     });
-    reload();
-    handlers.close();
   });
 
   const newHandlers = {
-    open: onOpen,
+    open,
     close: handlers.close,
   };
 
   return {
-    opened, handlers: newHandlers, form, onSubmit,
+    genreFormModalProps: {
+      opened,
+      close: handlers.close,
+      onSubmit,
+      form,
+      loading,
+    },
+    handlers: newHandlers,
   };
 };

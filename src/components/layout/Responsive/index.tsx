@@ -37,7 +37,7 @@ export const Responsive: ResponsiveType = {
     // eslint-disable-next-line react/prop-types
     const { children } = props;
     return (
-      <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+      <MediaQuery largerThan={MANTINE_SMARTPHONE_BREAKPOINT} styles={{ display: 'none' }}>
         {children}
       </MediaQuery>
     );

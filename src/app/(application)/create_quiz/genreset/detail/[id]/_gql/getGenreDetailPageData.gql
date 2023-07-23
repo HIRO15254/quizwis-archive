@@ -1,0 +1,21 @@
+query GetGenreDetailPageData($input: GetGenreSetInput) {
+  getGenreSet(input: $input) {
+    id
+    databaseId
+    name
+    genres {
+      id
+      databaseId
+      name
+      description
+      ratio
+      color
+      parentGenre {
+        id
+      }
+      childGenres {
+        id
+      }
+    }
+  }
+}

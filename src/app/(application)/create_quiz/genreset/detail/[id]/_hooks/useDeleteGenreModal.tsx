@@ -16,7 +16,7 @@ export const useDeleteGenreModal = (props: UseDeleteGenreModalProps) => {
   const [name, setName] = useState<string>('');
   const [databaseId, setDatabaseId] = useState<string>('');
 
-  const onOpen = async (open_id: string) => {
+  const open = async (open_id: string) => {
     setDatabaseId(open_id);
     const genre = await getGenre({
       variables: {
@@ -42,11 +42,18 @@ export const useDeleteGenreModal = (props: UseDeleteGenreModalProps) => {
   };
 
   const newHandlers = {
-    open: onOpen,
+    open,
     close: handlers.close,
   };
 
   return {
-    opened, handlers: newHandlers, name, onDelete,
+    modalProps: {
+      opened,
+      close: handlers.close,
+      onConfirm: onDelete,
+      name,
+    },
+    name,
+    handlers: newHandlers,
   };
 };

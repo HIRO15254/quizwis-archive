@@ -5,7 +5,6 @@
 // 各種import
 import {
   ActionIcon,
-  Badge,
   Button, Group, NativeSelect, Pagination, Skeleton, Stack, Table, Text, Tooltip,
 } from '@mantine/core';
 import {
