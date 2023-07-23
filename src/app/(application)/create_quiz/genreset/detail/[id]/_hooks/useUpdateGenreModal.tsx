@@ -32,7 +32,6 @@ export const useUpdateGenreModal = (props: UseUpdateGenreModalProps) => {
 
   const open = async (openDatabaseId: string) => {
     setDatabaseId(openDatabaseId);
-    handlers.open();
     getGenre({
       variables: { input: { databaseId: openDatabaseId } },
       onCompleted: (res) => {
@@ -42,6 +41,7 @@ export const useUpdateGenreModal = (props: UseUpdateGenreModalProps) => {
           ratio: res.getGenre.ratio,
           color: res.getGenre.color,
         });
+        handlers.open();
       },
     });
   };
