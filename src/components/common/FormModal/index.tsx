@@ -3,7 +3,7 @@
 import {
   Button, Group, LoadingOverlay, Modal, Stack, Text,
 } from '@mantine/core';
-import { useHotkeys } from '@mantine/hooks';
+import { getHotkeyHandler } from '@mantine/hooks';
 import React from 'react';
 
 export interface FormModalProps {
@@ -30,16 +30,14 @@ export const FormModal: React.FC<FormModalProps> = (props) => {
     children,
   } = props;
 
-  useHotkeys([
-    ['esc', close],
-    ['mod+Enter', onSubmit],
-  ]);
-
   return (
     <Modal
       opened={opened}
       onClose={close}
       title={<Text fz="xl" fw={800}>{title}</Text>}
+      onKeyDown={getHotkeyHandler([
+        ['mod+Enter', onSubmit],
+      ])}
     >
       <form onSubmit={onSubmit}>
         <Stack>

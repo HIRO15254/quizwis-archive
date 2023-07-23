@@ -1,6 +1,6 @@
 import { Group } from '@mantine/core';
 import {
-  IconArrowsSplit, IconNote, IconBook2, IconCheck,
+  IconArrowsSplit, IconNote, IconBook2, IconCheck, IconX,
 } from '@tabler/icons-react';
 import React from 'react';
 
@@ -21,6 +21,7 @@ export interface InlineQuizEditorProps {
   editors: Editors;
   operation: {
     update: (databaseId: string) => void;
+    cancel: () => void;
   }
   genreSelectorData: GenreSelectorProps['genres'];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -73,12 +74,18 @@ export const InlineQuizEditor = (props: InlineQuizEditorProps) => {
         </Group>
       </td>
       <td>
-        <Group spacing={3}>
+        <Group spacing={3} noWrap>
           <TableActionIcon
             tooltip="確定"
             color="green"
             onClick={() => operation.update(databaseId || '')}
             Icon={IconCheck}
+          />
+          <TableActionIcon
+            tooltip="キャンセル"
+            color="red"
+            onClick={() => operation.cancel()}
+            Icon={IconX}
           />
         </Group>
       </td>

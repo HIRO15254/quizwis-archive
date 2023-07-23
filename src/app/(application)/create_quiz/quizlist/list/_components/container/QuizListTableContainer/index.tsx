@@ -2,6 +2,7 @@
 
 // 各種import
 import { Title, Paper, Group } from '@mantine/core';
+import { useHotkeys } from '@mantine/hooks';
 import React, { useEffect } from 'react';
 
 import { useGetGenreSetsForQuizListQuery, useGetQuizListsLazyQuery } from 'gql';
@@ -45,7 +46,10 @@ export const QuizListTableContainer: React.FC = () => {
     })) ?? [],
   );
 
-  // 実際のコンポーネント
+  useHotkeys([
+    ['mod+alt+N', () => createQuizListModalHandlers.open(), { preventDefault: true }],
+  ]);
+
   return (
     <Group position="center" pb="sm">
       <Paper w="100%" maw={800} p="xl" shadow="xs">

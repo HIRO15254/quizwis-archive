@@ -4,6 +4,7 @@
 import {
   Title, Paper, Group, Anchor,
 } from '@mantine/core';
+import { useHotkeys } from '@mantine/hooks';
 import React, { useCallback, useEffect } from 'react';
 
 import { useGetQuizCountLazyQuery, useGetQuizListQuery, useGetQuizzesLazyQuery } from 'gql';
@@ -89,6 +90,12 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
     modalProps: deleteQuizModalProps,
     handlers: deleteQuizModalHandlers,
   } = useDeleteQuizModal({ reload });
+
+  useHotkeys([
+    ['mod+alt+N', () => create(), { preventDefault: true }],
+    ['mod+Enter', () => { if (editingQuizId) { inlineQuizEditorProps.operation.update(); } }, { preventDefault: true }],
+    ['Escape', () => { if (editingQuizId) { inlineQuizEditorProps.operation.cancel(); } }, { preventDefault: true }],
+  ]);
 
   // 実際のコンポーネント
   return (

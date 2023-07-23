@@ -2,6 +2,7 @@
 
 // 各種import
 import { Title, Paper, Group } from '@mantine/core';
+import { useHotkeys } from '@mantine/hooks';
 import React, { useEffect } from 'react';
 
 import { useGetGenreSetsLazyQuery } from 'gql';
@@ -33,6 +34,10 @@ export const GenreSetTableContainer: React.FC = () => {
   useEffect(() => {
     reload();
   }, [reload]);
+
+  useHotkeys([
+    ['mod+alt+N', () => createGenreSetModalHandlers.open(), { preventDefault: true }],
+  ]);
 
   // 実際のコンポーネント
   return (

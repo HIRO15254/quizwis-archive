@@ -3,6 +3,7 @@
 import {
   Anchor, Group, Paper, Title,
 } from '@mantine/core';
+import { useHotkeys } from '@mantine/hooks';
 import React, { useEffect } from 'react';
 
 import { useGetGenreDetailPageDataLazyQuery } from 'gql';
@@ -46,6 +47,10 @@ export const GenreTableContainer: React.FC<GenreTableContainerProps> = (props) =
   useEffect(() => {
     reload();
   }, [setId, reload]);
+
+  useHotkeys([
+    ['mod+alt+N', () => createGenreModalHandlers.open(setId), { preventDefault: true }],
+  ]);
 
   return (
     <Group position="center" pb="sm">
