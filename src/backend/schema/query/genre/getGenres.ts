@@ -24,7 +24,16 @@ builder.queryField('getGenres', (t) => t.prismaField({
     }
     const ret = await prisma.genre.findMany({
       where: { genreSetId: args.input?.genreSetDatabaseId ?? '' },
-      orderBy: { createdAt: 'asc' },
+      orderBy: {
+        createdAt: 'asc',
+      },
+      include: {
+        childGenres: {
+          orderBy: {
+            createdAt: 'asc',
+          },
+        },
+      },
     });
     return ret;
   },

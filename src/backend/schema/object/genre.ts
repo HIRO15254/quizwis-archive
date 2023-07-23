@@ -14,5 +14,8 @@ export const Genre = builder.prismaNode('Genre', {
     parentGenre: t.relation('parentGenre', { nullable: true }),
     childGenres: t.relation('childGenres'),
     quizzes: t.relation('quizzes'),
+
+    createdAt: t.expose('createdAt', { type: 'Date' }),
+    updatedAt: t.expose('updatedAt', { type: 'Date' }),
   }),
 });

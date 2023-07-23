@@ -76,6 +76,7 @@ export type Genre = Node & {
   __typename?: 'Genre';
   childGenres: Array<Genre>;
   color: Scalars['String']['output'];
+  createdAt: Scalars['Date']['output'];
   databaseId: Scalars['String']['output'];
   description: Scalars['String']['output'];
   genreSet: GenreSet;
@@ -84,6 +85,7 @@ export type Genre = Node & {
   parentGenre?: Maybe<Genre>;
   quizzes: Array<Quiz>;
   ratio: Scalars['Int']['output'];
+  updatedAt: Scalars['Date']['output'];
 };
 
 export type GenreSet = Node & {
@@ -428,7 +430,7 @@ export type GetGenreDetailPageDataQueryVariables = Exact<{
 }>;
 
 
-export type GetGenreDetailPageDataQuery = { __typename?: 'Query', getGenreSet: { __typename?: 'GenreSet', id: string, databaseId: string, name: string, genres: Array<{ __typename?: 'Genre', id: string, databaseId: string, name: string, description: string, ratio: number, color: string, parentGenre?: { __typename?: 'Genre', id: string } | null, childGenres: Array<{ __typename?: 'Genre', id: string }> }> } };
+export type GetGenreDetailPageDataQuery = { __typename?: 'Query', getGenreSet: { __typename?: 'GenreSet', id: string, databaseId: string, name: string, genres: Array<{ __typename?: 'Genre', id: string, databaseId: string, name: string, description: string, ratio: number, color: string, createdAt: any, parentGenre?: { __typename?: 'Genre', id: string } | null, childGenres: Array<{ __typename?: 'Genre', id: string }> }> } };
 
 export type UpdateGenreMutationVariables = Exact<{
   input: UpdateGenreInput;
@@ -699,6 +701,7 @@ export const GetGenreDetailPageDataDocument = gql`
       childGenres {
         id
       }
+      createdAt
     }
   }
 }

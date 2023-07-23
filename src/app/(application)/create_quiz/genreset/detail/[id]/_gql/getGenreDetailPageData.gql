@@ -16,6 +16,7 @@ query getGenreDetailPageData($input: GetGenreSetInput) {
       childGenres {
         id
       }
+      createdAt
     }
   }
 }
