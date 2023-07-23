@@ -326,7 +326,7 @@ export type Quiz = Node & {
 export type QuizList = Node & {
   __typename?: 'QuizList';
   databaseId: Scalars['String']['output'];
-  description?: Maybe<Scalars['String']['output']>;
+  description: Scalars['String']['output'];
   genreSet?: Maybe<GenreSet>;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
@@ -522,7 +522,7 @@ export type CreateQuizListMutationVariables = Exact<{
 }>;
 
 
-export type CreateQuizListMutation = { __typename?: 'Mutation', createQuizList: { __typename?: 'QuizList', id: string, name: string, databaseId: string, description?: string | null } };
+export type CreateQuizListMutation = { __typename?: 'Mutation', createQuizList: { __typename?: 'QuizList', id: string, name: string, databaseId: string, description: string } };
 
 export type DeleteQuizListMutationVariables = Exact<{
   input: DeleteQuizListInput;
@@ -541,21 +541,21 @@ export type GetQuizListQueryVariables = Exact<{
 }>;
 
 
-export type GetQuizListQuery = { __typename?: 'Query', getQuizList: { __typename?: 'QuizList', name: string, databaseId: string, description?: string | null, id: string, genreSet?: { __typename?: 'GenreSet', name: string, databaseId: string } | null } };
+export type GetQuizListQuery = { __typename?: 'Query', getQuizList: { __typename?: 'QuizList', name: string, databaseId: string, description: string, id: string, genreSet?: { __typename?: 'GenreSet', name: string, databaseId: string } | null } };
 
 export type GetQuizListsQueryVariables = Exact<{
   input?: InputMaybe<GetQuizListsInput>;
 }>;
 
 
-export type GetQuizListsQuery = { __typename?: 'Query', getQuizLists: Array<{ __typename?: 'QuizList', description?: string | null, name: string, databaseId: string, id: string, genreSet?: { __typename?: 'GenreSet', name: string, id: string, databaseId: string } | null }> };
+export type GetQuizListsQuery = { __typename?: 'Query', getQuizLists: Array<{ __typename?: 'QuizList', description: string, name: string, databaseId: string, id: string, genreSet?: { __typename?: 'GenreSet', name: string, id: string, databaseId: string } | null }> };
 
 export type UpdateQuizListMutationVariables = Exact<{
   input: UpdateQuizListInput;
 }>;
 
 
-export type UpdateQuizListMutation = { __typename?: 'Mutation', updateQuizList: { __typename?: 'QuizList', description?: string | null, name: string, id: string, databaseId: string } };
+export type UpdateQuizListMutation = { __typename?: 'Mutation', updateQuizList: { __typename?: 'QuizList', description: string, name: string, id: string, databaseId: string } };
 
 export type GetLoginUserQueryVariables = Exact<{ [key: string]: never; }>;
 

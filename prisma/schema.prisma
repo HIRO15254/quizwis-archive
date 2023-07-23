@@ -57,7 +57,7 @@ model User {
 model QuizList {
   databaseId String @id @default(cuid())
   name String
-  description String?
+  description String
 
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)

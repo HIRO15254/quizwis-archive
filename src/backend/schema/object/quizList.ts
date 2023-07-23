@@ -8,7 +8,7 @@ export const QuizList = builder.prismaNode('QuizList', {
     user: t.relation('user'),
 
     name: t.exposeString('name'),
-    description: t.exposeString('description', { nullable: true }),
+    description: t.exposeString('description'),
 
     genreSet: t.relation('genreSet', { nullable: true }),
     quizzes: t.relation('quizzes'),

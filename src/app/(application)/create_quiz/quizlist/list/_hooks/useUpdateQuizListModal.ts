@@ -2,9 +2,10 @@ import { isNotEmpty, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 
-import { useUpdateQuizListMutation, useGetQuizListLazyQuery, useGetGenreSetsForQuizListLazyQuery } from 'gql';
+import { useUpdateQuizListMutation, useGetQuizListLazyQuery } from 'gql';
+import { errorNotification, successNotification } from 'util/notifications';
 
-import { UpdateQuizListFormType } from '../_components/presenter/UpdateQuizListModal';
+import { QuizListFormType } from '../_types/QuizListFormType';
 
 type UseUpdateQuizListModalProps = {
   reload: () => void;
@@ -16,11 +17,8 @@ export const useUpdateQuizListModal = (props: UseUpdateQuizListModalProps) => {
   const [updateQuizList] = useUpdateQuizListMutation();
   const [getQuizList] = useGetQuizListLazyQuery();
   const [databaseId, setDatabaseId] = useState<string>('');
-  const [getGenreSets, { data }] = useGetGenreSetsForQuizListLazyQuery({
-    fetchPolicy: 'network-only',
-  });
 
-  const form = useForm<UpdateQuizListFormType>({
+  const form = useForm<QuizListFormType>({
     initialValues: {
       name: '',
       description: '',
@@ -31,39 +29,33 @@ export const useUpdateQuizListModal = (props: UseUpdateQuizListModalProps) => {
     },
   });
 
-  const onOpen = async (open_id: string) => {
+  const open = (open_id: string) => {
+    handlers.open();
     setDatabaseId(open_id);
-    await getGenreSets();
-    await getQuizList({
+    getQuizList({
       variables: {
         input: {
           databaseId: open_id,
         },
       },
-    }).then((res) => {
-      form.setValues({
-        name: res.data?.getQuizList?.name ?? '',
-        description: res.data?.getQuizList?.description ?? '',
-        genreSetId: res.data?.getQuizList?.genreSet?.databaseId ?? '',
-      });
+      onCompleted: (res) => {
+        form.setValues({
+          name: res.getQuizList.name,
+          description: res.getQuizList.description,
+          genreSetId: res.getQuizList.genreSet?.databaseId,
+        });
+      },
     });
-    handlers.open();
   };
 
-  const genreSets = () => {
-    if (!data?.getGenreSets) {
-      return [{ value: '', label: 'なし' }];
-    }
-    const dataArray = data.getGenreSets.map((genreSet) => ({
-      value: genreSet.databaseId,
-      label: genreSet.name,
-    }));
-    const ret = [{ value: '', label: 'なし' }].concat(dataArray);
-    return ret;
+  const newHandlers = {
+    ...handlers,
+    open,
   };
 
-  const onSubmit = form.onSubmit(async (values) => {
-    await updateQuizList({
+  const onSubmit = form.onSubmit((values) => {
+    newHandlers.close();
+    updateQuizList({
       variables: {
         input: {
           databaseId,
@@ -72,17 +64,23 @@ export const useUpdateQuizListModal = (props: UseUpdateQuizListModalProps) => {
           genreSetId: values.genreSetId ?? undefined,
         },
       },
+      onCompleted: () => {
+        successNotification({ message: 'クイズリストを更新しました' });
+        reload();
+      },
+      onError: () => {
+        errorNotification({ message: 'クイズリストの更新に失敗しました' });
+      },
     });
-    reload();
-    handlers.close();
   });
 
-  const newHandlers = {
-    open: onOpen,
-    close: handlers.close,
-  };
-
   return {
-    opened, handlers: newHandlers, form, onSubmit, genreSets,
+    modalProps: {
+      opened,
+      close: newHandlers.close,
+      onSubmit,
+      form,
+    },
+    handlers: newHandlers,
   };
 };
