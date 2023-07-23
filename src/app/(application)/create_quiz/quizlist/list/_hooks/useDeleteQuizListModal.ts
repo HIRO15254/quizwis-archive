@@ -12,7 +12,7 @@ export const useDeleteQuizListModal = (props: UseDeleteQuizListModalProps) => {
   const { reload } = props;
   const [opened, handlers] = useDisclosure();
   const [deleteQuizList] = useDeleteQuizListMutation();
-  const [getQuizList] = useGetQuizListLazyQuery();
+  const [getQuizList] = useGetQuizListLazyQuery({ fetchPolicy: 'cache-and-network' });
 
   const [name, setName] = useState<string>('');
   const [databaseId, setDatabaseId] = useState<string>('');

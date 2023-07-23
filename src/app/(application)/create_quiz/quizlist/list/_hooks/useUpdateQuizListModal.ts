@@ -15,7 +15,7 @@ export const useUpdateQuizListModal = (props: UseUpdateQuizListModalProps) => {
   const { reload } = props;
   const [opened, handlers] = useDisclosure();
   const [updateQuizList] = useUpdateQuizListMutation();
-  const [getQuizList] = useGetQuizListLazyQuery();
+  const [getQuizList] = useGetQuizListLazyQuery({ fetchPolicy: 'cache-and-network' });
   const [databaseId, setDatabaseId] = useState<string>('');
 
   const form = useForm<QuizListFormType>({

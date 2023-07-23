@@ -26,6 +26,17 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
 
   const [editingQuizId, setEditingQuizId] = useState<string | null>(null);
   const [updateQuiz] = useUpdateQuizMutation();
+  const [createQuiz] = useCreateQuizMutation();
+  const [getQuiz] = useGetQuizLazyQuery({ fetchPolicy: 'cache-and-network' });
+
+  const { data: genreData } = useGetGenresFromQuizListQuery({
+    fetchPolicy: 'cache-and-network',
+    variables: {
+      input: {
+        databaseId: listId,
+      },
+    },
+  });
 
   const form = useForm({
     initialValues: {
@@ -38,18 +49,6 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
     },
   });
 
-  const [createQuiz] = useCreateQuizMutation({
-    variables: {
-      input: {
-        quizListDatabaseId: listId,
-      },
-    },
-  });
-
-  const [getQuiz] = useGetQuizLazyQuery({
-    fetchPolicy: 'network-only',
-  });
-
   const editorOptions = (path: string): Partial<EditorOptions> => ({
     extensions: [StarterKit, Ruby, Link, Underline],
     content: '',
@@ -59,15 +58,6 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
     editorProps: {
       attributes: {
         style: 'padding: 0.5rem',
-      },
-    },
-  });
-
-  const { data: genreData } = useGetGenresFromQuizListQuery({
-    fetchPolicy: 'network-only',
-    variables: {
-      input: {
-        databaseId: listId,
       },
     },
   });
@@ -127,6 +117,11 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
 
   const createNewQuiz = () => {
     createQuiz({
+      variables: {
+        input: {
+          quizListDatabaseId: listId,
+        },
+      },
       onCompleted: (res) => {
         newSetEditingQuizId(res.createQuiz.databaseId ?? null);
         reload();
