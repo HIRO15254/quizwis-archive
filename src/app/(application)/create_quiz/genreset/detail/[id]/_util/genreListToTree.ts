@@ -1,11 +1,11 @@
-import { GetGenresQuery } from 'gql';
+import { GetGenreDetailPageDataQuery } from 'gql';
 
 export interface GenreTree {
-  data: GetGenresQuery['getGenres'][0];
+  data: GetGenreDetailPageDataQuery['getGenreSet']['genres'][0];
   children: GenreTree[];
 }
 
-export function genreListToTree(genreList: GetGenresQuery['getGenres']): GenreTree[] {
+export function genreListToTree(genreList: GetGenreDetailPageDataQuery['getGenreSet']['genres']): GenreTree[] {
   function getChildrenTree(genreId: string): GenreTree {
     const targetGenre = genreList.find((genre) => genre.id === genreId);
     if (targetGenre === undefined) {
