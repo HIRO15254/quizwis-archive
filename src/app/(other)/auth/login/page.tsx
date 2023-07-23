@@ -8,6 +8,10 @@ interface LoginPageProps {
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
+export const metadata = {
+  title: 'ログイン - QuizWis',
+};
+
 /**
  * ログイン用のページ ログイン時のアクセスは禁止
  */
