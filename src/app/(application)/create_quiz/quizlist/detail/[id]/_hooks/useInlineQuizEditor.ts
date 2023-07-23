@@ -130,6 +130,7 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
   };
 
   const onSubmit = () => {
+    setEditingQuizId(null);
     if (editingQuizId) {
       newSetEditingQuizId(null);
       updateQuiz({
@@ -155,12 +156,17 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
     }
   };
 
+  const onCancel = () => {
+    setEditingQuizId(null);
+  };
+
   return {
     inlineQuizEditorProps: {
       databaseId: editingQuizId,
       editors,
       operation: {
         update: onSubmit,
+        cancel: onCancel,
       },
       genreSelectorData,
       genreSelectorFormProps,

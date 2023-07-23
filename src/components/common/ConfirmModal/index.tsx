@@ -6,6 +6,7 @@ import {
   Modal,
   Text,
 } from '@mantine/core';
+import { getHotkeyHandler } from '@mantine/hooks';
 import React from 'react';
 
 export interface ConfirmModalProps {
@@ -37,6 +38,10 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = (props) => {
       opened={opened}
       onClose={close}
       title={<Text fz="xl" fw={800}>{title}</Text>}
+      onKeyDown={getHotkeyHandler([
+        ['esc', close],
+        ['mod+Enter', onConfirm],
+      ])}
     >
       {children}
       <Group position="right" mt="md">
