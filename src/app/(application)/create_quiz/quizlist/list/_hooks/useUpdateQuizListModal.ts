@@ -30,7 +30,6 @@ export const useUpdateQuizListModal = (props: UseUpdateQuizListModalProps) => {
   });
 
   const open = (open_id: string) => {
-    handlers.open();
     setDatabaseId(open_id);
     getQuizList({
       variables: {
@@ -44,6 +43,7 @@ export const useUpdateQuizListModal = (props: UseUpdateQuizListModalProps) => {
           description: res.getQuizList.description,
           genreSetId: res.getQuizList.genreSet?.databaseId,
         });
+        handlers.open();
       },
     });
   };

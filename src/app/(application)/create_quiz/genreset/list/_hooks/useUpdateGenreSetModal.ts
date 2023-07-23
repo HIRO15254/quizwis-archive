@@ -30,7 +30,6 @@ export const useUpdateGenreSetModal = (props: UseUpdateGenreSetModalProps) => {
 
   const open = async (open_id: string) => {
     setDatabaseId(open_id);
-    handlers.open();
     getGenreSet({
       variables: {
         input: {
@@ -42,6 +41,7 @@ export const useUpdateGenreSetModal = (props: UseUpdateGenreSetModalProps) => {
           name: res.getGenreSet.name,
           description: res.getGenreSet.description,
         });
+        handlers.open();
       },
     });
   };

@@ -96,7 +96,6 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
   } as Editors;
 
   const newSetEditingQuizId = (id: string | null) => {
-    setEditingQuizId(id);
     getQuiz({
       variables: {
         input: {
@@ -111,6 +110,7 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
         explanationEditor?.commands.setContent(quiz?.explanation ?? '', true);
         sourceEditor?.commands.setContent(quiz?.source ?? '', true);
         form.setFieldValue('genre', quiz?.genre?.name ?? '');
+        setEditingQuizId(id);
       },
     });
   };
