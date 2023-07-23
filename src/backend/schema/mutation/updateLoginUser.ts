@@ -18,12 +18,12 @@ builder.mutationFields((t) => ({
     },
     resolve: async (_query, _root, args, ctx, _info) => {
       const ret = await prisma.user.update({
-        where: { userId: ctx.currentUserId ?? '' },
+        where: { userId: ctx.currentUserId },
         data: {
-          userId: args.input?.newUserId,
-          name: args.input?.name,
-          trueEmail: args.input?.email,
-          image: args.input?.image,
+          userId: args.input.newUserId,
+          name: args.input.name,
+          trueEmail: args.input.email,
+          image: args.input.image,
         },
       });
       return ret;

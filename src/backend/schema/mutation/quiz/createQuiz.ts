@@ -6,9 +6,11 @@ import { Quiz } from '../../object/quiz';
 const CreateQuizInput = builder.inputType('CreateQuizInput', {
   fields: (t) => ({
     quizListDatabaseId: t.string({ required: true }),
-    question: t.string(),
-    answer: t.string(),
-    explanation: t.string(),
+    question: t.string({ required: true, defaultValue: '' }),
+    answer: t.string({ required: true, defaultValue: '' }),
+    explanation: t.string({ required: true, defaultValue: '' }),
+    otherAnswer: t.string({ required: true, defaultValue: '' }),
+    source: t.string({ required: true, defaultValue: '' }),
   }),
 });
 
@@ -20,11 +22,11 @@ builder.mutationFields((t) => ({
     },
     resolve: async (_query, _root, args, ctx, _info) => {
       const quizList = await prisma.quizList.findUniqueOrThrow({
-        where: { databaseId: args.input?.quizListDatabaseId ?? '' },
+        where: { databaseId: args.input.quizListDatabaseId },
         include: { user: true },
       });
       if (quizList.user.userId !== ctx.currentUserId) {
-        if (!await checkAuthority(ctx.currentUserId ?? '', 'ADMIN')) {
+        if (!await checkAuthority(ctx.currentUserId, 'ADMIN')) {
           throw new Error('権限がありません。');
         }
       }
@@ -32,17 +34,19 @@ builder.mutationFields((t) => ({
         data: {
           user: {
             connect: {
-              userId: ctx.currentUserId ?? '',
+              userId: ctx.currentUserId,
             },
           },
           quizList: {
             connect: {
-              databaseId: args.input?.quizListDatabaseId ?? '',
+              databaseId: args.input.quizListDatabaseId,
             },
           },
-          question: args.input?.question ?? '',
-          answer: args.input?.answer ?? '',
-          explanation: args.input?.explanation ?? '',
+          question: args.input.question,
+          answer: args.input.answer,
+          explanation: args.input.explanation,
+          otherAnswer: args.input.otherAnswer,
+          source: args.input.source,
         },
       });
       return ret;

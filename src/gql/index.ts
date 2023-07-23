@@ -24,28 +24,30 @@ export type CopyGenreSetInput = {
 };
 
 export type CreateGenreInput = {
-  color?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
+  color?: Scalars['String']['input'];
+  description: Scalars['String']['input'];
   genreSetDatabaseId: Scalars['String']['input'];
   name: Scalars['String']['input'];
   parentGenreDatabaseId?: InputMaybe<Scalars['String']['input']>;
-  ratio?: InputMaybe<Scalars['Int']['input']>;
+  ratio?: Scalars['Int']['input'];
 };
 
 export type CreateGenreSetInput = {
-  description?: InputMaybe<Scalars['String']['input']>;
+  description: Scalars['String']['input'];
   name: Scalars['String']['input'];
 };
 
 export type CreateQuizInput = {
-  answer?: InputMaybe<Scalars['String']['input']>;
-  explanation?: InputMaybe<Scalars['String']['input']>;
-  question?: InputMaybe<Scalars['String']['input']>;
+  answer?: Scalars['String']['input'];
+  explanation?: Scalars['String']['input'];
+  otherAnswer?: Scalars['String']['input'];
+  question?: Scalars['String']['input'];
   quizListDatabaseId: Scalars['String']['input'];
+  source?: Scalars['String']['input'];
 };
 
 export type CreateQuizListInput = {
-  description?: InputMaybe<Scalars['String']['input']>;
+  description: Scalars['String']['input'];
   genreSetId?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
 };

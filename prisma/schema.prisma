@@ -76,15 +76,15 @@ model Quiz {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   quizList QuizList @relation(fields: [quizlistId], references: [databaseId], onDelete: Cascade)
 
-  question String?
-  answer String?
-  otherAnswer String?
-  explanation String?
-  source String?
+  question String
+  answer String
+  otherAnswer String
+  explanation String
+  source String
 
   genre Genre? @relation(fields: [genreId], references: [databaseId], onDelete: SetNull)
-
   genreId String?
+
   quizlistId String
   userId String
 

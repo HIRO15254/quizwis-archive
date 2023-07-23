@@ -17,16 +17,16 @@ builder.mutationFields((t) => ({
     },
     resolve: async (_query, _root, args, ctx, _info) => {
       const quiz = await prisma.quiz.findUniqueOrThrow({
-        where: { databaseId: args.input?.quizDatabaseId ?? '' },
+        where: { databaseId: args.input.quizDatabaseId },
         include: { user: true },
       });
       if (quiz.user.userId !== ctx.currentUserId) {
-        if (!await checkAuthority(ctx.currentUserId ?? '', 'ADMIN')) {
+        if (!await checkAuthority(ctx.currentUserId, 'ADMIN')) {
           throw new Error('権限がありません。');
         }
       }
       const ret = await prisma.quiz.delete({
-        where: { databaseId: args.input?.quizDatabaseId ?? '' },
+        where: { databaseId: args.input.quizDatabaseId },
       });
       return ret;
     },

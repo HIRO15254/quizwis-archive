@@ -15,7 +15,7 @@ builder.mutationFields((t) => ({
     },
     resolve: async (_query, _root, args, _ctx, _info) => {
       const ret = await prisma.user.delete({
-        where: { userId: args.input?.userId ?? '' },
+        where: { userId: args.input.userId },
       });
       return ret;
     },

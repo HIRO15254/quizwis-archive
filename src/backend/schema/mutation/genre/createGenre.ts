@@ -8,9 +8,9 @@ const CreateGenreInput = builder.inputType('CreateGenreInput', {
     genreSetDatabaseId: t.string({ required: true }),
     parentGenreDatabaseId: t.string(),
     name: t.string({ required: true }),
-    description: t.string(),
-    ratio: t.int({ defaultValue: 1 }),
-    color: t.string(),
+    description: t.string({ required: true }),
+    ratio: t.int({ required: true, defaultValue: 5 }),
+    color: t.string({ required: true, defaultValue: 'gray' }),
   }),
 });
 
@@ -22,31 +22,31 @@ builder.mutationFields((t) => ({
     },
     resolve: async (_query, _root, args, ctx, _info) => {
       const genreSet = await prisma.genreSet.findUniqueOrThrow({
-        where: { databaseId: args.input?.genreSetDatabaseId ?? '' },
+        where: { databaseId: args.input.genreSetDatabaseId },
         include: { user: true },
       });
       if (genreSet.user.userId !== ctx.currentUserId) {
-        if (!await checkAuthority(ctx.currentUserId ?? '', 'ADMIN')) {
+        if (!await checkAuthority(ctx.currentUserId, 'ADMIN')) {
           throw new Error('権限がありません。');
         }
       }
-      if (args.input?.parentGenreDatabaseId) {
+      if (args.input.parentGenreDatabaseId) {
         const ret = await prisma.genre.create({
           data: {
             genreSet: {
               connect: {
-                databaseId: args.input?.genreSetDatabaseId ?? '',
+                databaseId: args.input.genreSetDatabaseId,
               },
             },
             parentGenre: {
               connect: {
-                databaseId: args.input?.parentGenreDatabaseId ?? '',
+                databaseId: args.input.parentGenreDatabaseId,
               },
             },
-            name: args.input?.name,
-            description: args.input?.description ?? undefined,
-            ratio: args.input?.ratio ?? undefined,
-            color: args.input?.color ?? undefined,
+            name: args.input.name,
+            description: args.input.description,
+            ratio: args.input.ratio,
+            color: args.input.color,
           },
         });
         return ret;
@@ -55,13 +55,13 @@ builder.mutationFields((t) => ({
         data: {
           genreSet: {
             connect: {
-              databaseId: args.input?.genreSetDatabaseId ?? '',
+              databaseId: args.input.genreSetDatabaseId,
             },
           },
-          name: args.input?.name,
-          description: args.input?.description ?? undefined,
-          ratio: args.input?.ratio ?? undefined,
-          color: args.input?.color ?? undefined,
+          name: args.input.name,
+          description: args.input.description,
+          ratio: args.input.ratio,
+          color: args.input.color,
         },
       });
       return ret;
