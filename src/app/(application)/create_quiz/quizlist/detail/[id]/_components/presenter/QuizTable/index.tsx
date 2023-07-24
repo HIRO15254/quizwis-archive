@@ -157,7 +157,7 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
           <tr>
             <th>問題文</th>
             <th style={{ width: '15%' }}>解答</th>
-            <th style={{ width: '11rem' }}>ジャンル</th>
+            <th style={{ width: '13rem' }}>ジャンル</th>
             <th style={{ width: 0 }}>追加情報</th>
             <th style={{ width: 0 }}>操作</th>
           </tr>

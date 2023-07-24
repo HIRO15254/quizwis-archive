@@ -63,20 +63,23 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
   });
 
   const genres = genreData?.getQuizList?.genreSet?.genres;
-  const genreSelectorData = genres?.map((genre) => {
-    let val = genre.name;
+  const genreSelectorData = genres?.filter(
+    (genre) => genre.childGenres.length === 0,
+  ).map((genre) => {
+    let val = '';
     let parentId = genre.parentGenre?.databaseId;
     while (parentId) {
       const oldParentId = parentId;
       const parent = genres?.find((g) => g.databaseId === oldParentId);
-      val = `${parent?.name} ${val}`;
+      val = `${parent?.name}${val ? '.' : ''}${val}`;
       parentId = parent?.parentGenre?.databaseId;
     }
     return ({
       value: genre.name,
-      searchText: val,
+      searchText: `${genre.name} ${val}`,
       label: genre.name,
       color: genre.color,
+      group: val ?? '',
     });
   }) ?? [];
   const genreSelectorFormProps = form.getInputProps('genre');
@@ -110,8 +113,9 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
         explanationEditor?.commands.setContent(quiz?.explanation ?? '', true);
         sourceEditor?.commands.setContent(quiz?.source ?? '', true);
         form.setFieldValue('genre', quiz?.genre?.name ?? '');
-        setEditingQuizId(id);
       },
+    }).then(() => {
+      setEditingQuizId(id);
     });
   };
 
@@ -130,9 +134,8 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
   };
 
   const onSubmit = () => {
-    setEditingQuizId(null);
+    newSetEditingQuizId(null);
     if (editingQuizId) {
-      newSetEditingQuizId(null);
       updateQuiz({
         variables: {
           input: {
