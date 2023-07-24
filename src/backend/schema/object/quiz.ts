@@ -12,6 +12,8 @@ export const Quiz = builder.prismaNode('Quiz', {
     explanation: t.exposeString('explanation'),
     otherAnswer: t.exposeString('otherAnswer'),
     source: t.exposeString('source'),
+    length: t.exposeInt('length'),
+
     genre: t.relation('genre', { nullable: true }),
   }),
 });

@@ -40,6 +40,7 @@ export type CreateGenreSetInput = {
 export type CreateQuizInput = {
   answer?: Scalars['String']['input'];
   explanation?: Scalars['String']['input'];
+  length?: Scalars['Int']['input'];
   otherAnswer?: Scalars['String']['input'];
   question?: Scalars['String']['input'];
   quizListDatabaseId: Scalars['String']['input'];
@@ -321,6 +322,7 @@ export type Quiz = Node & {
   explanation: Scalars['String']['output'];
   genre?: Maybe<Genre>;
   id: Scalars['ID']['output'];
+  length: Scalars['Int']['output'];
   otherAnswer: Scalars['String']['output'];
   question: Scalars['String']['output'];
   quizList: QuizList;
@@ -367,6 +369,7 @@ export type UpdateQuizInput = {
   answer?: InputMaybe<Scalars['String']['input']>;
   explanation?: InputMaybe<Scalars['String']['input']>;
   genreName?: InputMaybe<Scalars['String']['input']>;
+  length?: InputMaybe<Scalars['Int']['input']>;
   otherAnswer?: InputMaybe<Scalars['String']['input']>;
   question?: InputMaybe<Scalars['String']['input']>;
   quizDatabaseId: Scalars['String']['input'];
@@ -515,7 +518,7 @@ export type GetQuizzesQueryVariables = Exact<{
 }>;
 
 
-export type GetQuizzesQuery = { __typename?: 'Query', getQuizzes: Array<{ __typename?: 'Quiz', answer: string, databaseId: string, explanation: string, otherAnswer: string, source: string, id: string, question: string, genre?: { __typename?: 'Genre', name: string, databaseId: string, id: string, color: string } | null }> };
+export type GetQuizzesQuery = { __typename?: 'Query', getQuizzes: Array<{ __typename?: 'Quiz', answer: string, databaseId: string, explanation: string, otherAnswer: string, source: string, id: string, question: string, length: number, genre?: { __typename?: 'Genre', name: string, databaseId: string, id: string, color: string } | null }> };
 
 export type UpdateQuizMutationVariables = Exact<{
   input: UpdateQuizInput;
@@ -1166,6 +1169,7 @@ export const GetQuizzesDocument = gql`
       id
       color
     }
+    length
   }
 }
     `;

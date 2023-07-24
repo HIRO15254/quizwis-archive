@@ -13,5 +13,6 @@ query GetQuizzes($input: GetQuizzesInput!) {
       id
       color
     }
+    length
   }
 }

@@ -13,6 +13,7 @@ const UpdateQuizInput = builder.inputType('UpdateQuizInput', {
     otherAnswer: t.string(),
     source: t.string(),
     genreName: t.string(),
+    length: t.int(),
   }),
 });
 
@@ -46,6 +47,7 @@ builder.mutationFields((t) => ({
           explanation: nullToEmpty(args.input.explanation),
           otherAnswer: nullToEmpty(args.input.otherAnswer),
           source: nullToEmpty(args.input.source),
+          length: args.input.length === null ? undefined : args.input.length,
           genre: newGenre ? { connect: { databaseId: newGenre.databaseId } } : { disconnect: true },
         },
       });

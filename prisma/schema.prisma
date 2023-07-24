@@ -83,6 +83,7 @@ model Quiz {
   otherAnswer String
   explanation String
   source String
+  length Int @default(0)
 
   genre Genre? @relation(fields: [genreId], references: [databaseId], onDelete: SetNull)
   genreId String?

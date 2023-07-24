@@ -146,6 +146,7 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
             explanation: form.values.explanation,
             source: form.values.source,
             genreName: form.values.genre,
+            length: questionEditor?.getText().length ?? 0,
           },
         },
         onCompleted: () => {

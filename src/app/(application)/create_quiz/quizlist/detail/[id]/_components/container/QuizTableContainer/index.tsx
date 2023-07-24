@@ -2,9 +2,10 @@
 
 // 各種import
 import {
-  Title, Paper, Group, Anchor,
+  Title, Paper, Group, Anchor, ActionIcon, Tooltip,
 } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
+import { IconChartBar } from '@tabler/icons-react';
 import React, { useCallback, useEffect } from 'react';
 
 import { useGetQuizCountLazyQuery, useGetQuizListQuery, useGetQuizzesLazyQuery } from 'gql';
@@ -93,6 +94,7 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
 
   useHotkeys([
     ['mod+alt+N', () => create(), { preventDefault: true }],
+    ['mod+I', () => {}],
     ['mod+Enter', () => { if (editingQuizId) { inlineQuizEditorProps.operation.update(); } }, { preventDefault: true }],
     ['Escape', () => { if (editingQuizId) { inlineQuizEditorProps.operation.cancel(); } }, { preventDefault: true }],
   ]);
@@ -104,7 +106,16 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
         <Anchor href="/create_quiz/quizlist/list" unstyled>
           {'< 問題リスト一覧に戻る'}
         </Anchor>
-        <Title order={1} mt="md">{quizListName?.getQuizList.name ?? ''}</Title>
+        <Group align="baseline">
+          <Title order={1} mt="md">
+            {quizListName?.getQuizList.name ?? ''}
+          </Title>
+          <Tooltip label="集計(ctrl + I)">
+            <ActionIcon size="lg" variant="subtle" color="blue" onClick={create}>
+              <IconChartBar />
+            </ActionIcon>
+          </Tooltip>
+        </Group>
         <DeleteQuizModal {...deleteQuizModalProps} title="問題削除" confirmText="削除" confirmColor="red" />
         <QuizTable
           inlineQuizEditorProps={inlineQuizEditorProps}

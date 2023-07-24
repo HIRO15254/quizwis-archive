@@ -43,6 +43,9 @@ export const InlineQuizEditor = (props: InlineQuizEditorProps) => {
         <InlineQuestionEditor editor={editors.question} />
       </td>
       <td>
+        {editors.question.getText().length}
+      </td>
+      <td>
         <InlineAnswerEditor editor={editors.answer} />
       </td>
       <td>
