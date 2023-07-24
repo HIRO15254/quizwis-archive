@@ -2,7 +2,7 @@
 
 // 各種import
 import {
-  Button, Group, Skeleton, Stack, Table, Text, useMantineTheme,
+  Button, Group, Skeleton, Stack, Table, Text,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
@@ -30,21 +30,10 @@ const GenreRow: React.FC<GenreRowProps> = (props) => {
     operations,
   } = props;
   const [opened, { toggle }] = useDisclosure(false);
-  const theme = useMantineTheme();
-
-  const bgColor = () => {
-    if (theme.colorScheme === 'dark') {
-      return theme.colors.dark[7 - nest];
-    }
-    if (nest === 0) {
-      return theme.white;
-    }
-    return theme.colors.gray[nest - 1];
-  };
 
   return (
     <>
-      <tr style={{ backgroundColor: bgColor() }}>
+      <tr>
         <td style={{ paddingLeft: nest * 20 }}>
           <Group noWrap>
             <IconPlus
@@ -63,8 +52,18 @@ const GenreRow: React.FC<GenreRowProps> = (props) => {
             <Text c="dimmed">説明文なし</Text>
           )}
         </td>
-        <td>
-          <Text>{genre.data.ratio}</Text>
+        <td style={{ whiteSpace: 'nowrap' }}>
+          <Group noWrap>
+            <Text fw="bold">{genre.data.ratio}</Text>
+            <Text fz="xs">
+              { nest === 0 && (
+                `(${genre.data.ratioPercent.toFixed(2)}%)`
+              )}
+              { nest !== 0 && (
+                `(${genre.data.ratioPercent.toFixed(2)}%/${genre.data.allRatioPercent.toFixed(2)}%)`
+              )}
+            </Text>
+          </Group>
         </td>
         <td>
           <Group spacing={2} noWrap>
