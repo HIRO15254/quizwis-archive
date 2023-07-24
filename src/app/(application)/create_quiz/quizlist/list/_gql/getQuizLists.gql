@@ -4,6 +4,8 @@ query GetQuizLists($input: GetQuizListsInput) {
     name
     databaseId
     id
+    goal
+    quizCount
     genreSet {
       name
       id

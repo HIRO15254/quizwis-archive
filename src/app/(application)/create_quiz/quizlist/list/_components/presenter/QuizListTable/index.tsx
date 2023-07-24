@@ -19,6 +19,8 @@ interface QuizListData {
     databaseId: string;
     name: string;
   } | null | undefined;
+  goal: number;
+  quizCount: number;
 }
 
 interface QuizListTableProps {
@@ -58,6 +60,18 @@ export const QuizListTable: React.FC<QuizListTableProps> = (props) => {
         { !quizList.description && (
           <Text c="dimmed">
             説明文はありません
+          </Text>
+        )}
+      </td>
+      <td style={{ whiteSpace: 'nowrap' }}>
+        { quizList.goal > 0 && (
+          <Text>
+            {`${quizList.quizCount}/${quizList.goal}`}
+          </Text>
+        )}
+        { quizList.goal === 0 && (
+          <Text>
+            {quizList.quizCount}
           </Text>
         )}
       </td>
@@ -124,6 +138,7 @@ export const QuizListTable: React.FC<QuizListTableProps> = (props) => {
           <tr>
             <th>リスト名</th>
             <th>説明</th>
+            <th style={{ width: 0, whiteSpace: 'nowrap' }}>問題数</th>
             <th>使用ジャンルセット</th>
             <th style={{ width: 0 }}>操作</th>
           </tr>

@@ -10,7 +10,8 @@ type UseDeleteQuizListModalProps = {
 
 export const useDeleteQuizListModal = (props: UseDeleteQuizListModalProps) => {
   const { reload } = props;
-  const [opened, handlers] = useDisclosure();
+
+  const [opened, handlers] = useDisclosure(false, { onClose: reload });
   const [deleteQuizList] = useDeleteQuizListMutation();
   const [getQuizList] = useGetQuizListLazyQuery({ fetchPolicy: 'cache-and-network' });
 
@@ -38,7 +39,6 @@ export const useDeleteQuizListModal = (props: UseDeleteQuizListModalProps) => {
   };
 
   const onDelete = () => {
-    handlers.close();
     deleteQuizList({
       variables: {
         input: {
@@ -47,10 +47,11 @@ export const useDeleteQuizListModal = (props: UseDeleteQuizListModalProps) => {
       },
       onCompleted: () => {
         successNotification({ message: 'クイズリストを削除しました' });
-        reload();
+        newHandlers.close();
       },
       onError: () => {
         errorNotification({ message: 'クイズリストの削除に失敗しました' });
+        newHandlers.close();
       },
     });
   };

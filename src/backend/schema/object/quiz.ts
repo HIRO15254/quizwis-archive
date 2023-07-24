@@ -7,11 +7,11 @@ export const Quiz = builder.prismaNode('Quiz', {
     quizList: t.relation('quizList'),
     user: t.relation('user'),
 
-    question: t.exposeString('question', { nullable: true }),
-    answer: t.exposeString('answer', { nullable: true }),
-    explanation: t.exposeString('explanation', { nullable: true }),
-    otherAnswer: t.exposeString('otherAnswer', { nullable: true }),
-    source: t.exposeString('source', { nullable: true }),
-    genre: t.relation('genre', { nullable: true }),
+    question: t.exposeString('question'),
+    answer: t.exposeString('answer'),
+    explanation: t.exposeString('explanation'),
+    otherAnswer: t.exposeString('otherAnswer'),
+    source: t.exposeString('source'),
+    genre: t.relation('genre'),
   }),
 });

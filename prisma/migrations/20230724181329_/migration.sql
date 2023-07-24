@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "QuizList" ADD COLUMN     "goal" INTEGER NOT NULL DEFAULT 0;

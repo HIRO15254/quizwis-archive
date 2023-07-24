@@ -9,6 +9,7 @@ const UpdateQuizListInput = builder.inputType('UpdateQuizListInput', {
     name: t.string({ required: true }),
     description: t.string(),
     genreSetId: t.string(),
+    goal: t.int(),
   }),
 });
 
@@ -64,6 +65,7 @@ builder.mutationFields((t) => ({
         data: {
           name: nullToEmpty(args.input.name),
           description: nullToEmpty(args.input.description),
+          goal: args.input.goal ?? undefined,
         },
       });
       return ret;

@@ -41,8 +41,9 @@ export const useUpdateGenreModal = (props: UseUpdateGenreModalProps) => {
           ratio: res.getGenre.ratio,
           color: res.getGenre.color,
         });
-        handlers.open();
       },
+    }).then(() => {
+      handlers.open();
     });
   };
 

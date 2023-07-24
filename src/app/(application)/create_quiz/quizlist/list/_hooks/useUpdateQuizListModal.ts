@@ -13,9 +13,10 @@ type UseUpdateQuizListModalProps = {
 
 export const useUpdateQuizListModal = (props: UseUpdateQuizListModalProps) => {
   const { reload } = props;
-  const [opened, handlers] = useDisclosure();
+
+  const [opened, handlers] = useDisclosure(false);
   const [updateQuizList] = useUpdateQuizListMutation();
-  const [getQuizList] = useGetQuizListLazyQuery({ fetchPolicy: 'cache-and-network' });
+  const [getQuizList] = useGetQuizListLazyQuery({ fetchPolicy: 'network-only' });
   const [databaseId, setDatabaseId] = useState<string>('');
 
   const form = useForm<QuizListFormType>({
@@ -23,6 +24,8 @@ export const useUpdateQuizListModal = (props: UseUpdateQuizListModalProps) => {
       name: '',
       description: '',
       genreSetId: '',
+      useGoal: false,
+      goal: 100,
     },
     validate: {
       name: isNotEmpty('このフィールドは必須です'),
@@ -42,9 +45,12 @@ export const useUpdateQuizListModal = (props: UseUpdateQuizListModalProps) => {
           name: res.getQuizList.name,
           description: res.getQuizList.description,
           genreSetId: res.getQuizList.genreSet?.databaseId,
+          useGoal: res.getQuizList.goal > 0,
+          goal: res.getQuizList.goal,
         });
-        handlers.open();
       },
+    }).then(() => {
+      handlers.open();
     });
   };
 
@@ -62,6 +68,7 @@ export const useUpdateQuizListModal = (props: UseUpdateQuizListModalProps) => {
           name: values.name,
           description: values.description,
           genreSetId: values.genreSetId ?? undefined,
+          goal: values.useGoal ? values.goal : 0,
         },
       },
       onCompleted: () => {

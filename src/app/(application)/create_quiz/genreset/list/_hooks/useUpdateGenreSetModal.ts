@@ -41,8 +41,9 @@ export const useUpdateGenreSetModal = (props: UseUpdateGenreSetModalProps) => {
           name: res.getGenreSet.name,
           description: res.getGenreSet.description,
         });
-        handlers.open();
       },
+    }).then(() => {
+      handlers.open();
     });
   };
 

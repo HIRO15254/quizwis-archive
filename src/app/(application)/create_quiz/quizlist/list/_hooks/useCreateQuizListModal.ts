@@ -1,5 +1,6 @@
 import { isNotEmpty, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
+import { useCallback } from 'react';
 
 import { useCreateQuizListMutation } from 'gql';
 import { errorNotification, successNotification } from 'util/notifications';
@@ -12,7 +13,8 @@ type UseCreateQuizListModalProps = {
 
 export const useCreateQuizListModal = (props: UseCreateQuizListModalProps) => {
   const { reload } = props;
-  const [opened, handlers] = useDisclosure();
+
+  const [opened, handlers] = useDisclosure(false);
   const [createQuizList] = useCreateQuizListMutation();
 
   const form = useForm<QuizListFormType>({
@@ -20,6 +22,8 @@ export const useCreateQuizListModal = (props: UseCreateQuizListModalProps) => {
       name: '',
       description: '',
       genreSetId: '',
+      useGoal: false,
+      goal: 100,
     },
     validate: {
       name: isNotEmpty('このフィールドは必須です'),
@@ -28,13 +32,13 @@ export const useCreateQuizListModal = (props: UseCreateQuizListModalProps) => {
 
   const newHandlers = {
     ...handlers,
-    open: () => {
+    open: useCallback(() => {
       handlers.open();
-    },
-    close: () => {
+    }, [handlers]),
+    close: useCallback(() => {
       form.reset();
       handlers.close();
-    },
+    }, [form, handlers]),
   };
 
   const onSubmit = form.onSubmit((values) => {
@@ -45,6 +49,7 @@ export const useCreateQuizListModal = (props: UseCreateQuizListModalProps) => {
           name: values.name,
           description: values.description,
           genreSetId: values.genreSetId,
+          goal: values.useGoal ? values.goal : 0,
         },
       },
       onCompleted: () => {

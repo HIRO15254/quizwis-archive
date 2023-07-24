@@ -39,7 +39,6 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = (props) => {
       onClose={close}
       title={<Text fz="xl" fw={800}>{title}</Text>}
       onKeyDown={getHotkeyHandler([
-        ['esc', close],
         ['mod+Enter', onConfirm],
       ])}
     >
