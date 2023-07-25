@@ -24,6 +24,20 @@ builder.queryField('getQuizList', (t) => t.prismaField({
     }
     const ret = await prisma.quizList.findUniqueOrThrow({
       where: { databaseId: args.input?.databaseId ?? '' },
+      include: {
+        genreSet: {
+          include: {
+            genres: {
+              orderBy: { createdAt: 'asc' },
+              include: {
+                childGenres: {
+                  orderBy: { createdAt: 'asc' },
+                },
+              },
+            },
+          },
+        },
+      },
     });
     return ret;
   },
