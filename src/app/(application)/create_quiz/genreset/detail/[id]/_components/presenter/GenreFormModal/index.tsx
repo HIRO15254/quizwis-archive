@@ -14,6 +14,7 @@ import type { GenreFormType } from '../../../_types/GenreFormType';
 
 interface GenreFormModalProps extends FormModalProps {
   form: UseFormReturnType<GenreFormType>;
+  continue: boolean;
 }
 
 /**

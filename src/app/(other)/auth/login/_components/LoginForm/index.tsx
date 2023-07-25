@@ -1,7 +1,8 @@
 'use client';
 
 import {
-  Group, Paper, Stack, Title,
+  Anchor,
+  Group, Paper, Stack, Title, Text,
 } from '@mantine/core';
 import React from 'react';
 
@@ -26,6 +27,11 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
           <LoginButton provider="google" callback={callbackUrl}>
             Googleでログイン
           </LoginButton>
+          <Text size="sm">
+            ログインを行うと、
+            <Anchor href="/info/termsofservice">利用規約</Anchor>
+            に同意したものとみなします。
+          </Text>
         </Stack>
       </Paper>
     </Group>
