@@ -13,7 +13,9 @@ import { useGetQuizCountLazyQuery, useGetQuizListQuery, useGetQuizzesLazyQuery }
 import { useDeleteQuizModal } from '../../../_hooks/useDeleteQuizModal';
 import { useInlineQuizEditor } from '../../../_hooks/useInlineQuizEditor';
 import { usePageNation } from '../../../_hooks/usePageNation';
+import { useQuizListStatModal } from '../../../_hooks/useQuizListStatModal';
 import { DeleteQuizModal } from '../../presenter/DeleteQuizModal';
+import { QuizListStatModal } from '../../presenter/QuizListStatModal';
 import { QuizTable } from '../../presenter/QuizTable';
 
 interface QuizTableContainerProps {
@@ -76,6 +78,11 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
     reloadQuizCount();
   }, [dataPerPage, listId, page, reloadQuizCount, reloadQuizzes]);
 
+  const {
+    modalProps: statModalProps,
+    handlers: statModalHandlers,
+  } = useQuizListStatModal({ listId });
+
   useEffect(() => {
     reload();
   }, [reload]);
@@ -94,7 +101,7 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
 
   useHotkeys([
     ['mod+alt+N', () => create(), { preventDefault: true }],
-    ['mod+I', () => {}],
+    ['mod+I', () => { statModalHandlers.open(); }, { preventDefault: true }],
     ['mod+Enter', () => { if (editingQuizId) { inlineQuizEditorProps.operation.update(); } }, { preventDefault: true }],
     ['Escape', () => { if (editingQuizId) { inlineQuizEditorProps.operation.cancel(); } }, { preventDefault: true }],
   ]);
@@ -110,12 +117,15 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
           <Title order={1} mt="md">
             {quizListName?.getQuizList.name ?? ''}
           </Title>
-          <Tooltip label="集計(ctrl + I)">
-            <ActionIcon size="lg" variant="subtle" color="blue" onClick={create}>
-              <IconChartBar />
-            </ActionIcon>
-          </Tooltip>
+          {(data || !loading) && called && (
+            <Tooltip label="集計(ctrl + I)">
+              <ActionIcon size="lg" variant="subtle" color="blue" onClick={statModalHandlers.open}>
+                <IconChartBar />
+              </ActionIcon>
+            </Tooltip>
+          )}
         </Group>
+        <QuizListStatModal {...statModalProps} />
         <DeleteQuizModal {...deleteQuizModalProps} title="問題削除" confirmText="削除" confirmColor="red" />
         <QuizTable
           inlineQuizEditorProps={inlineQuizEditorProps}

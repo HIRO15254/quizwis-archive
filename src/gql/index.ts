@@ -513,6 +513,13 @@ export type GetQuizCountQueryVariables = Exact<{
 
 export type GetQuizCountQuery = { __typename?: 'Query', getQuizList: { __typename?: 'QuizList', id: string, databaseId: string, quizCount: number } };
 
+export type GetQuizListStatDataQueryVariables = Exact<{
+  input?: InputMaybe<GetQuizListInput>;
+}>;
+
+
+export type GetQuizListStatDataQuery = { __typename?: 'Query', getQuizList: { __typename?: 'QuizList', id: string, databaseId: string, goal: number, quizCount: number, quizzes: Array<{ __typename?: 'Quiz', genre?: { __typename?: 'Genre', id: string } | null }>, genreSet?: { __typename?: 'GenreSet', genres: Array<{ __typename?: 'Genre', id: string, databaseId: string, color: string, name: string, ratio: number, childGenres: Array<{ __typename?: 'Genre', id: string }>, parentGenre?: { __typename?: 'Genre', id: string } | null }> } | null } };
+
 export type GetQuizzesQueryVariables = Exact<{
   input: GetQuizzesInput;
 }>;
@@ -1153,6 +1160,64 @@ export function useGetQuizCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type GetQuizCountQueryHookResult = ReturnType<typeof useGetQuizCountQuery>;
 export type GetQuizCountLazyQueryHookResult = ReturnType<typeof useGetQuizCountLazyQuery>;
 export type GetQuizCountQueryResult = Apollo.QueryResult<GetQuizCountQuery, GetQuizCountQueryVariables>;
+export const GetQuizListStatDataDocument = gql`
+    query GetQuizListStatData($input: GetQuizListInput) {
+  getQuizList(input: $input) {
+    id
+    databaseId
+    goal
+    quizCount
+    quizzes {
+      genre {
+        id
+      }
+    }
+    genreSet {
+      genres {
+        id
+        databaseId
+        color
+        name
+        ratio
+        childGenres {
+          id
+        }
+        parentGenre {
+          id
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetQuizListStatDataQuery__
+ *
+ * To run a query within a React component, call `useGetQuizListStatDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetQuizListStatDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetQuizListStatDataQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetQuizListStatDataQuery(baseOptions?: Apollo.QueryHookOptions<GetQuizListStatDataQuery, GetQuizListStatDataQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetQuizListStatDataQuery, GetQuizListStatDataQueryVariables>(GetQuizListStatDataDocument, options);
+      }
+export function useGetQuizListStatDataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetQuizListStatDataQuery, GetQuizListStatDataQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetQuizListStatDataQuery, GetQuizListStatDataQueryVariables>(GetQuizListStatDataDocument, options);
+        }
+export type GetQuizListStatDataQueryHookResult = ReturnType<typeof useGetQuizListStatDataQuery>;
+export type GetQuizListStatDataLazyQueryHookResult = ReturnType<typeof useGetQuizListStatDataLazyQuery>;
+export type GetQuizListStatDataQueryResult = Apollo.QueryResult<GetQuizListStatDataQuery, GetQuizListStatDataQueryVariables>;
 export const GetQuizzesDocument = gql`
     query GetQuizzes($input: GetQuizzesInput!) {
   getQuizzes(input: $input) {
