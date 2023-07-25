@@ -11,6 +11,7 @@ const CreateQuizInput = builder.inputType('CreateQuizInput', {
     explanation: t.string({ required: true, defaultValue: '' }),
     otherAnswer: t.string({ required: true, defaultValue: '' }),
     source: t.string({ required: true, defaultValue: '' }),
+    length: t.int({ required: true, defaultValue: 0 }),
   }),
 });
 
@@ -47,6 +48,7 @@ builder.mutationFields((t) => ({
           explanation: args.input.explanation,
           otherAnswer: args.input.otherAnswer,
           source: args.input.source,
+          length: args.input.length,
         },
       });
       return ret;

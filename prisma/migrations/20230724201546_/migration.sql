@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Quiz" ADD COLUMN     "length" INTEGER NOT NULL DEFAULT 0;

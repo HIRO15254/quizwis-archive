@@ -26,6 +26,7 @@ interface QuizData {
   otherAnswer?: string | null | undefined;
   explanation?: string | null | undefined;
   source?: string | null | undefined;
+  length: number;
   genre?: {
     databaseId: string;
     name: string;
@@ -76,6 +77,9 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
       <tr key={quiz.id}>
         <td>
           <div dangerouslySetInnerHTML={{ __html: quiz.question ?? '' }} />
+        </td>
+        <td>
+          {quiz.length}
         </td>
         <td>
           <div dangerouslySetInnerHTML={{ __html: quiz.answer ?? '' }} />
@@ -156,8 +160,9 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
         <thead>
           <tr>
             <th>問題文</th>
+            <th style={{ width: 0, whiteSpace: 'nowrap' }}>文字数</th>
             <th style={{ width: '15%' }}>解答</th>
-            <th style={{ width: '11rem' }}>ジャンル</th>
+            <th style={{ width: '13rem' }}>ジャンル</th>
             <th style={{ width: 0 }}>追加情報</th>
             <th style={{ width: 0 }}>操作</th>
           </tr>

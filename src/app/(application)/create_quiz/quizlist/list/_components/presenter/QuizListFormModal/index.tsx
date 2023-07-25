@@ -5,6 +5,8 @@ import {
   Textarea,
   NativeSelect,
   SelectItem,
+  Checkbox,
+  NumberInput,
 } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import React from 'react';
@@ -31,7 +33,6 @@ export const QuizListFormModal: React.FC<QuizListFormModalProps> = (props) => {
   return (
     <FormModal
       {...other}
-      title="新規問題リスト"
     >
       <TextInput
         withAsterisk
@@ -44,6 +45,17 @@ export const QuizListFormModal: React.FC<QuizListFormModalProps> = (props) => {
         minRows={2}
         {...form.getInputProps('description')}
       />
+      <Checkbox
+        label="目標問題数を設定する"
+        description="設定することでジャンルごとの問題数の目安等が表示されます。"
+        {...form.getInputProps('useGoal', { type: 'checkbox' })}
+      />
+      {form.values.useGoal && (
+        <NumberInput
+          label="目標問題数"
+          {...form.getInputProps('goal')}
+        />
+      )}
       <NativeSelect
         label="使用するジャンルセット"
         description="ジャンルセットは割り当てなおすたびにすべての問題のジャンルがリセットされます。"

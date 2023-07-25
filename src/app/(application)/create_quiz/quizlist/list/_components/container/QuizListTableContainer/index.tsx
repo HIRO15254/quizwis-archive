@@ -54,9 +54,24 @@ export const QuizListTableContainer: React.FC = () => {
     <Group position="center" pb="sm">
       <Paper w="100%" maw={800} p="xl" shadow="xs">
         <Title order={1}>問題リスト一覧</Title>
-        <QuizListFormModal title="新規問題リスト" submitText="作成" genreSets={genreSets} {...createQuizListModalProps} />
-        <QuizListFormModal title="問題リストの編集" submitText="更新" genreSets={genreSets} {...updateQuizListModalProps} />
-        <DeleteQuizListModal title="問題リストの削除" confirmText="削除" confirmColor="red" {...deleteQuizListModalProps} />
+        <QuizListFormModal
+          title="新規問題リスト"
+          submitText="作成"
+          genreSets={genreSets}
+          {...createQuizListModalProps}
+        />
+        <QuizListFormModal
+          title="問題リストの編集"
+          submitText="更新"
+          genreSets={genreSets}
+          {...updateQuizListModalProps}
+        />
+        <DeleteQuizListModal
+          title="問題リストの削除"
+          confirmText="削除"
+          confirmColor="red"
+          {...deleteQuizListModalProps}
+        />
         <QuizListTable
           data={data?.getQuizLists ?? []}
           loading={(!data && loading) || !called}

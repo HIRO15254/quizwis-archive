@@ -8,5 +8,6 @@ query GetQuizList($input: GetQuizListInput) {
       databaseId
     }
     id
+    goal
   }
 }

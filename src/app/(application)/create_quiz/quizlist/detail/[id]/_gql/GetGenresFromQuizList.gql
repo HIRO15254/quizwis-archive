@@ -7,6 +7,10 @@ query GetGenresFromQuizList($input: GetQuizListInput) {
           id
           databaseId
         }
+        childGenres{
+          id
+          databaseId
+        }
         id
         databaseId
         description

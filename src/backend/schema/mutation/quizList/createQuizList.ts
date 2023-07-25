@@ -6,6 +6,7 @@ const CreateQuizListInput = builder.inputType('CreateQuizListInput', {
     name: t.string({ required: true }),
     description: t.string({ required: true }),
     genreSetId: t.string(),
+    goal: t.int({ required: true }),
   }),
 });
 
@@ -26,23 +27,6 @@ builder.mutationFields((t) => ({
         if (genreSet.user.userId !== ctx.currentUserId) {
           throw new Error('権限がありません');
         }
-        const ret = await prisma.quizList.create({
-          data: {
-            user: {
-              connect: {
-                userId: ctx.currentUserId,
-              },
-            },
-            name: args.input.name,
-            description: args.input.description,
-            genreSet: {
-              connect: {
-                databaseId: args.input.genreSetId,
-              },
-            },
-          },
-        });
-        return ret;
       }
       const ret = await prisma.quizList.create({
         data: {
@@ -53,6 +37,12 @@ builder.mutationFields((t) => ({
           },
           name: args.input.name,
           description: args.input.description,
+          goal: args.input.goal,
+          genreSet: args.input.genreSetId ? {
+            connect: {
+              databaseId: args.input.genreSetId,
+            },
+          } : undefined,
         },
       });
       return ret;
