@@ -80,6 +80,7 @@ const GenreRow: React.FC<GenreRowProps> = (props) => {
             <TableActionIcon
               tooltip="削除"
               color="red"
+              onClick={() => operations.delete(genre.data.databaseId)}
               Icon={IconTrash}
             />
           </Group>
