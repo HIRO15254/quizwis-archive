@@ -31,14 +31,6 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
   const [reloadQuizzes, { loading, data, called }] = useGetQuizzesLazyQuery({
     fetchPolicy: 'network-only',
   });
-  const [reloadQuizCount, { data: quizCountData }] = useGetQuizCountLazyQuery({
-    fetchPolicy: 'network-only',
-    variables: {
-      input: {
-        databaseId: listId,
-      },
-    },
-  });
 
   const { data: quizListName } = useGetQuizListQuery({
     variables: {
@@ -49,9 +41,8 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
   });
 
   const {
-    paginationProps, dataPerPage, setDataPerPage, page,
+    paginationProps, dataPerPage, setDataPerPage, page, setDataCount,
   } = usePageNation({
-    dataCount: quizCountData?.getQuizList.quizCount ?? 0,
     onChangePage: (newPage: number, newDataPerPage?: number) => {
       reloadQuizzes({
         variables: {
@@ -63,6 +54,16 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
         },
       });
     },
+  });
+
+  const [reloadQuizCount] = useGetQuizCountLazyQuery({
+    fetchPolicy: 'network-only',
+    variables: {
+      input: {
+        databaseId: listId,
+      },
+    },
+    onCompleted: (dat) => { setDataCount(dat.getQuizList.quizCount); },
   });
 
   const reload = useCallback(() => {

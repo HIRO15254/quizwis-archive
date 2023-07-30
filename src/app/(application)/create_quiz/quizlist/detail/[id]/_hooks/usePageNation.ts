@@ -5,13 +5,13 @@ import {
 type UsePageNationProps = {
   onChangePage: (page: number, dataPerPage?: number) => void;
   defaultDataPerPage?: number;
-  dataCount: number;
 };
 
 export const usePageNation = (props: UsePageNationProps) => {
-  const { onChangePage, dataCount, defaultDataPerPage } = props;
+  const { onChangePage, defaultDataPerPage } = props;
   const [page, setPage] = useState(1);
   const [dataPerPage, setDataPerPage] = useState(defaultDataPerPage ?? 10);
+  const [dataCount, setDataCount] = useState(0);
 
   const newSetPage = useCallback((newPage: number) => {
     setPage(newPage);
@@ -34,10 +34,11 @@ export const usePageNation = (props: UsePageNationProps) => {
 
   return {
     paginationProps: {
-      total: page,
-      value: maxPage,
+      total: maxPage,
+      value: page,
       onChange: newSetPage,
     },
+    setDataCount,
     dataPerPage,
     setDataPerPage: newSetDataPerPage,
     page,
