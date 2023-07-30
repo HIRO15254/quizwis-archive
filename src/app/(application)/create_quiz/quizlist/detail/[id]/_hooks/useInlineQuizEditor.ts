@@ -40,21 +40,13 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
 
   const form = useForm({
     initialValues: {
-      question: '',
-      answer: '',
-      otherAnswer: '',
-      explanation: '',
-      source: '',
       genre: '',
     },
   });
 
-  const editorOptions = (path: string): Partial<EditorOptions> => ({
+  const editorOptions = (): Partial<EditorOptions> => ({
     extensions: [StarterKit, Ruby, Link, Underline],
     content: '',
-    onUpdate({ editor: newEditor }) {
-      form.setFieldValue(path, newEditor.getHTML());
-    },
     editorProps: {
       attributes: {
         style: 'padding: 0.5rem',
@@ -84,11 +76,11 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
   }) ?? [];
   const genreSelectorFormProps = form.getInputProps('genre');
 
-  const questionEditor = useEditor(editorOptions('question'));
-  const answerEditor = useEditor(editorOptions('answer'));
-  const otherAnswerEditor = useEditor(editorOptions('otherAnswer'));
-  const explanationEditor = useEditor(editorOptions('explanation'));
-  const sourceEditor = useEditor(editorOptions('source'));
+  const questionEditor = useEditor(editorOptions());
+  const answerEditor = useEditor(editorOptions());
+  const otherAnswerEditor = useEditor(editorOptions());
+  const explanationEditor = useEditor(editorOptions());
+  const sourceEditor = useEditor(editorOptions());
 
   const editors = {
     question: questionEditor,
@@ -140,11 +132,11 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
         variables: {
           input: {
             quizDatabaseId: editingQuizId,
-            question: form.values.question,
-            answer: form.values.answer,
-            otherAnswer: form.values.otherAnswer,
-            explanation: form.values.explanation,
-            source: form.values.source,
+            question: editors.question?.getHTML() ?? '',
+            answer: editors.answer?.getHTML() ?? '',
+            otherAnswer: editors.otherAnswer?.getHTML() ?? '',
+            explanation: editors.explanation?.getHTML() ?? '',
+            source: editors.source?.getHTML() ?? '',
             genreName: form.values.genre,
             length: questionEditor?.getText().length ?? 0,
           },
