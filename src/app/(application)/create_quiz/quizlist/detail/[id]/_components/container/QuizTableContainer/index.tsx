@@ -8,7 +8,12 @@ import { useHotkeys } from '@mantine/hooks';
 import { IconChartBar } from '@tabler/icons-react';
 import React, { useCallback, useEffect } from 'react';
 
-import { useGetQuizCountLazyQuery, useGetQuizListQuery, useGetQuizzesLazyQuery } from 'gql';
+import {
+  useGetGenresFromQuizListQuery,
+  useGetQuizCountLazyQuery,
+  useGetQuizListQuery,
+  useGetQuizzesLazyQuery,
+} from 'gql';
 
 import { useDeleteQuizModal } from '../../../_hooks/useDeleteQuizModal';
 import { useInlineQuizEditor } from '../../../_hooks/useInlineQuizEditor';
@@ -27,6 +32,7 @@ interface QuizTableContainerProps {
  */
 export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => {
   const { listId } = props;
+  const [genreFilter, setGenreFilter] = React.useState<string | undefined>(undefined);
 
   const [reloadQuizzes, { loading, data, called }] = useGetQuizzesLazyQuery({
     fetchPolicy: 'network-only',
@@ -41,7 +47,7 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
   });
 
   const {
-    paginationProps, dataPerPage, setDataPerPage, page, setDataCount,
+    paginationProps, dataPerPage, setDataPerPage, page, setDataCount, setPage,
   } = usePageNation({
     onChangePage: (newPage: number, newDataPerPage?: number) => {
       reloadQuizzes({
@@ -71,13 +77,34 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
       variables: {
         input: {
           quizListDatabaseId: listId,
+          genreId: genreFilter,
           take: dataPerPage,
           page,
         },
       },
     });
     reloadQuizCount();
-  }, [dataPerPage, listId, page, reloadQuizCount, reloadQuizzes]);
+  }, [dataPerPage, listId, page, reloadQuizCount, reloadQuizzes, genreFilter]);
+
+  const { data: quizGenres } = useGetGenresFromQuizListQuery({
+    variables: {
+      input: {
+        databaseId: listId,
+      },
+    },
+  });
+  const genres = quizGenres?.getQuizList.genreSet?.genres.map((genre) => ({
+    value: genre.databaseId,
+    label: genre.name,
+  }));
+  const changeGenre = (id?: string) => {
+    setGenreFilter(id);
+    // TODO: 辞める
+    if (genreFilter) {
+      setPage(1);
+    }
+    reload();
+  };
 
   const {
     modalProps: statModalProps,
@@ -129,6 +156,8 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
         <QuizListStatModal {...statModalProps} />
         <DeleteQuizModal {...deleteQuizModalProps} title="問題削除" confirmText="削除" confirmColor="red" />
         <QuizTable
+          genres={genres ?? []}
+          changeGenre={changeGenre}
           inlineQuizEditorProps={inlineQuizEditorProps}
           operations={{
             create,

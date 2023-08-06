@@ -6,9 +6,10 @@ import { Quiz } from '../../object/quiz';
 const GetQuizzesInput = builder.inputType('GetQuizzesInput', {
   fields: (t) => ({
     quizListDatabaseId: t.string(),
-    take: t.int({ required: true, defaultValue: 10 }),
     cursorDatabaseId: t.string(),
+    take: t.int({ required: true, defaultValue: 10 }),
     page: t.int({ required: true, defaultValue: 1 }),
+    genreId: t.string(),
   }),
 });
 
@@ -28,7 +29,12 @@ builder.queryField('getQuizzes', (t) => t.prismaField({
         }
       }
       const quizzes = await prisma.quiz.findMany({
-        where: { quizlistId: args.input.quizListDatabaseId },
+        where: {
+          quizlistId: args.input.quizListDatabaseId,
+          genre: {
+            databaseId: args.input.genreId ? args.input.genreId : undefined,
+          },
+        },
         orderBy: { createdAt: 'desc' },
         take: args.input.take,
         cursor: cursor ? { databaseId: cursor } : undefined,

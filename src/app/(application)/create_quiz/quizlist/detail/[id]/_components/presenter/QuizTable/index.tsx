@@ -4,7 +4,7 @@
 
 // 各種import
 import {
-  Button, Group, NativeSelect, Pagination, PaginationProps, Skeleton, Stack, Table, Text,
+  Button, Group, NativeSelect, Pagination, PaginationProps, Select, Skeleton, Stack, Table, Text,
 } from '@mantine/core';
 import {
   IconArrowsSplit, IconBook2, IconNote, IconPencil, IconPlus, IconTrash,
@@ -16,7 +16,6 @@ import { TableActionIcon } from 'components/common/TableActionICon';
 
 import { AdditionalInfoIcon } from '../AdditionalInfoIcon';
 import { InlineQuizEditor, InlineQuizEditorProps } from '../InlineQuizEditor';
-
 // Propsの型定義
 interface QuizData {
   id: string;
@@ -42,6 +41,11 @@ interface QuizTableProps {
     delete: (databaseId: string) => void;
     update: (databaseId: string) => void;
   }
+  genres: {
+    value: string;
+    label: string;
+  }[]
+  changeGenre: (id?: string) => void;
   loading: boolean;
   data: QuizData[];
   dataPerPage: number;
@@ -54,6 +58,8 @@ interface QuizTableProps {
  */
 export const QuizTable: React.FC<QuizTableProps> = (props) => {
   const {
+    genres,
+    changeGenre,
     inlineQuizEditorProps,
     editingQuizId,
     operations,
@@ -137,11 +143,18 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
   return (
     <Skeleton visible={loading}>
       <Group position="right">
+        <Text>ジャンルフィルター</Text>
+        <Select
+          clearable
+          onChange={(e) => changeGenre(e ?? undefined)}
+          style={{ width: 300 }}
+          data={genres}
+        />
         <Text>表示件数</Text>
         <NativeSelect
           value={dataPerPage}
           onChange={(e) => setDataPerPage(Number(e.currentTarget.value))}
-          style={{ width: 70 }}
+          style={{ width: 100 }}
           data={['10', '20', '50', '100']}
         />
         <Button
