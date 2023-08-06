@@ -131,6 +131,7 @@ export type GetQuizListsInput = {
 
 export type GetQuizzesInput = {
   cursorDatabaseId?: InputMaybe<Scalars['String']['input']>;
+  genreId?: InputMaybe<Scalars['String']['input']>;
   page?: Scalars['Int']['input'];
   quizListDatabaseId?: InputMaybe<Scalars['String']['input']>;
   take?: Scalars['Int']['input'];

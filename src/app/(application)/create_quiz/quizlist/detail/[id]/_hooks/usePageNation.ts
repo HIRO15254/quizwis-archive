@@ -42,5 +42,6 @@ export const usePageNation = (props: UsePageNationProps) => {
     dataPerPage,
     setDataPerPage: newSetDataPerPage,
     page,
+    setPage: newSetPage,
   };
 };
