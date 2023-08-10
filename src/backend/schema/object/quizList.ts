@@ -21,7 +21,6 @@ export const QuizList = builder.prismaNode('QuizList', {
         return ret;
       },
     }),
-
     allQuizHtml: t.field({
       type: 'String',
       resolve: async (parent, _args, _ctx, _info) => {
@@ -34,7 +33,7 @@ export const QuizList = builder.prismaNode('QuizList', {
         }
         let ret = '';
         for (let i = 0; i < dat.length; i += 1) {
-          ret += `<tr><td>${i + 1}</td><td>${dat[i].question}</td><td>${dat[i].answer}${dat[i].otherAnswer.replace('<p>', '<p class="sub">')}${dat[i].explanation.replace('<p>', '<p class="sub">')}</td></tr>`;
+          ret += `<tr><td>${i + 1}</td><td>${dat[i].question}</td><td>${dat[i].answer}${dat[i].otherAnswer.replace('<p></p>', '').replace('<p>', '<p class="sub">')}${dat[i].explanation.replace('<p></p>', '').replace('<p>', '<p class="sub">')}</td></tr>`;
         }
         return ret;
       },
