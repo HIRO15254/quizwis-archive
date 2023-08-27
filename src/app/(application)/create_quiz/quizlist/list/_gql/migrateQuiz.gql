@@ -1,0 +1,5 @@
+mutation migrateQuiz {
+  migrateQuiz {
+    id
+  }
+}

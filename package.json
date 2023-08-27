@@ -43,6 +43,7 @@
     "@tiptap/pm": "2.0.4",
     "@tiptap/react": "^2.0.4",
     "@tiptap/starter-kit": "^2.0.4",
+    "@vivliostyle/vfm": "^2.1.0",
     "dayjs": "^1.11.7",
     "graphql": "^16.6.0",
     "graphql-scalars": "^1.22.1",

@@ -1,11 +1,13 @@
 'use client';
 
 // 各種import
-import { Title, Paper, Group } from '@mantine/core';
+import {
+  Title, Paper, Group, Button,
+} from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import React, { useEffect } from 'react';
 
-import { useGetGenreSetsForQuizListQuery, useGetQuizListsLazyQuery } from 'gql';
+import { useGetGenreSetsForQuizListQuery, useGetQuizListsLazyQuery, useMigrateQuizMutation } from 'gql';
 
 import { useCreateQuizListModal } from '../../../_hooks/useCreateQuizListModal';
 import { useDeleteQuizListModal } from '../../../_hooks/useDeleteQuizListModal';
@@ -34,6 +36,7 @@ export const QuizListTableContainer: React.FC = () => {
     modalProps: updateQuizListModalProps,
     handlers: updateQuizListModalHandlers,
   } = useUpdateQuizListModal({ reload });
+  const [migrateQuiz] = useMigrateQuizMutation();
 
   useEffect(() => {
     reload();
@@ -72,6 +75,14 @@ export const QuizListTableContainer: React.FC = () => {
           confirmColor="red"
           {...deleteQuizListModalProps}
         />
+        <Button
+          onClick={() => migrateQuiz()}
+          color="blue"
+          variant="outline"
+          size="sm"
+        >
+          問題DBのマイグレーション
+        </Button>
         <QuizListTable
           data={data?.getQuizLists ?? []}
           loading={(!data && loading) || !called}
