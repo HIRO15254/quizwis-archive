@@ -1,6 +1,11 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "QuizWis",
+    "short_name": "QuizWis",
+    "description": "競技クイズ支援のための総合アプリケーション",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#0070f3",
     "icons": [
         {
             "src": "/favicons/android-chrome-192x192.png",
@@ -12,8 +17,5 @@
             "sizes": "384x384",
             "type": "image/png"
         }
-    ],
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff",
-    "display": "standalone"
+    ]
 }
