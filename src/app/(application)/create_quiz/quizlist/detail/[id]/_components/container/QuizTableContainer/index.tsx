@@ -9,7 +9,6 @@ import { IconChartBar } from '@tabler/icons-react';
 import React, { useCallback, useEffect } from 'react';
 
 import {
-  useGetAllQuizQuery,
   useGetGenresFromQuizListQuery,
   useGetQuizCountLazyQuery,
   useGetQuizListQuery,
@@ -37,14 +36,6 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
 
   const [reloadQuizzes, { loading, data, called }] = useGetQuizzesLazyQuery({
     fetchPolicy: 'network-only',
-  });
-
-  const { data: allQuizData } = useGetAllQuizQuery({
-    variables: {
-      input: {
-        databaseId: listId,
-      },
-    },
   });
 
   const { data: quizListName } = useGetQuizListQuery({

@@ -153,7 +153,6 @@ export type Mutation = {
   deleteQuiz: Quiz;
   deleteQuizList: QuizList;
   deleteUser: User;
-  migrateQuiz: Array<Quiz>;
   updateGenre: Genre;
   updateGenreSet: GenreSet;
   updateLoginUser: User;
@@ -334,7 +333,6 @@ export type Quiz = Node & {
 
 export type QuizList = Node & {
   __typename?: 'QuizList';
-  allQuizHtml: Scalars['String']['output'];
   databaseId: Scalars['String']['output'];
   description: Scalars['String']['output'];
   genreSet?: Maybe<GenreSet>;
@@ -502,13 +500,6 @@ export type DeleteQuizMutationVariables = Exact<{
 
 export type DeleteQuizMutation = { __typename?: 'Mutation', deleteQuiz: { __typename?: 'Quiz', id: string, databaseId: string } };
 
-export type GetAllQuizQueryVariables = Exact<{
-  input?: InputMaybe<GetQuizListInput>;
-}>;
-
-
-export type GetAllQuizQuery = { __typename?: 'Query', getQuizList: { __typename?: 'QuizList', id: string, allQuizHtml: string } };
-
 export type GetQuizQueryVariables = Exact<{
   input?: InputMaybe<GetQuizInput>;
 }>;
@@ -576,11 +567,6 @@ export type GetQuizListsQueryVariables = Exact<{
 
 
 export type GetQuizListsQuery = { __typename?: 'Query', getQuizLists: Array<{ __typename?: 'QuizList', description: string, name: string, databaseId: string, id: string, goal: number, quizCount: number, genreSet?: { __typename?: 'GenreSet', name: string, id: string, databaseId: string } | null }> };
-
-export type MigrateQuizMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MigrateQuizMutation = { __typename?: 'Mutation', migrateQuiz: Array<{ __typename?: 'Quiz', id: string }> };
 
 export type UpdateQuizListMutationVariables = Exact<{
   input: UpdateQuizListInput;
@@ -1092,42 +1078,6 @@ export function useDeleteQuizMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteQuizMutationHookResult = ReturnType<typeof useDeleteQuizMutation>;
 export type DeleteQuizMutationResult = Apollo.MutationResult<DeleteQuizMutation>;
 export type DeleteQuizMutationOptions = Apollo.BaseMutationOptions<DeleteQuizMutation, DeleteQuizMutationVariables>;
-export const GetAllQuizDocument = gql`
-    query GetAllQuiz($input: GetQuizListInput) {
-  getQuizList(input: $input) {
-    id
-    allQuizHtml
-  }
-}
-    `;
-
-/**
- * __useGetAllQuizQuery__
- *
- * To run a query within a React component, call `useGetAllQuizQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllQuizQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetAllQuizQuery({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useGetAllQuizQuery(baseOptions?: Apollo.QueryHookOptions<GetAllQuizQuery, GetAllQuizQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAllQuizQuery, GetAllQuizQueryVariables>(GetAllQuizDocument, options);
-      }
-export function useGetAllQuizLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllQuizQuery, GetAllQuizQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAllQuizQuery, GetAllQuizQueryVariables>(GetAllQuizDocument, options);
-        }
-export type GetAllQuizQueryHookResult = ReturnType<typeof useGetAllQuizQuery>;
-export type GetAllQuizLazyQueryHookResult = ReturnType<typeof useGetAllQuizLazyQuery>;
-export type GetAllQuizQueryResult = Apollo.QueryResult<GetAllQuizQuery, GetAllQuizQueryVariables>;
 export const GetQuizDocument = gql`
     query GetQuiz($input: GetQuizInput) {
   getQuiz(input: $input) {
@@ -1544,38 +1494,6 @@ export function useGetQuizListsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type GetQuizListsQueryHookResult = ReturnType<typeof useGetQuizListsQuery>;
 export type GetQuizListsLazyQueryHookResult = ReturnType<typeof useGetQuizListsLazyQuery>;
 export type GetQuizListsQueryResult = Apollo.QueryResult<GetQuizListsQuery, GetQuizListsQueryVariables>;
-export const MigrateQuizDocument = gql`
-    mutation migrateQuiz {
-  migrateQuiz {
-    id
-  }
-}
-    `;
-export type MigrateQuizMutationFn = Apollo.MutationFunction<MigrateQuizMutation, MigrateQuizMutationVariables>;
-
-/**
- * __useMigrateQuizMutation__
- *
- * To run a mutation, you first call `useMigrateQuizMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useMigrateQuizMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [migrateQuizMutation, { data, loading, error }] = useMigrateQuizMutation({
- *   variables: {
- *   },
- * });
- */
-export function useMigrateQuizMutation(baseOptions?: Apollo.MutationHookOptions<MigrateQuizMutation, MigrateQuizMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<MigrateQuizMutation, MigrateQuizMutationVariables>(MigrateQuizDocument, options);
-      }
-export type MigrateQuizMutationHookResult = ReturnType<typeof useMigrateQuizMutation>;
-export type MigrateQuizMutationResult = Apollo.MutationResult<MigrateQuizMutation>;
-export type MigrateQuizMutationOptions = Apollo.BaseMutationOptions<MigrateQuizMutation, MigrateQuizMutationVariables>;
 export const UpdateQuizListDocument = gql`
     mutation UpdateQuizList($input: UpdateQuizListInput!) {
   updateQuizList(input: $input) {

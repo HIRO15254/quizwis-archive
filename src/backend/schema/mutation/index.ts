@@ -7,7 +7,6 @@ import './quizList/updateQuizList';
 import './quiz/createQuiz';
 import './quiz/deleteQuiz';
 import './quiz/updateQuiz';
-import './quiz/migrateQuiz';
 import './genre/createGenre';
 import './genre/deleteGenre';
 import './genre/updateGenre';
