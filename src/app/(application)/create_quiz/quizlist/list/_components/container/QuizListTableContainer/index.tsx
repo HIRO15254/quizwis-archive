@@ -1,7 +1,9 @@
 'use client';
 
 // 各種import
-import { Title, Paper, Group } from '@mantine/core';
+import {
+  Title, Paper, Group,
+} from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import React, { useEffect } from 'react';
 

@@ -333,7 +333,6 @@ export type Quiz = Node & {
 
 export type QuizList = Node & {
   __typename?: 'QuizList';
-  allQuizHtml: Scalars['String']['output'];
   databaseId: Scalars['String']['output'];
   description: Scalars['String']['output'];
   genreSet?: Maybe<GenreSet>;
@@ -500,13 +499,6 @@ export type DeleteQuizMutationVariables = Exact<{
 
 
 export type DeleteQuizMutation = { __typename?: 'Mutation', deleteQuiz: { __typename?: 'Quiz', id: string, databaseId: string } };
-
-export type GetAllQuizQueryVariables = Exact<{
-  input?: InputMaybe<GetQuizListInput>;
-}>;
-
-
-export type GetAllQuizQuery = { __typename?: 'Query', getQuizList: { __typename?: 'QuizList', id: string, allQuizHtml: string } };
 
 export type GetQuizQueryVariables = Exact<{
   input?: InputMaybe<GetQuizInput>;
@@ -1086,42 +1078,6 @@ export function useDeleteQuizMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteQuizMutationHookResult = ReturnType<typeof useDeleteQuizMutation>;
 export type DeleteQuizMutationResult = Apollo.MutationResult<DeleteQuizMutation>;
 export type DeleteQuizMutationOptions = Apollo.BaseMutationOptions<DeleteQuizMutation, DeleteQuizMutationVariables>;
-export const GetAllQuizDocument = gql`
-    query GetAllQuiz($input: GetQuizListInput) {
-  getQuizList(input: $input) {
-    id
-    allQuizHtml
-  }
-}
-    `;
-
-/**
- * __useGetAllQuizQuery__
- *
- * To run a query within a React component, call `useGetAllQuizQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllQuizQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetAllQuizQuery({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useGetAllQuizQuery(baseOptions?: Apollo.QueryHookOptions<GetAllQuizQuery, GetAllQuizQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAllQuizQuery, GetAllQuizQueryVariables>(GetAllQuizDocument, options);
-      }
-export function useGetAllQuizLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllQuizQuery, GetAllQuizQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAllQuizQuery, GetAllQuizQueryVariables>(GetAllQuizDocument, options);
-        }
-export type GetAllQuizQueryHookResult = ReturnType<typeof useGetAllQuizQuery>;
-export type GetAllQuizLazyQueryHookResult = ReturnType<typeof useGetAllQuizLazyQuery>;
-export type GetAllQuizQueryResult = Apollo.QueryResult<GetAllQuizQuery, GetAllQuizQueryVariables>;
 export const GetQuizDocument = gql`
     query GetQuiz($input: GetQuizInput) {
   getQuiz(input: $input) {

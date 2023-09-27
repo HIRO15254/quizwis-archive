@@ -1,6 +1,0 @@
-query GetAllQuiz($input: GetQuizListInput) {
-  getQuizList(input: $input) {
-    id
-    allQuizHtml
-  }
-}
