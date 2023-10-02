@@ -1,3 +1,5 @@
+import { decodeGlobalID } from '@pothos/plugin-relay';
+
 import { prisma } from '../../../../lib/prisma';
 import { checkAuthority } from '../../../util/checkAuthority';
 import { builder } from '../../builder';
@@ -5,7 +7,7 @@ import { GenreSet } from '../../object/genreSet';
 
 const DeleteGenreSetInput = builder.inputType('DeleteGenreSetInput', {
   fields: (t) => ({
-    databaseId: t.string({ required: true }),
+    id: t.string({ required: true }),
   }),
 });
 
@@ -15,9 +17,19 @@ builder.mutationFields((t) => ({
     args: {
       input: t.arg({ type: DeleteGenreSetInput, required: true }),
     },
-    resolve: async (_query, _root, args, ctx, _info) => {
+    resolve: async (
+      _query,
+      _root,
+      args,
+      ctx,
+      _info,
+    ) => {
+      const { typename, id: databaseId } = decodeGlobalID(args.input.id);
+      if (typename !== 'GenreSet') {
+        throw new Error('IDの型が違います。');
+      }
       const genreSet = await prisma.genreSet.findUniqueOrThrow({
-        where: { databaseId: args.input.databaseId },
+        where: { databaseId },
         include: { user: true },
       });
       if (genreSet.user.userId !== ctx.currentUserId) {
@@ -25,10 +37,9 @@ builder.mutationFields((t) => ({
           throw new Error('権限がありません。');
         }
       }
-      const ret = await prisma.genreSet.delete({
-        where: { databaseId: args.input.databaseId },
+      return prisma.genreSet.delete({
+        where: { databaseId },
       });
-      return ret;
     },
   }),
 }));

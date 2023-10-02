@@ -15,19 +15,22 @@ builder.mutationFields((t) => ({
     args: {
       input: t.arg({ type: CreateGenreSetInput, required: true }),
     },
-    resolve: async (_query, _root, args, ctx, _info) => {
-      const ret = await prisma.genreSet.create({
-        data: {
-          user: {
-            connect: {
-              userId: ctx.currentUserId,
-            },
+    resolve: async (
+      _query,
+      _root,
+      args,
+      ctx,
+      _info,
+    ) => prisma.genreSet.create({
+      data: {
+        user: {
+          connect: {
+            userId: ctx.currentUserId,
           },
-          name: args.input.name,
-          description: args.input.description,
         },
-      });
-      return ret;
-    },
+        name: args.input.name,
+        description: args.input.description,
+      },
+    }),
   }),
 }));

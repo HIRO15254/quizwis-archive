@@ -19,10 +19,6 @@ export type Scalars = {
   Date: { input: any; output: any; }
 };
 
-export type CopyGenreSetInput = {
-  databaseId: Scalars['String']['input'];
-};
-
 export type CreateGenreInput = {
   color?: Scalars['String']['input'];
   description: Scalars['String']['input'];
@@ -59,7 +55,7 @@ export type DeleteGenreInput = {
 };
 
 export type DeleteGenreSetInput = {
-  databaseId: Scalars['String']['input'];
+  id: Scalars['String']['input'];
 };
 
 export type DeleteQuizInput = {
@@ -106,7 +102,7 @@ export type GetGenreInput = {
 };
 
 export type GetGenreSetInput = {
-  databaseId?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['String']['input'];
 };
 
 export type GetGenreSetsInput = {
@@ -143,7 +139,6 @@ export type GetUserInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  copyGenreSet: GenreSet;
   createGenre: Genre;
   createGenreSet: GenreSet;
   createQuiz: Quiz;
@@ -159,11 +154,6 @@ export type Mutation = {
   updateQuiz: Quiz;
   updateQuizList: QuizList;
   updateUser: User;
-};
-
-
-export type MutationCopyGenreSetArgs = {
-  input: CopyGenreSetInput;
 };
 
 
@@ -268,7 +258,7 @@ export type QueryGetGenreArgs = {
 
 
 export type QueryGetGenreSetArgs = {
-  input?: InputMaybe<GetGenreSetInput>;
+  input: GetGenreSetInput;
 };
 
 
@@ -354,9 +344,9 @@ export type UpdateGenreInput = {
 };
 
 export type UpdateGenreSetInput = {
-  databaseId: Scalars['String']['input'];
-  description?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
+  description: Scalars['String']['input'];
+  id: Scalars['String']['input'];
+  name: Scalars['String']['input'];
 };
 
 export type UpdateLoginUserInput = {
@@ -433,7 +423,7 @@ export type GetGenreQueryVariables = Exact<{
 export type GetGenreQuery = { __typename?: 'Query', getGenre: { __typename?: 'Genre', databaseId: string, id: string, description: string, name: string, ratio: number, color: string } };
 
 export type GetGenreDetailPageDataQueryVariables = Exact<{
-  input?: InputMaybe<GetGenreSetInput>;
+  input: GetGenreSetInput;
 }>;
 
 
@@ -446,38 +436,40 @@ export type UpdateGenreMutationVariables = Exact<{
 
 export type UpdateGenreMutation = { __typename?: 'Mutation', updateGenre: { __typename?: 'Genre', databaseId: string, id: string } };
 
+export type GenreSetDataFragment = { __typename?: 'GenreSet', id: string, name: string, description: string };
+
 export type CreateGenreSetMutationVariables = Exact<{
   input: CreateGenreSetInput;
 }>;
 
 
-export type CreateGenreSetMutation = { __typename?: 'Mutation', createGenreSet: { __typename?: 'GenreSet', databaseId: string, id: string } };
+export type CreateGenreSetMutation = { __typename?: 'Mutation', createGenreSet: { __typename?: 'GenreSet', id: string, name: string, description: string } };
 
 export type DeleteGenreSetMutationVariables = Exact<{
   input: DeleteGenreSetInput;
 }>;
 
 
-export type DeleteGenreSetMutation = { __typename?: 'Mutation', deleteGenreSet: { __typename?: 'GenreSet', id: string, databaseId: string } };
+export type DeleteGenreSetMutation = { __typename?: 'Mutation', deleteGenreSet: { __typename?: 'GenreSet', id: string, name: string, description: string } };
 
 export type GetGenreSetQueryVariables = Exact<{
-  input?: InputMaybe<GetGenreSetInput>;
+  input: GetGenreSetInput;
 }>;
 
 
-export type GetGenreSetQuery = { __typename?: 'Query', getGenreSet: { __typename?: 'GenreSet', name: string, description: string, id: string, databaseId: string } };
+export type GetGenreSetQuery = { __typename?: 'Query', getGenreSet: { __typename?: 'GenreSet', id: string, name: string, description: string } };
 
 export type GetGenreSetsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetGenreSetsQuery = { __typename?: 'Query', getGenreSets: Array<{ __typename?: 'GenreSet', id: string, name: string, description: string, databaseId: string }> };
+export type GetGenreSetsQuery = { __typename?: 'Query', getGenreSets: Array<{ __typename?: 'GenreSet', id: string, name: string, description: string }> };
 
 export type UpdateGenreSetMutationVariables = Exact<{
   input: UpdateGenreSetInput;
 }>;
 
 
-export type UpdateGenreSetMutation = { __typename?: 'Mutation', updateGenreSet: { __typename?: 'GenreSet', id: string, databaseId: string } };
+export type UpdateGenreSetMutation = { __typename?: 'Mutation', updateGenreSet: { __typename?: 'GenreSet', id: string, name: string, description: string } };
 
 export type GetGenresFromQuizListQueryVariables = Exact<{
   input?: InputMaybe<GetQuizListInput>;
@@ -587,7 +579,13 @@ export type UpdateLoginUserMutationVariables = Exact<{
 
 export type UpdateLoginUserMutation = { __typename?: 'Mutation', updateLoginUser: { __typename?: 'User', id: string } };
 
-
+export const GenreSetDataFragmentDoc = gql`
+    fragment GenreSetData on GenreSet {
+  id
+  name
+  description
+}
+    `;
 export const CreateGenreDocument = gql`
     mutation CreateGenre($input: CreateGenreInput!) {
   createGenre(input: $input) {
@@ -697,7 +695,7 @@ export type GetGenreQueryHookResult = ReturnType<typeof useGetGenreQuery>;
 export type GetGenreLazyQueryHookResult = ReturnType<typeof useGetGenreLazyQuery>;
 export type GetGenreQueryResult = Apollo.QueryResult<GetGenreQuery, GetGenreQueryVariables>;
 export const GetGenreDetailPageDataDocument = gql`
-    query getGenreDetailPageData($input: GetGenreSetInput) {
+    query getGenreDetailPageData($input: GetGenreSetInput!) {
   getGenreSet(input: $input) {
     id
     databaseId
@@ -737,7 +735,7 @@ export const GetGenreDetailPageDataDocument = gql`
  *   },
  * });
  */
-export function useGetGenreDetailPageDataQuery(baseOptions?: Apollo.QueryHookOptions<GetGenreDetailPageDataQuery, GetGenreDetailPageDataQueryVariables>) {
+export function useGetGenreDetailPageDataQuery(baseOptions: Apollo.QueryHookOptions<GetGenreDetailPageDataQuery, GetGenreDetailPageDataQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetGenreDetailPageDataQuery, GetGenreDetailPageDataQueryVariables>(GetGenreDetailPageDataDocument, options);
       }
@@ -785,11 +783,10 @@ export type UpdateGenreMutationOptions = Apollo.BaseMutationOptions<UpdateGenreM
 export const CreateGenreSetDocument = gql`
     mutation CreateGenreSet($input: CreateGenreSetInput!) {
   createGenreSet(input: $input) {
-    databaseId
-    id
+    ...GenreSetData
   }
 }
-    `;
+    ${GenreSetDataFragmentDoc}`;
 export type CreateGenreSetMutationFn = Apollo.MutationFunction<CreateGenreSetMutation, CreateGenreSetMutationVariables>;
 
 /**
@@ -819,11 +816,10 @@ export type CreateGenreSetMutationOptions = Apollo.BaseMutationOptions<CreateGen
 export const DeleteGenreSetDocument = gql`
     mutation DeleteGenreSet($input: DeleteGenreSetInput!) {
   deleteGenreSet(input: $input) {
-    id
-    databaseId
+    ...GenreSetData
   }
 }
-    `;
+    ${GenreSetDataFragmentDoc}`;
 export type DeleteGenreSetMutationFn = Apollo.MutationFunction<DeleteGenreSetMutation, DeleteGenreSetMutationVariables>;
 
 /**
@@ -851,15 +847,12 @@ export type DeleteGenreSetMutationHookResult = ReturnType<typeof useDeleteGenreS
 export type DeleteGenreSetMutationResult = Apollo.MutationResult<DeleteGenreSetMutation>;
 export type DeleteGenreSetMutationOptions = Apollo.BaseMutationOptions<DeleteGenreSetMutation, DeleteGenreSetMutationVariables>;
 export const GetGenreSetDocument = gql`
-    query GetGenreSet($input: GetGenreSetInput) {
+    query GetGenreSet($input: GetGenreSetInput!) {
   getGenreSet(input: $input) {
-    name
-    description
-    id
-    databaseId
+    ...GenreSetData
   }
 }
-    `;
+    ${GenreSetDataFragmentDoc}`;
 
 /**
  * __useGetGenreSetQuery__
@@ -877,7 +870,7 @@ export const GetGenreSetDocument = gql`
  *   },
  * });
  */
-export function useGetGenreSetQuery(baseOptions?: Apollo.QueryHookOptions<GetGenreSetQuery, GetGenreSetQueryVariables>) {
+export function useGetGenreSetQuery(baseOptions: Apollo.QueryHookOptions<GetGenreSetQuery, GetGenreSetQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetGenreSetQuery, GetGenreSetQueryVariables>(GetGenreSetDocument, options);
       }
@@ -891,13 +884,10 @@ export type GetGenreSetQueryResult = Apollo.QueryResult<GetGenreSetQuery, GetGen
 export const GetGenreSetsDocument = gql`
     query GetGenreSets {
   getGenreSets {
-    id
-    name
-    description
-    databaseId
+    ...GenreSetData
   }
 }
-    `;
+    ${GenreSetDataFragmentDoc}`;
 
 /**
  * __useGetGenreSetsQuery__
@@ -928,11 +918,10 @@ export type GetGenreSetsQueryResult = Apollo.QueryResult<GetGenreSetsQuery, GetG
 export const UpdateGenreSetDocument = gql`
     mutation UpdateGenreSet($input: UpdateGenreSetInput!) {
   updateGenreSet(input: $input) {
-    id
-    databaseId
+    ...GenreSetData
   }
 }
-    `;
+    ${GenreSetDataFragmentDoc}`;
 export type UpdateGenreSetMutationFn = Apollo.MutationFunction<UpdateGenreSetMutation, UpdateGenreSetMutationVariables>;
 
 /**

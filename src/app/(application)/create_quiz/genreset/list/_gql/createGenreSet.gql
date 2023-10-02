@@ -1,6 +1,5 @@
 mutation CreateGenreSet($input: CreateGenreSetInput!) {
   createGenreSet(input: $input) {
-    databaseId
-    id
+    ...GenreSetData
   }
 }

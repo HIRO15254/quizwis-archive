@@ -1,8 +1,5 @@
-query GetGenreSet($input: GetGenreSetInput) {
+query GetGenreSet($input: GetGenreSetInput!) {
   getGenreSet(input: $input) {
-    name
-    description
-    id
-    databaseId
+    ...GenreSetData
   }
 }

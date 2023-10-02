@@ -11,6 +11,5 @@ import './genre/createGenre';
 import './genre/deleteGenre';
 import './genre/updateGenre';
 import './genreSet/createGenreSet';
-import './genreSet/copyGenreSet';
 import './genreSet/deleteGenreSet';
 import './genreSet/updateGenreSet';

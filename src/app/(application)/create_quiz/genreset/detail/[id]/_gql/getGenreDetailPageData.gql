@@ -1,4 +1,4 @@
-query getGenreDetailPageData($input: GetGenreSetInput) {
+query getGenreDetailPageData($input: GetGenreSetInput!) {
   getGenreSet(input: $input) {
     id
     databaseId
