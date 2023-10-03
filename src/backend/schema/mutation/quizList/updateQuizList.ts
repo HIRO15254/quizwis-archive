@@ -1,15 +1,16 @@
+import { decodeGlobalID } from '@pothos/plugin-relay';
+
 import { prisma } from '../../../../lib/prisma';
 import { checkAuthority } from '../../../util/checkAuthority';
-import { nullToEmpty } from '../../../util/nullToEmpty';
 import { builder } from '../../builder';
 
 const UpdateQuizListInput = builder.inputType('UpdateQuizListInput', {
   fields: (t) => ({
-    databaseId: t.string({ required: true }),
+    id: t.string({ required: true }),
     name: t.string({ required: true }),
-    description: t.string(),
+    description: t.string({ required: true }),
     genreSetId: t.string(),
-    goal: t.int(),
+    goal: t.int({ required: true }),
   }),
 });
 
@@ -19,9 +20,19 @@ builder.mutationFields((t) => ({
     args: {
       input: t.arg({ type: UpdateQuizListInput, required: true }),
     },
-    resolve: async (_query, _root, args, ctx, _info) => {
+    resolve: async (
+      _query,
+      _root,
+      args,
+      ctx,
+      _info,
+    ) => {
+      const { typename, id: databaseId } = decodeGlobalID(args.input.id);
+      if (typename !== 'QuizList') {
+        throw new Error('不正なIDです');
+      }
       const quizList = await prisma.quizList.findUniqueOrThrow({
-        where: { databaseId: args.input.databaseId },
+        where: { databaseId },
         include: { user: true, genreSet: true, quizzes: true },
       });
       if (quizList?.user.userId !== ctx.currentUserId) {
@@ -39,7 +50,7 @@ builder.mutationFields((t) => ({
         if (genreSet.user.userId !== ctx.currentUserId) {
           throw new Error('権限がありません');
         }
-        quizList.quizzes.forEach(async (quiz) => {
+        await Promise.all(quizList.quizzes.map(async (quiz) => {
           await prisma.quiz.update({
             where: { databaseId: quiz.databaseId },
             data: {
@@ -48,9 +59,9 @@ builder.mutationFields((t) => ({
               },
             },
           });
-        });
+        }));
         await prisma.quizList.update({
-          where: { databaseId: args.input.databaseId },
+          where: { databaseId },
           data: {
             genreSet: {
               connect: {
@@ -60,15 +71,14 @@ builder.mutationFields((t) => ({
           },
         });
       }
-      const ret = await prisma.quizList.update({
-        where: { databaseId: args.input.databaseId },
+      return prisma.quizList.update({
+        where: { databaseId },
         data: {
-          name: nullToEmpty(args.input.name),
-          description: nullToEmpty(args.input.description),
-          goal: args.input.goal ?? undefined,
+          name: args.input.name,
+          description: args.input.description,
+          goal: args.input.goal,
         },
       });
-      return ret;
     },
   }),
 }));

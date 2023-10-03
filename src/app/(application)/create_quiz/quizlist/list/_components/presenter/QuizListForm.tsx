@@ -1,39 +1,31 @@
-'use client';
-
 import {
-  TextInput,
-  Textarea,
-  NativeSelect,
-  SelectItem,
-  Checkbox,
-  NumberInput,
+  Checkbox, NativeSelect, NumberInput, SelectItem, Textarea, TextInput,
 } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import React from 'react';
 
-import { FormModal, FormModalProps } from 'components/common/FormModal';
+import { GenreSetDataFragment } from '../../../../../../../gql';
+import { QuizListFormType } from '../../_types/QuizListFormType';
 
-import type { QuizListFormType } from '../../../_types/QuizListFormType';
-
-interface QuizListFormModalProps extends FormModalProps {
+interface Props {
   form: UseFormReturnType<QuizListFormType>;
-  genreSets: SelectItem[];
+  genreSetData: GenreSetDataFragment[];
 }
-
-/**
- * クイズリストを新たに作成するためのモーダル
- */
-export const QuizListFormModal: React.FC<QuizListFormModalProps> = (props) => {
+export const QuizListForm: React.FC<Props> = (props) => {
   const {
     form,
-    genreSets,
-    ...other
+    genreSetData,
   } = props;
 
+  const genreSetSelectData = [{ value: '', label: 'なし' }].concat(
+    genreSetData.map((genreSet) => ({
+      value: genreSet.id,
+      label: genreSet.name,
+    })) ?? [],
+  );
+
   return (
-    <FormModal
-      {...other}
-    >
+    <>
       <TextInput
         withAsterisk
         label="問題リスト名"
@@ -59,9 +51,9 @@ export const QuizListFormModal: React.FC<QuizListFormModalProps> = (props) => {
       <NativeSelect
         label="使用するジャンルセット"
         description="ジャンルセットは割り当てなおすたびにすべての問題のジャンルがリセットされます。"
-        data={genreSets}
+        data={genreSetSelectData}
         {...form.getInputProps('genreSetId')}
       />
-    </FormModal>
+    </>
   );
 };

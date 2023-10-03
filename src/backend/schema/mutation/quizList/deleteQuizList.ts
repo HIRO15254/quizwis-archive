@@ -1,10 +1,12 @@
+import { decodeGlobalID } from '@pothos/plugin-relay';
+
 import { prisma } from '../../../../lib/prisma';
 import { checkAuthority } from '../../../util/checkAuthority';
 import { builder } from '../../builder';
 
 const DeleteQuizListInput = builder.inputType('DeleteQuizListInput', {
   fields: (t) => ({
-    databaseId: t.string({ required: true }),
+    id: t.string({ required: true }),
   }),
 });
 
@@ -14,9 +16,19 @@ builder.mutationFields((t) => ({
     args: {
       input: t.arg({ type: DeleteQuizListInput, required: true }),
     },
-    resolve: async (_query, _root, args, ctx, _info) => {
+    resolve: async (
+      _query,
+      _root,
+      args,
+      ctx,
+      _info,
+    ) => {
+      const { typename, id: databaseId } = decodeGlobalID(args.input.id);
+      if (typename !== 'QuizList') {
+        throw new Error('不正なIDです');
+      }
       const quizList = await prisma.quizList.findUnique({
-        where: { databaseId: args.input.databaseId },
+        where: { databaseId },
         include: { user: true },
       });
       if (quizList?.user.userId !== ctx.currentUserId) {
@@ -24,10 +36,9 @@ builder.mutationFields((t) => ({
           throw new Error('権限がありません。');
         }
       }
-      const ret = await prisma.quizList.delete({
-        where: { databaseId: args.input.databaseId },
+      return prisma.quizList.delete({
+        where: { databaseId },
       });
-      return ret;
     },
   }),
 }));

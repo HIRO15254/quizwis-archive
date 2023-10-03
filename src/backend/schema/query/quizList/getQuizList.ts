@@ -1,3 +1,5 @@
+import { decodeGlobalID } from '@pothos/plugin-relay';
+
 import { prisma } from '../../../../lib/prisma';
 import { checkAuthority } from '../../../util/checkAuthority';
 import { builder } from '../../builder';
@@ -5,16 +7,26 @@ import { QuizList } from '../../object/quizList';
 
 const GetQuizListInput = builder.inputType('GetQuizListInput', {
   fields: (t) => ({
-    databaseId: t.string(),
+    id: t.string({ required: true }),
   }),
 });
 
 builder.queryField('getQuizList', (t) => t.prismaField({
   type: QuizList,
-  args: { input: t.arg({ type: GetQuizListInput }) },
-  resolve: async (_query, _root, args, ctx, _info) => {
+  args: { input: t.arg({ type: GetQuizListInput, required: true }) },
+  resolve: async (
+    _query,
+    _root,
+    args,
+    ctx,
+    _info,
+  ) => {
+    const { typename, id: databaseId } = decodeGlobalID(args.input.id);
+    if (typename !== 'QuizList') {
+      throw new Error('idがQuizListのものではありません');
+    }
     const quizList = await prisma.quizList.findUnique({
-      where: { databaseId: args.input?.databaseId ?? '' },
+      where: { databaseId },
       include: { user: true },
     });
     if (quizList?.user.userId !== ctx.currentUserId) {
@@ -22,8 +34,8 @@ builder.queryField('getQuizList', (t) => t.prismaField({
         throw new Error('権限がありません。');
       }
     }
-    const ret = await prisma.quizList.findUniqueOrThrow({
-      where: { databaseId: args.input?.databaseId ?? '' },
+    return prisma.quizList.findUniqueOrThrow({
+      where: { databaseId },
       include: {
         genreSet: {
           include: {
@@ -39,6 +51,5 @@ builder.queryField('getQuizList', (t) => t.prismaField({
         },
       },
     });
-    return ret;
   },
 }));

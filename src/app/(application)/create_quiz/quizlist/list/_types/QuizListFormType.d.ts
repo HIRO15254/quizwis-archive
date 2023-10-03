@@ -1,7 +1,5 @@
-export interface QuizListFormType {
-  name: string;
-  description: string;
-  genreSetId: string;
+import { CreateQuizListInput } from 'gql';
+
+export interface QuizListFormType extends CreateQuizListInput {
   useGoal: boolean;
-  goal: number;
 }

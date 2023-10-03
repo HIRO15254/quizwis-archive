@@ -1,4 +1,4 @@
-query GetGenresFromQuizList($input: GetQuizListInput) {
+query GetGenresFromQuizList($input: GetQuizListInput!) {
   getQuizList(input: $input) {
     genreSet {
       genres {

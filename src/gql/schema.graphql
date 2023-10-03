@@ -47,7 +47,7 @@ input DeleteQuizInput {
 }
 
 input DeleteQuizListInput {
-  databaseId: String!
+  id: String!
 }
 
 input DeleteUserInput {
@@ -63,7 +63,7 @@ type Genre implements Node {
   genreSet: GenreSet!
   id: ID!
   name: String!
-  parentGenre: Genre
+  parentGenre: Genre!
   quizzes: [Quiz!]!
   ratio: Int!
   updatedAt: Date!
@@ -100,7 +100,7 @@ input GetQuizInput {
 }
 
 input GetQuizListInput {
-  databaseId: String
+  id: String!
 }
 
 input GetQuizListsInput {
@@ -147,7 +147,7 @@ type Query {
   getGenreSets(input: GetGenreSetsInput): [GenreSet!]!
   getGenres(input: GetGenresInput!): [Genre!]!
   getQuiz(input: GetQuizInput): Quiz!
-  getQuizList(input: GetQuizListInput): QuizList!
+  getQuizList(input: GetQuizListInput!): QuizList!
   getQuizLists(input: GetQuizListsInput): [QuizList!]!
   getQuizzes(input: GetQuizzesInput!): [Quiz!]!
   getUser(input: GetUserInput!): User!
@@ -173,7 +173,7 @@ type Quiz implements Node {
 type QuizList implements Node {
   databaseId: String!
   description: String!
-  genreSet: GenreSet
+  genreSet: GenreSet!
   goal: Int!
   id: ID!
   name: String!
@@ -216,10 +216,10 @@ input UpdateQuizInput {
 }
 
 input UpdateQuizListInput {
-  databaseId: String!
-  description: String
+  description: String!
   genreSetId: String
-  goal: Int
+  goal: Int!
+  id: String!
   name: String!
 }
 

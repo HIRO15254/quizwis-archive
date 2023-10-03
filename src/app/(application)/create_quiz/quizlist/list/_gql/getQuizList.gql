@@ -1,13 +1,5 @@
-query GetQuizList($input: GetQuizListInput) {
+query GetQuizList($input: GetQuizListInput!) {
   getQuizList(input: $input) {
-    name
-    databaseId
-    description
-    genreSet {
-      name
-      databaseId
-    }
-    id
-    goal
+    ...QuizListData
   }
 }

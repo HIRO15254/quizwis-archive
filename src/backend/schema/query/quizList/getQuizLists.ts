@@ -22,11 +22,10 @@ builder.queryField('getQuizLists', (t) => t.prismaField({
       }
     }
     const user = await prisma.user.findUniqueOrThrow({ where: { userId } });
-    const ret = await prisma.quizList.findMany({
+    return prisma.quizList.findMany({
       ...query,
       where: { user: { id: user?.id } },
       orderBy: { updatedAt: 'desc' },
     });
-    return ret;
   },
 }));

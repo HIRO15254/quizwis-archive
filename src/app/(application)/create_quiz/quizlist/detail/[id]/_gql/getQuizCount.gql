@@ -1,4 +1,4 @@
-query GetQuizCount($input: GetQuizListInput) {
+query GetQuizCount($input: GetQuizListInput!) {
   getQuizList(input: $input) {
     id
     databaseId

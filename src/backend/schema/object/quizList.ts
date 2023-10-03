@@ -16,10 +16,12 @@ export const QuizList = builder.prismaNode('QuizList', {
     quizzes: t.relation('quizzes'),
     quizCount: t.field({
       type: 'Int',
-      resolve: async (parent, _args, _ctx, _info) => {
-        const ret = await prisma.quiz.count({ where: { quizlistId: parent.databaseId } });
-        return ret;
-      },
+      resolve: async (
+        parent,
+        _args,
+        _ctx,
+        _info,
+      ) => prisma.quiz.count({ where: { quizlistId: parent.databaseId } }) ?? 0,
     }),
   }),
 });
