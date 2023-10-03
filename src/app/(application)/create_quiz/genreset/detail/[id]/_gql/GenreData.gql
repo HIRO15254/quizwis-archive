@@ -1,0 +1,7 @@
+fragment GenreData on Genre {
+  id
+  description
+  name
+  ratio
+  color
+}

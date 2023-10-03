@@ -8,25 +8,25 @@ import {
 import { getHotkeyHandler } from '@mantine/hooks';
 import React from 'react';
 
-import { GenreSetDataFragment } from 'gql';
+import { GenreDataFragment } from 'gql';
 // 各種import
 
 interface Props extends ModalProps {
-  data: GenreSetDataFragment | undefined
+  data: GenreDataFragment | undefined
   onConfirm: () => void
   loading?: boolean
-  confirmButtonLoading?: boolean
+  buttonLoading?: boolean
 }
 
 /**
  * クイズリストを削除するためのモーダル
  */
-export const DeleteGenreSetModal: React.FC<Props> = (props) => {
+export const DeleteGenreModal: React.FC<Props> = (props) => {
   const {
     data,
     onConfirm,
     loading = false,
-    confirmButtonLoading = false,
+    buttonLoading = false,
     ...other
   } = props;
 
@@ -39,8 +39,9 @@ export const DeleteGenreSetModal: React.FC<Props> = (props) => {
       ])}
     >
       <LoadingOverlay visible={loading} />
-      <Text mb="xs">{`ジャンルセット「${data?.name}」を本当に削除しますか？`}</Text>
-      <Text>削除した場合、このジャンルセットが使用されているすべての問題リストのジャンルが「なし」に変更されます。</Text>
+      <Text mb="xs">{`ジャンル「${data?.name}」を本当に削除しますか？`}</Text>
+      <Text mb="xs">削除すると、サブジャンルもすべて削除され、このジャンルやサブジャンルが使用されているすべての問題はジャンルなしになります。</Text>
+      <Text>新たな問題セット用にジャンルセットを変更する場合は、ジャンルセットをコピーしてからの編集を推奨します。</Text>
       <Group position="right" mt="md">
         <Button
           color="gray"
@@ -50,7 +51,7 @@ export const DeleteGenreSetModal: React.FC<Props> = (props) => {
         </Button>
         <Button
           color="red"
-          loading={confirmButtonLoading}
+          loading={buttonLoading}
           onClick={onConfirm}
         >
           削除

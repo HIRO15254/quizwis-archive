@@ -1,27 +1,36 @@
 import { isNotEmpty, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-import { useCreateGenreMutation, useGetGenreLazyQuery } from 'gql';
+import {
+  useCreateGenreMutation,
+  useGetGenreLazyQuery,
+} from 'gql';
 import { errorNotification, successNotification } from 'util/notifications';
 
-import type { GenreFormType } from '../_types/GenreFormType';
+import { CreateGenreModal } from '../_components/presenter/CreateGenreModal';
+import { GenreFormType } from '../_types/GenreFormType';
 
-type UseCreateGenreModalProps = {
-  reload: () => void;
-  genreSetDatabaseId: string;
+type Props = {
+  genreSetId: string;
 };
 
 /**
  * ジャンルを新規作成するためのモーダル
  */
-export const useCreateGenreModal = (props: UseCreateGenreModalProps) => {
-  const { reload, genreSetDatabaseId } = props;
+export const useCreateGenreModal = (props: Props) => {
+  const { genreSetId } = props;
 
   const [opened, handlers] = useDisclosure();
-  const [parentId, setParentId] = useState<string | null>(null);
-  const [createGenre] = useCreateGenreMutation();
-  const [getGenre] = useGetGenreLazyQuery();
+  const [parentGenreId, setParentGenreId] = useState<string | undefined>(undefined);
+  const [
+    createGenre,
+    { loading: createGenreLoading },
+  ] = useCreateGenreMutation();
+  const [
+    getGenre,
+    { loading: getGenreLoading },
+  ] = useGetGenreLazyQuery();
 
   const form = useForm<GenreFormType>({
     initialValues: {
@@ -35,62 +44,55 @@ export const useCreateGenreModal = (props: UseCreateGenreModalProps) => {
     },
   });
 
-  const close = () => {
+  const open = (openParentGenreId?: string) => {
+    setParentGenreId(openParentGenreId);
     form.reset();
-    handlers.close();
-  };
-
-  const open = (newParentId?: string) => {
-    setParentId(newParentId || null);
     handlers.open();
-    if (newParentId) {
+    if (openParentGenreId) {
       getGenre({
-        fetchPolicy: 'network-only',
         variables: {
           input: {
-            databaseId: newParentId,
+            id: openParentGenreId,
           },
         },
         onCompleted: (res) => {
-          form.setValues({ color: res.getGenre?.color ?? 'gray' });
+          form.setValues({ color: res.getGenre.color });
         },
       });
     }
   };
 
   const onSubmit = form.onSubmit(async (values) => {
-    close();
     await createGenre({
       variables: {
         input: {
-          genreSetDatabaseId,
-          parentGenreDatabaseId: parentId || undefined,
+          genreSetId,
+          parentGenreId,
           ...values,
         },
       },
       onCompleted: () => {
         successNotification({ message: 'ジャンルを作成しました' });
-        reload();
+        handlers.close();
       },
       onError: () => {
         errorNotification({ message: 'ジャンルの作成に失敗しました' });
       },
+      refetchQueries: ['GetGenreDetailPageData'],
     });
   });
 
-  const newHandlers = {
-    ...handlers,
-    open,
-    close,
+  const createGenreModalProps = {
+    opened,
+    onClose: handlers.close,
+    onSubmit,
+    form,
+    loading: getGenreLoading,
+    buttonLoading: createGenreLoading,
   };
 
   return {
-    genreFormModalProps: {
-      opened,
-      close,
-      onSubmit,
-      form,
-    },
-    handlers: newHandlers,
+    createGenreModal: <CreateGenreModal {...createGenreModalProps} />,
+    createGenre: open,
   };
 };

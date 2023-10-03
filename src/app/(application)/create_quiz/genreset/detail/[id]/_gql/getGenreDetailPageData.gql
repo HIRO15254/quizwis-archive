@@ -1,15 +1,8 @@
-query getGenreDetailPageData($input: GetGenreSetInput!) {
+query GetGenreDetailPageData($input: GetGenreSetInput!) {
   getGenreSet(input: $input) {
-    id
-    databaseId
-    name
+    ...GenreSetData
     genres {
-      id
-      databaseId
-      name
-      description
-      ratio
-      color
+      ...GenreData
       parentGenre {
         id
       }
@@ -20,3 +13,4 @@ query getGenreDetailPageData($input: GetGenreSetInput!) {
     }
   }
 }
+

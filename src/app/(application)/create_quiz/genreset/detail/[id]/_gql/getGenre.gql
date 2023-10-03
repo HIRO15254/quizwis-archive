@@ -1,10 +1,5 @@
-query GetGenre($input: GetGenreInput) {
+query GetGenre($input: GetGenreInput!) {
   getGenre(input: $input) {
-    databaseId
-    id
-    description
-    name
-    ratio
-    color
+    ...GenreData
   }
 }

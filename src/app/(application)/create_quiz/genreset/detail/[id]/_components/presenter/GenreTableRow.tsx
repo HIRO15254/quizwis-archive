@@ -1,9 +1,4 @@
-// "use client";
-
-// 各種import
-import {
-  Button, Group, Skeleton, Stack, Table, Text,
-} from '@mantine/core';
+import { Group, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
 import React from 'react';
@@ -11,9 +6,9 @@ import React from 'react';
 import { GenreBadge } from 'components/common/GenreBadge';
 import { TableActionIcon } from 'components/common/TableActionICon';
 
-import { GenreTree } from '../../../_util/genreListToTree';
+import { GenreTree } from '../../_util/genreListToTree';
 
-interface GenreRowProps {
+interface Props {
   genre: GenreTree;
   nest: number;
   operations: {
@@ -23,7 +18,7 @@ interface GenreRowProps {
   }
 }
 
-const GenreRow: React.FC<GenreRowProps> = (props) => {
+export const GenreTableRow: React.FC<Props> = (props) => {
   const {
     genre,
     nest,
@@ -69,25 +64,25 @@ const GenreRow: React.FC<GenreRowProps> = (props) => {
           <Group spacing={2} noWrap>
             <TableActionIcon
               tooltip="サブジャンルを追加"
-              onClick={() => operations.create(genre.data.databaseId)}
+              onClick={() => operations.create(genre.data.id)}
               Icon={IconPlus}
             />
             <TableActionIcon
               tooltip="編集"
-              onClick={() => operations.update(genre.data.databaseId)}
+              onClick={() => operations.update(genre.data.id)}
               Icon={IconPencil}
             />
             <TableActionIcon
               tooltip="削除"
               color="red"
-              onClick={() => operations.delete(genre.data.databaseId)}
+              onClick={() => operations.delete(genre.data.id)}
               Icon={IconTrash}
             />
           </Group>
         </td>
       </tr>
       {opened && genre.children.map((child) => (
-        <GenreRow
+        <GenreTableRow
           key={child.data.id}
           genre={child}
           nest={nest + 1}
@@ -95,74 +90,5 @@ const GenreRow: React.FC<GenreRowProps> = (props) => {
         />
       ))}
     </>
-  );
-};
-
-interface GenreTableProps {
-  data: GenreTree[];
-  loading: boolean;
-  operations: {
-    create: (parentId?: string) => void;
-    update: (databaseId: string) => void;
-    delete: (databaseId: string) => void;
-  }
-}
-
-/**
- * ジャンル一覧ページのテーブル
- */
-export const GenreTable: React.FC<GenreTableProps> = (props) => {
-  const {
-    data,
-    loading,
-    operations,
-  } = props;
-
-  // reactのhookの宣言
-  // 実際のコンポーネント
-  if (data.length === 0 && !loading) {
-    return (
-      <Stack align="center" m="sm">
-        <Text size="lg">ジャンルがありません</Text>
-        <Button
-          onClick={() => operations.create()}
-          leftIcon={<IconPlus />}
-        >
-          新規ジャンル
-        </Button>
-      </Stack>
-    );
-  }
-  return (
-    <Skeleton visible={loading}>
-      <Group position="right" pb="sm">
-        <Button
-          onClick={() => operations.create()}
-          leftIcon={<IconPlus />}
-        >
-          ジャンルを追加
-        </Button>
-      </Group>
-      <Table>
-        <thead>
-          <tr>
-            <th style={{ width: 'fix-content' }}>ジャンル名</th>
-            <th>説明</th>
-            <th style={{ width: 0, whiteSpace: 'nowrap' }}>比率</th>
-            <th style={{ width: 0 }}>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((genre) => (
-            <GenreRow
-              key={genre.data.id}
-              genre={genre}
-              nest={0}
-              operations={operations}
-            />
-          ))}
-        </tbody>
-      </Table>
-    </Skeleton>
   );
 };

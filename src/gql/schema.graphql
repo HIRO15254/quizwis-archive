@@ -1,10 +1,10 @@
 input CreateGenreInput {
-  color: String! = "gray"
+  color: String!
   description: String!
-  genreSetDatabaseId: String!
+  genreSetId: String!
   name: String!
-  parentGenreDatabaseId: String
-  ratio: Int! = 5
+  parentGenreId: String
+  ratio: Int!
 }
 
 input CreateGenreSetInput {
@@ -35,7 +35,7 @@ A date string, such as 2007-12-03, compliant with the `full-date` format outline
 scalar Date
 
 input DeleteGenreInput {
-  databaseId: String!
+  id: String!
 }
 
 input DeleteGenreSetInput {
@@ -80,7 +80,7 @@ type GenreSet implements Node {
 }
 
 input GetGenreInput {
-  databaseId: String
+  id: String!
 }
 
 input GetGenreSetInput {
@@ -92,7 +92,7 @@ input GetGenreSetsInput {
 }
 
 input GetGenresInput {
-  genreSetDatabaseId: String
+  genreSetId: String!
 }
 
 input GetQuizInput {
@@ -142,10 +142,10 @@ interface Node {
 }
 
 type Query {
-  getGenre(input: GetGenreInput): Genre!
+  getGenre(input: GetGenreInput!): Genre!
   getGenreSet(input: GetGenreSetInput!): GenreSet!
   getGenreSets(input: GetGenreSetsInput): [GenreSet!]!
-  getGenres(input: GetGenresInput): [Genre!]!
+  getGenres(input: GetGenresInput!): [Genre!]!
   getQuiz(input: GetQuizInput): Quiz!
   getQuizList(input: GetQuizListInput): QuizList!
   getQuizLists(input: GetQuizListsInput): [QuizList!]!
@@ -183,12 +183,12 @@ type QuizList implements Node {
 }
 
 input UpdateGenreInput {
-  color: String
-  databaseId: String!
-  description: String
-  name: String
-  parentGenreDatabaseId: String
-  ratio: Int
+  color: String!
+  description: String!
+  id: String!
+  name: String!
+  parentGenreId: String
+  ratio: Int!
 }
 
 input UpdateGenreSetInput {

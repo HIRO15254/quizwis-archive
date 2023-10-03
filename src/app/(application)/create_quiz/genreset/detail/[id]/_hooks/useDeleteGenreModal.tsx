@@ -1,33 +1,33 @@
 import { useDisclosure } from '@mantine/hooks';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { useDeleteGenreMutation, useGetGenreLazyQuery } from 'gql';
 import { errorNotification, successNotification } from 'util/notifications';
 
-type UseDeleteGenreModalProps = {
-  reload: () => void;
-};
+import { DeleteGenreModal } from '../_components/presenter/DeleteGenreModal';
 
-export const useDeleteGenreModal = (props: UseDeleteGenreModalProps) => {
-  const { reload } = props;
+export const useDeleteGenreModal = () => {
   const [opened, handlers] = useDisclosure();
-  const [deleteGenre] = useDeleteGenreMutation();
-  const [getGenre] = useGetGenreLazyQuery();
+  const [
+    deleteGenre,
+    { loading: mutationLoading },
+  ] = useDeleteGenreMutation();
+  const [
+    getGenre,
+    { data: genreData, loading },
+  ] = useGetGenreLazyQuery();
+  const [id, setId] = useState<string>('');
 
-  const [name, setName] = useState<string>('');
-  const [databaseId, setDatabaseId] = useState<string>('');
-
-  const open = async (open_id: string) => {
-    setDatabaseId(open_id);
-    const genre = await getGenre({
+  const open = async (openId: string) => {
+    handlers.open();
+    setId(openId);
+    await getGenre({
       variables: {
         input: {
-          databaseId: open_id,
+          id: openId,
         },
       },
     });
-    setName(genre.data?.getGenre?.name ?? '');
-    handlers.open();
   };
 
   const onDelete = async () => {
@@ -35,32 +35,30 @@ export const useDeleteGenreModal = (props: UseDeleteGenreModalProps) => {
     await deleteGenre({
       variables: {
         input: {
-          databaseId,
+          id,
         },
       },
       onCompleted: () => {
         successNotification({ message: 'ジャンルを削除しました' });
-        reload();
       },
       onError: () => {
         errorNotification({ message: 'ジャンルの削除に失敗しました' });
       },
+      refetchQueries: ['GetGenreDetailPageData'],
     });
   };
 
-  const newHandlers = {
-    ...handlers,
-    open,
+  const modalProps = {
+    opened,
+    onClose: handlers.close,
+    onConfirm: onDelete,
+    data: genreData?.getGenre,
+    loading,
+    buttonLoading: mutationLoading,
   };
 
   return {
-    modalProps: {
-      opened,
-      close: handlers.close,
-      onConfirm: onDelete,
-      name,
-    },
-    name,
-    handlers: newHandlers,
+    deleteGenreModal: <DeleteGenreModal {...modalProps} />,
+    deleteGenre: open,
   };
 };

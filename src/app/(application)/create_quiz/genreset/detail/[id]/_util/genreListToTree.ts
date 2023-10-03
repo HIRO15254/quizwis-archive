@@ -4,7 +4,6 @@ export interface GenreTreeData {
   color: string;
   name: string;
   description: string;
-  databaseId: string;
   parentGenre?: {
     id: string;
   } | null;

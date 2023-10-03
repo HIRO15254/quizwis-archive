@@ -20,12 +20,12 @@ export type Scalars = {
 };
 
 export type CreateGenreInput = {
-  color?: Scalars['String']['input'];
+  color: Scalars['String']['input'];
   description: Scalars['String']['input'];
-  genreSetDatabaseId: Scalars['String']['input'];
+  genreSetId: Scalars['String']['input'];
   name: Scalars['String']['input'];
-  parentGenreDatabaseId?: InputMaybe<Scalars['String']['input']>;
-  ratio?: Scalars['Int']['input'];
+  parentGenreId?: InputMaybe<Scalars['String']['input']>;
+  ratio: Scalars['Int']['input'];
 };
 
 export type CreateGenreSetInput = {
@@ -51,7 +51,7 @@ export type CreateQuizListInput = {
 };
 
 export type DeleteGenreInput = {
-  databaseId: Scalars['String']['input'];
+  id: Scalars['String']['input'];
 };
 
 export type DeleteGenreSetInput = {
@@ -98,7 +98,7 @@ export type GenreSet = Node & {
 };
 
 export type GetGenreInput = {
-  databaseId?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['String']['input'];
 };
 
 export type GetGenreSetInput = {
@@ -110,7 +110,7 @@ export type GetGenreSetsInput = {
 };
 
 export type GetGenresInput = {
-  genreSetDatabaseId?: InputMaybe<Scalars['String']['input']>;
+  genreSetId: Scalars['String']['input'];
 };
 
 export type GetQuizInput = {
@@ -253,7 +253,7 @@ export type Query = {
 
 
 export type QueryGetGenreArgs = {
-  input?: InputMaybe<GetGenreInput>;
+  input: GetGenreInput;
 };
 
 
@@ -268,7 +268,7 @@ export type QueryGetGenreSetsArgs = {
 
 
 export type QueryGetGenresArgs = {
-  input?: InputMaybe<GetGenresInput>;
+  input: GetGenresInput;
 };
 
 
@@ -335,12 +335,12 @@ export type QuizList = Node & {
 };
 
 export type UpdateGenreInput = {
-  color?: InputMaybe<Scalars['String']['input']>;
-  databaseId: Scalars['String']['input'];
-  description?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  parentGenreDatabaseId?: InputMaybe<Scalars['String']['input']>;
-  ratio?: InputMaybe<Scalars['Int']['input']>;
+  color: Scalars['String']['input'];
+  description: Scalars['String']['input'];
+  id: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  parentGenreId?: InputMaybe<Scalars['String']['input']>;
+  ratio: Scalars['Int']['input'];
 };
 
 export type UpdateGenreSetInput = {
@@ -401,40 +401,42 @@ export enum UserRole {
   User = 'USER'
 }
 
+export type GenreDataFragment = { __typename?: 'Genre', id: string, description: string, name: string, ratio: number, color: string };
+
 export type CreateGenreMutationVariables = Exact<{
   input: CreateGenreInput;
 }>;
 
 
-export type CreateGenreMutation = { __typename?: 'Mutation', createGenre: { __typename?: 'Genre', databaseId: string, id: string } };
+export type CreateGenreMutation = { __typename?: 'Mutation', createGenre: { __typename?: 'Genre', id: string, description: string, name: string, ratio: number, color: string } };
 
 export type DeleteGenreMutationVariables = Exact<{
   input: DeleteGenreInput;
 }>;
 
 
-export type DeleteGenreMutation = { __typename?: 'Mutation', deleteGenre: { __typename?: 'Genre', id: string, databaseId: string } };
+export type DeleteGenreMutation = { __typename?: 'Mutation', deleteGenre: { __typename?: 'Genre', id: string, description: string, name: string, ratio: number, color: string } };
 
 export type GetGenreQueryVariables = Exact<{
-  input?: InputMaybe<GetGenreInput>;
+  input: GetGenreInput;
 }>;
 
 
-export type GetGenreQuery = { __typename?: 'Query', getGenre: { __typename?: 'Genre', databaseId: string, id: string, description: string, name: string, ratio: number, color: string } };
+export type GetGenreQuery = { __typename?: 'Query', getGenre: { __typename?: 'Genre', id: string, description: string, name: string, ratio: number, color: string } };
 
 export type GetGenreDetailPageDataQueryVariables = Exact<{
   input: GetGenreSetInput;
 }>;
 
 
-export type GetGenreDetailPageDataQuery = { __typename?: 'Query', getGenreSet: { __typename?: 'GenreSet', id: string, databaseId: string, name: string, genres: Array<{ __typename?: 'Genre', id: string, databaseId: string, name: string, description: string, ratio: number, color: string, createdAt: any, parentGenre?: { __typename?: 'Genre', id: string } | null, childGenres: Array<{ __typename?: 'Genre', id: string }> }> } };
+export type GetGenreDetailPageDataQuery = { __typename?: 'Query', getGenreSet: { __typename?: 'GenreSet', id: string, name: string, description: string, genres: Array<{ __typename?: 'Genre', createdAt: any, id: string, description: string, name: string, ratio: number, color: string, parentGenre?: { __typename?: 'Genre', id: string } | null, childGenres: Array<{ __typename?: 'Genre', id: string }> }> } };
 
 export type UpdateGenreMutationVariables = Exact<{
   input: UpdateGenreInput;
 }>;
 
 
-export type UpdateGenreMutation = { __typename?: 'Mutation', updateGenre: { __typename?: 'Genre', databaseId: string, id: string } };
+export type UpdateGenreMutation = { __typename?: 'Mutation', updateGenre: { __typename?: 'Genre', id: string, description: string, name: string, ratio: number, color: string } };
 
 export type GenreSetDataFragment = { __typename?: 'GenreSet', id: string, name: string, description: string };
 
@@ -579,6 +581,15 @@ export type UpdateLoginUserMutationVariables = Exact<{
 
 export type UpdateLoginUserMutation = { __typename?: 'Mutation', updateLoginUser: { __typename?: 'User', id: string } };
 
+export const GenreDataFragmentDoc = gql`
+    fragment GenreData on Genre {
+  id
+  description
+  name
+  ratio
+  color
+}
+    `;
 export const GenreSetDataFragmentDoc = gql`
     fragment GenreSetData on GenreSet {
   id
@@ -589,11 +600,10 @@ export const GenreSetDataFragmentDoc = gql`
 export const CreateGenreDocument = gql`
     mutation CreateGenre($input: CreateGenreInput!) {
   createGenre(input: $input) {
-    databaseId
-    id
+    ...GenreData
   }
 }
-    `;
+    ${GenreDataFragmentDoc}`;
 export type CreateGenreMutationFn = Apollo.MutationFunction<CreateGenreMutation, CreateGenreMutationVariables>;
 
 /**
@@ -623,11 +633,10 @@ export type CreateGenreMutationOptions = Apollo.BaseMutationOptions<CreateGenreM
 export const DeleteGenreDocument = gql`
     mutation DeleteGenre($input: DeleteGenreInput!) {
   deleteGenre(input: $input) {
-    id
-    databaseId
+    ...GenreData
   }
 }
-    `;
+    ${GenreDataFragmentDoc}`;
 export type DeleteGenreMutationFn = Apollo.MutationFunction<DeleteGenreMutation, DeleteGenreMutationVariables>;
 
 /**
@@ -655,17 +664,12 @@ export type DeleteGenreMutationHookResult = ReturnType<typeof useDeleteGenreMuta
 export type DeleteGenreMutationResult = Apollo.MutationResult<DeleteGenreMutation>;
 export type DeleteGenreMutationOptions = Apollo.BaseMutationOptions<DeleteGenreMutation, DeleteGenreMutationVariables>;
 export const GetGenreDocument = gql`
-    query GetGenre($input: GetGenreInput) {
+    query GetGenre($input: GetGenreInput!) {
   getGenre(input: $input) {
-    databaseId
-    id
-    description
-    name
-    ratio
-    color
+    ...GenreData
   }
 }
-    `;
+    ${GenreDataFragmentDoc}`;
 
 /**
  * __useGetGenreQuery__
@@ -683,7 +687,7 @@ export const GetGenreDocument = gql`
  *   },
  * });
  */
-export function useGetGenreQuery(baseOptions?: Apollo.QueryHookOptions<GetGenreQuery, GetGenreQueryVariables>) {
+export function useGetGenreQuery(baseOptions: Apollo.QueryHookOptions<GetGenreQuery, GetGenreQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetGenreQuery, GetGenreQueryVariables>(GetGenreDocument, options);
       }
@@ -695,18 +699,11 @@ export type GetGenreQueryHookResult = ReturnType<typeof useGetGenreQuery>;
 export type GetGenreLazyQueryHookResult = ReturnType<typeof useGetGenreLazyQuery>;
 export type GetGenreQueryResult = Apollo.QueryResult<GetGenreQuery, GetGenreQueryVariables>;
 export const GetGenreDetailPageDataDocument = gql`
-    query getGenreDetailPageData($input: GetGenreSetInput!) {
+    query GetGenreDetailPageData($input: GetGenreSetInput!) {
   getGenreSet(input: $input) {
-    id
-    databaseId
-    name
+    ...GenreSetData
     genres {
-      id
-      databaseId
-      name
-      description
-      ratio
-      color
+      ...GenreData
       parentGenre {
         id
       }
@@ -717,7 +714,8 @@ export const GetGenreDetailPageDataDocument = gql`
     }
   }
 }
-    `;
+    ${GenreSetDataFragmentDoc}
+${GenreDataFragmentDoc}`;
 
 /**
  * __useGetGenreDetailPageDataQuery__
@@ -749,11 +747,10 @@ export type GetGenreDetailPageDataQueryResult = Apollo.QueryResult<GetGenreDetai
 export const UpdateGenreDocument = gql`
     mutation UpdateGenre($input: UpdateGenreInput!) {
   updateGenre(input: $input) {
-    databaseId
-    id
+    ...GenreData
   }
 }
-    `;
+    ${GenreDataFragmentDoc}`;
 export type UpdateGenreMutationFn = Apollo.MutationFunction<UpdateGenreMutation, UpdateGenreMutationVariables>;
 
 /**

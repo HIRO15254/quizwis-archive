@@ -1,34 +1,27 @@
-// "use client";
-
-// 各種import
 import {
-  TextInput, Textarea, NativeSelect, MANTINE_COLORS, NumberInput, Text, Grid,
+  Grid,
+  MANTINE_COLORS,
+  NativeSelect,
+  NumberInput,
+  Text,
+  Textarea,
+  TextInput,
 } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import React from 'react';
 
-import { FormModal, FormModalProps } from 'components/common/FormModal';
 import { GenreBadge } from 'components/common/GenreBadge';
 
-import type { GenreFormType } from '../../../_types/GenreFormType';
+import { GenreFormType } from '../../_types/GenreFormType';
 
-interface GenreFormModalProps extends FormModalProps {
-  form: UseFormReturnType<GenreFormType>;
+interface Props {
+  form: UseFormReturnType<GenreFormType>
 }
 
-/**
- * ジャンル関係のモーダルの共通部分
- */
-export const GenreFormModal: React.FC<GenreFormModalProps> = (props) => {
-  const {
-    form,
-    ...other
-  } = props;
-
+export const GenreForm: React.FC<Props> = (props) => {
+  const { form } = props;
   return (
-    <FormModal
-      {...other}
-    >
+    <>
       <Grid>
         <Grid.Col span={8}>
           <TextInput
@@ -64,6 +57,6 @@ export const GenreFormModal: React.FC<GenreFormModalProps> = (props) => {
         min={0}
         {...form.getInputProps('ratio')}
       />
-    </FormModal>
+    </>
   );
 };

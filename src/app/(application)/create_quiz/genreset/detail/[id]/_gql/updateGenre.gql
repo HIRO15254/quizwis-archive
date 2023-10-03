@@ -1,6 +1,5 @@
 mutation UpdateGenre($input: UpdateGenreInput!) {
   updateGenre(input: $input) {
-    databaseId
-    id
+    ...GenreData
   }
 }
