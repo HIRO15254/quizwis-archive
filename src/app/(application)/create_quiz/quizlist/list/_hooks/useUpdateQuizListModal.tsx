@@ -43,7 +43,7 @@ export const useUpdateQuizListModal = () => {
           description: res.getQuizList.description,
           genreSetId: res.getQuizList.genreSet?.id,
           useGoal: !!res.getQuizList.goal && res.getQuizList.goal > 0,
-          goal: res.getQuizList.goal,
+          goal: res.getQuizList.goal ?? 100,
         });
       },
     });
