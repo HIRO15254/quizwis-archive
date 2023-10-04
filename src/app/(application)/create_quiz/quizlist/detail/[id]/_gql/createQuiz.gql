@@ -1,6 +1,0 @@
-mutation CreateQuiz($input: CreateQuizInput!) {
-  createQuiz(input: $input) {
-    id
-    databaseId
-  }
-}

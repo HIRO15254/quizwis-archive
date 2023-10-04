@@ -1,5 +1,0 @@
-mutation DeleteGenre($input: DeleteGenreInput!) {
-  deleteGenre(input: $input) {
-    ...GenreData
-  }
-}

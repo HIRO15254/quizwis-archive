@@ -1,5 +1,0 @@
-mutation UpdateGenre($input: UpdateGenreInput!) {
-  updateGenre(input: $input) {
-    ...GenreData
-  }
-}

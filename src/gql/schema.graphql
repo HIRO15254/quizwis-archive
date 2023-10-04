@@ -51,7 +51,7 @@ type Genre implements Node {
   genreSet: GenreSet!
   id: ID!
   name: String!
-  parentGenre: Genre!
+  parentGenre: Genre
   quizzes: [Quiz!]!
   ratio: Int!
   updatedAt: Date!
@@ -90,15 +90,11 @@ input GetGenreSetInput {
 }
 
 input GetGenreSetsInput {
-  userDatabaseId: String
-}
-
-input GetGenresInput {
-  genreSetId: String!
+  userId: String!
 }
 
 input GetQuizInput {
-  databaseId: String
+  id: String!
 }
 
 input GetQuizListInput {
@@ -106,15 +102,7 @@ input GetQuizListInput {
 }
 
 input GetQuizListsInput {
-  userId: String
-}
-
-input GetQuizzesInput {
-  cursorDatabaseId: String
-  genreId: String
-  page: Int! = 1
-  quizListDatabaseId: String
-  take: Int! = 10
+  userId: String!
 }
 
 input GetUserInput {
@@ -147,11 +135,9 @@ type Query {
   getGenre(input: GetGenreInput!): Genre!
   getGenreSet(input: GetGenreSetInput!): GenreSet!
   getGenreSets(input: GetGenreSetsInput): [GenreSet!]!
-  getGenres(input: GetGenresInput!): [Genre!]!
-  getQuiz(input: GetQuizInput): Quiz!
+  getQuiz(input: GetQuizInput!): Quiz!
   getQuizList(input: GetQuizListInput!): QuizList!
   getQuizLists(input: GetQuizListsInput): [QuizList!]!
-  getQuizzes(input: GetQuizzesInput!): [Quiz!]!
   getUser(input: GetUserInput!): User!
   loginUser: User!
   node(id: ID!): Node

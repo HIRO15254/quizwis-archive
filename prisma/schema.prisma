@@ -56,6 +56,7 @@ model User {
 
 model QuizList {
   databaseId String @id @default(cuid())
+
   name String
   description String?
 

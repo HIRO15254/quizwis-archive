@@ -1,0 +1,14 @@
+fragment QuizData on Quiz {
+  id
+  question
+  answer
+  otherAnswer
+  explanation
+  source
+  length
+  genre {
+    id
+    name
+    color
+  }
+}

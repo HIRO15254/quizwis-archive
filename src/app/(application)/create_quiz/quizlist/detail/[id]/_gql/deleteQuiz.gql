@@ -1,6 +1,0 @@
-mutation DeleteQuiz($input: DeleteQuizInput!) {
-  deleteQuiz(input: $input) {
-    id
-    databaseId
-  }
-}

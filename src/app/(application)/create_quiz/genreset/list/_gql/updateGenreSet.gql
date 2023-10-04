@@ -1,5 +1,0 @@
-mutation UpdateGenreSet($input: UpdateGenreSetInput!) {
-  updateGenreSet(input: $input) {
-    ...GenreSetData
-  }
-}

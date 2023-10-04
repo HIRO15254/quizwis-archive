@@ -5,7 +5,7 @@ import { prisma } from '../../lib/prisma';
 type Args<T> = {
   userId: string;
   targetId: T;
-  expectedTypeName?: string;
+  expectedTypeName?: 'User' | 'QuizList' | 'Quiz' | 'GenreSet' | 'Genre';
 };
 
 type Return = {
@@ -40,6 +40,12 @@ const trueCheckId = async (args: Args<string>): Promise<Return> => {
   }
 
   // 管理者以外の場合の型ごとの処理
+  if (typename === 'User') {
+    if (userId === databaseId) {
+      return { typename, databaseId };
+    }
+    throw new Error('権限がありません。');
+  }
   if (typename === 'QuizList') {
     const quizList = await prisma.quizList.findUniqueOrThrow(
       {
@@ -48,6 +54,18 @@ const trueCheckId = async (args: Args<string>): Promise<Return> => {
       },
     );
     if (quizList?.user.userId === userId) {
+      return { typename, databaseId };
+    }
+    throw new Error('権限がありません。');
+  }
+  if (typename === 'Quiz') {
+    const quiz = await prisma.quiz.findUniqueOrThrow(
+      {
+        where: { databaseId },
+        include: { quizList: { include: { user: true } } },
+      },
+    );
+    if (quiz?.quizList.user.userId === userId) {
       return { typename, databaseId };
     }
     throw new Error('権限がありません。');

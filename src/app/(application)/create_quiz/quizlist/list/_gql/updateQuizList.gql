@@ -1,5 +1,0 @@
-mutation UpdateQuizList($input: UpdateQuizListInput!) {
-  updateQuizList(input: $input) {
-    ...QuizListData
-  }
-}

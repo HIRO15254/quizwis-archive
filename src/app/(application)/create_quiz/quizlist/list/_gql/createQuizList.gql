@@ -1,5 +1,0 @@
-mutation CreateQuizList($input: CreateQuizListInput!) {
-  createQuizList(input: $input) {
-    ...QuizListData
-  }
-}
