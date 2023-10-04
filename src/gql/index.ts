@@ -20,27 +20,18 @@ export type Scalars = {
 };
 
 export type CreateGenreInput = {
-  color: Scalars['String']['input'];
-  description: Scalars['String']['input'];
+  data: GenreInputData;
   genreSetId: Scalars['String']['input'];
-  name: Scalars['String']['input'];
   parentGenreId?: InputMaybe<Scalars['String']['input']>;
-  ratio: Scalars['Int']['input'];
 };
 
 export type CreateGenreSetInput = {
-  description: Scalars['String']['input'];
-  name: Scalars['String']['input'];
+  data: GenreSetInputData;
 };
 
 export type CreateQuizInput = {
-  answer?: Scalars['String']['input'];
-  explanation?: Scalars['String']['input'];
-  length?: Scalars['Int']['input'];
-  otherAnswer?: Scalars['String']['input'];
-  question?: Scalars['String']['input'];
-  quizListDatabaseId: Scalars['String']['input'];
-  source?: Scalars['String']['input'];
+  data: QuizInputData;
+  quizListId: Scalars['String']['input'];
 };
 
 export type CreateQuizListInput = {
@@ -56,7 +47,7 @@ export type DeleteGenreSetInput = {
 };
 
 export type DeleteQuizInput = {
-  quizDatabaseId: Scalars['String']['input'];
+  id: Scalars['String']['input'];
 };
 
 export type DeleteQuizListInput = {
@@ -83,6 +74,13 @@ export type Genre = Node & {
   updatedAt: Scalars['Date']['output'];
 };
 
+export type GenreInputData = {
+  color?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+  ratio: Scalars['Int']['input'];
+};
+
 export type GenreSet = Node & {
   __typename?: 'GenreSet';
   createdAt: Scalars['Date']['output'];
@@ -94,6 +92,11 @@ export type GenreSet = Node & {
   quizLists: Array<QuizList>;
   updatedAt: Scalars['Date']['output'];
   user: User;
+};
+
+export type GenreSetInputData = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
 };
 
 export type GetGenreInput = {
@@ -322,6 +325,16 @@ export type Quiz = Node & {
   user: User;
 };
 
+export type QuizInputData = {
+  answer?: InputMaybe<Scalars['String']['input']>;
+  explanation?: InputMaybe<Scalars['String']['input']>;
+  genreId?: InputMaybe<Scalars['String']['input']>;
+  length: Scalars['Int']['input'];
+  otherAnswer?: InputMaybe<Scalars['String']['input']>;
+  question?: InputMaybe<Scalars['String']['input']>;
+  source?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type QuizList = Node & {
   __typename?: 'QuizList';
   databaseId: Scalars['String']['output'];
@@ -343,18 +356,13 @@ export type QuizListInputData = {
 };
 
 export type UpdateGenreInput = {
-  color: Scalars['String']['input'];
-  description: Scalars['String']['input'];
+  data: GenreInputData;
   id: Scalars['String']['input'];
-  name: Scalars['String']['input'];
-  parentGenreId?: InputMaybe<Scalars['String']['input']>;
-  ratio: Scalars['Int']['input'];
 };
 
 export type UpdateGenreSetInput = {
-  description: Scalars['String']['input'];
+  data: GenreSetInputData;
   id: Scalars['String']['input'];
-  name: Scalars['String']['input'];
 };
 
 export type UpdateLoginUserInput = {
@@ -365,14 +373,8 @@ export type UpdateLoginUserInput = {
 };
 
 export type UpdateQuizInput = {
-  answer?: InputMaybe<Scalars['String']['input']>;
-  explanation?: InputMaybe<Scalars['String']['input']>;
-  genreName?: InputMaybe<Scalars['String']['input']>;
-  length?: InputMaybe<Scalars['Int']['input']>;
-  otherAnswer?: InputMaybe<Scalars['String']['input']>;
-  question?: InputMaybe<Scalars['String']['input']>;
-  quizDatabaseId: Scalars['String']['input'];
-  source?: InputMaybe<Scalars['String']['input']>;
+  data: QuizInputData;
+  id: Scalars['String']['input'];
 };
 
 export type UpdateQuizListInput = {

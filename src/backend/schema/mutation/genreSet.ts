@@ -3,7 +3,7 @@ import { checkId } from '../../util/checkId';
 import { builder } from '../builder';
 import { GenreSet } from '../object/genreSet';
 
-const GenreSetInputData = builder.inputType('GenreSetInput', {
+const GenreSetInputData = builder.inputType('GenreSetInputData', {
   fields: (t) => ({
     name: t.string({ required: true }),
     description: t.string(),

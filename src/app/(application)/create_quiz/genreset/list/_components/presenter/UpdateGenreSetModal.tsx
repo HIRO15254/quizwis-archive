@@ -2,16 +2,11 @@
 import {
   Button, Group, LoadingOverlay, Modal, ModalProps, Stack,
 } from '@mantine/core';
-import { UseFormReturnType } from '@mantine/form';
 import { getHotkeyHandler } from '@mantine/hooks';
-import React from 'react';
-
-import { UpdateGenreSetInput } from 'gql';
-
-import { GenreSetForm } from './GenreSetForm';
+import React, { ReactNode } from 'react';
 
 export interface Props extends ModalProps {
-  form: UseFormReturnType<Omit<UpdateGenreSetInput, 'id'>>;
+  genreSetForm: ReactNode;
   onSubmit: () => void;
   loading?: boolean;
   submitButtonLoading?: boolean;
@@ -22,7 +17,7 @@ export interface Props extends ModalProps {
  */
 export const UpdateGenreSetModal: React.FC<Props> = (props) => {
   const {
-    form,
+    genreSetForm,
     onSubmit,
     loading = false,
     submitButtonLoading = false,
@@ -40,7 +35,7 @@ export const UpdateGenreSetModal: React.FC<Props> = (props) => {
       <form onSubmit={onSubmit}>
         <Stack>
           <LoadingOverlay visible={loading} />
-          <GenreSetForm form={form} />
+          {genreSetForm}
           <Group position="right">
             <Button
               type="submit"

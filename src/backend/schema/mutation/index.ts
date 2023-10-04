@@ -3,7 +3,5 @@ import './user/updateUser';
 import './user/updateLoginUser';
 import './quizList';
 import './quiz';
-import './quiz/deleteQuiz';
-import './quiz/updateQuiz';
 import './genre';
 import './genreSet';

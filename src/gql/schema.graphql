@@ -1,25 +1,16 @@
 input CreateGenreInput {
-  color: String!
-  description: String!
+  data: GenreInputData!
   genreSetId: String!
-  name: String!
   parentGenreId: String
-  ratio: Int!
 }
 
 input CreateGenreSetInput {
-  description: String!
-  name: String!
+  data: GenreSetInputData!
 }
 
 input CreateQuizInput {
-  answer: String! = ""
-  explanation: String! = ""
-  length: Int! = 0
-  otherAnswer: String! = ""
-  question: String! = ""
-  quizListDatabaseId: String!
-  source: String! = ""
+  data: QuizInputData!
+  quizListId: String!
 }
 
 input CreateQuizListInput {
@@ -40,7 +31,7 @@ input DeleteGenreSetInput {
 }
 
 input DeleteQuizInput {
-  quizDatabaseId: String!
+  id: String!
 }
 
 input DeleteQuizListInput {
@@ -66,6 +57,13 @@ type Genre implements Node {
   updatedAt: Date!
 }
 
+input GenreInputData {
+  color: String
+  description: String
+  name: String!
+  ratio: Int!
+}
+
 type GenreSet implements Node {
   createdAt: Date!
   databaseId: String!
@@ -76,6 +74,11 @@ type GenreSet implements Node {
   quizLists: [QuizList!]!
   updatedAt: Date!
   user: User!
+}
+
+input GenreSetInputData {
+  description: String
+  name: String!
 }
 
 input GetGenreInput {
@@ -171,6 +174,16 @@ type Quiz implements Node {
   user: User!
 }
 
+input QuizInputData {
+  answer: String
+  explanation: String
+  genreId: String
+  length: Int!
+  otherAnswer: String
+  question: String
+  source: String
+}
+
 type QuizList implements Node {
   databaseId: String!
   description: String
@@ -191,18 +204,13 @@ input QuizListInputData {
 }
 
 input UpdateGenreInput {
-  color: String!
-  description: String!
+  data: GenreInputData!
   id: String!
-  name: String!
-  parentGenreId: String
-  ratio: Int!
 }
 
 input UpdateGenreSetInput {
-  description: String!
+  data: GenreSetInputData!
   id: String!
-  name: String!
 }
 
 input UpdateLoginUserInput {
@@ -213,14 +221,8 @@ input UpdateLoginUserInput {
 }
 
 input UpdateQuizInput {
-  answer: String
-  explanation: String
-  genreName: String
-  length: Int
-  otherAnswer: String
-  question: String
-  quizDatabaseId: String!
-  source: String
+  data: QuizInputData!
+  id: String!
 }
 
 input UpdateQuizListInput {

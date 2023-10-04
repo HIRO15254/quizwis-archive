@@ -1,31 +1,22 @@
-import { isNotEmpty, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import React, { useState } from 'react';
 
 import { useUpdateGenreMutation, useGetGenreLazyQuery } from 'gql';
 import { errorNotification, successNotification } from 'util/notifications';
 
+import { useGenreForm } from './useGenreForm';
 import { UpdateGenreModal } from '../_components/presenter/UpdateGenreModal';
-
-import type { GenreFormType } from '../_types/GenreFormType';
 
 export const useUpdateGenreModal = () => {
   const [opened, handlers] = useDisclosure();
   const [updateGenre, { loading: mutationLoading }] = useUpdateGenreMutation();
-  const [getGenre, { loading }] = useGetGenreLazyQuery({ fetchPolicy: 'cache-and-network' });
+  const [getGenre, { loading }] = useGetGenreLazyQuery();
   const [id, setId] = useState<string>('');
 
-  const form = useForm<GenreFormType>({
-    initialValues: {
-      name: '',
-      description: '',
-      ratio: 5,
-      color: 'gray',
-    },
-    validate: {
-      name: isNotEmpty('このフィールドは必須です'),
-    },
-  });
+  const {
+    form,
+    genreForm,
+  } = useGenreForm();
 
   const open = async (openId: string) => {
     handlers.open();
@@ -53,7 +44,7 @@ export const useUpdateGenreModal = () => {
       variables: {
         input: {
           id,
-          ...values,
+          data: values,
         },
       },
       onCompleted: () => {
@@ -71,7 +62,7 @@ export const useUpdateGenreModal = () => {
     opened,
     onClose: handlers.close,
     onSubmit,
-    form,
+    genreForm,
     loading,
     buttonLoading: mutationLoading,
   };

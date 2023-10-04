@@ -1,10 +1,10 @@
-import { isNotEmpty, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import React from 'react';
 
-import { CreateGenreSetInput, useCreateGenreSetMutation } from 'gql';
+import { useCreateGenreSetMutation } from 'gql';
 import { errorNotification, successNotification } from 'util/notifications';
 
+import { useGenreSetForm } from './useGenreSetForm';
 import { CreateGenreSetModal } from '../_components/presenter/CreateGenreSetModal';
 
 type Return = {
@@ -20,15 +20,10 @@ export const useCreateGenreSetModal = (): Return => {
   const [opened, handlers] = useDisclosure();
   const [createGenreSetMutation, { loading }] = useCreateGenreSetMutation();
 
-  const form = useForm<CreateGenreSetInput>({
-    initialValues: {
-      name: '',
-      description: '',
-    },
-    validate: {
-      name: isNotEmpty('このフィールドは必須です'),
-    },
-  });
+  const {
+    form,
+    genreSetForm,
+  } = useGenreSetForm();
 
   const createGenreSet = () => {
     form.reset();
@@ -38,7 +33,9 @@ export const useCreateGenreSetModal = (): Return => {
   const onSubmit = form.onSubmit(async (values) => {
     await createGenreSetMutation({
       variables: {
-        input: values,
+        input: {
+          data: values,
+        },
       },
       onCompleted: () => {
         successNotification({ message: 'ジャンルセットを作成しました' });
@@ -56,7 +53,7 @@ export const useCreateGenreSetModal = (): Return => {
     onClose: handlers.close,
     onSubmit,
     submitButtonLoading: loading,
-    form,
+    genreSetForm,
   };
 
   return {

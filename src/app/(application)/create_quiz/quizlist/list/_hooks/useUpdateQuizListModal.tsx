@@ -1,13 +1,11 @@
-import { isNotEmpty, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import React, { useState } from 'react';
 
-import { useUpdateQuizListMutation, useGetQuizListLazyQuery, useGetGenreSetsQuery } from 'gql';
+import { useUpdateQuizListMutation, useGetQuizListLazyQuery } from 'gql';
 import { errorNotification, successNotification } from 'util/notifications';
 
+import { useQuizListForm } from './useQuizListForm';
 import { UpdateQuizListModal } from '../_components/presenter/UpdateQuizListModal';
-import { QuizListFormType } from '../_types/QuizListFormType';
-import { quizListMutationInputData, useQuizListForm } from '../utils/quizListFormUtils';
 
 export const useUpdateQuizListModal = () => {
   const [opened, handlers] = useDisclosure(false);
@@ -19,13 +17,14 @@ export const useUpdateQuizListModal = () => {
     getQuizList,
     { loading: getQuizListLoading },
   ] = useGetQuizListLazyQuery();
-  const {
-    data: genreSetData,
-    loading: getGenreSetLoading,
-  } = useGetGenreSetsQuery();
   const [id, setId] = useState<string>('');
 
-  const form = useQuizListForm();
+  const {
+    form,
+    loading: quizListFormLoading,
+    quizListForm,
+    toQuizListInput,
+  } = useQuizListForm();
 
   const open = async (openId: string) => {
     setId(openId);
@@ -54,7 +53,7 @@ export const useUpdateQuizListModal = () => {
       variables: {
         input: {
           id,
-          data: quizListMutationInputData(values),
+          data: toQuizListInput(values),
         },
       },
       onCompleted: () => {
@@ -72,9 +71,8 @@ export const useUpdateQuizListModal = () => {
     opened,
     onClose: handlers.close,
     onSubmit,
-    form,
-    genreSetData: genreSetData?.getGenreSets ?? [],
-    loading: getQuizListLoading || getGenreSetLoading,
+    quizListForm,
+    loading: getQuizListLoading || quizListFormLoading,
     buttonLoading: mutationLoading,
   };
 

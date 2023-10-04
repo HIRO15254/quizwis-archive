@@ -1,11 +1,11 @@
 import { useDisclosure } from '@mantine/hooks';
 import React from 'react';
 
-import { useCreateQuizListMutation, useGetGenreSetsQuery } from 'gql';
+import { useCreateQuizListMutation } from 'gql';
 import { errorNotification, successNotification } from 'util/notifications';
 
+import { useQuizListForm } from './useQuizListForm';
 import { CreateQuizListModal } from '../_components/presenter/CreateQuizListModal';
-import { quizListMutationInputData, useQuizListForm } from '../utils/quizListFormUtils';
 
 export const useCreateQuizListModal = () => {
   const [opened, handlers] = useDisclosure(false);
@@ -13,12 +13,13 @@ export const useCreateQuizListModal = () => {
     createQuizList,
     { loading: mutationLoading },
   ] = useCreateQuizListMutation();
-  const {
-    data: genreSetData,
-    loading,
-  } = useGetGenreSetsQuery();
 
-  const form = useQuizListForm();
+  const {
+    form,
+    loading,
+    quizListForm,
+    toQuizListInput,
+  } = useQuizListForm();
 
   const open = () => {
     form.reset();
@@ -29,7 +30,7 @@ export const useCreateQuizListModal = () => {
     await createQuizList({
       variables: {
         input: {
-          data: quizListMutationInputData(values),
+          data: toQuizListInput(values),
         },
       },
       onCompleted: () => {
@@ -47,8 +48,7 @@ export const useCreateQuizListModal = () => {
     opened,
     onClose: handlers.close,
     onSubmit,
-    form,
-    genreSetData: genreSetData?.getGenreSets ?? [],
+    quizListForm,
     loading,
     buttonLoading: mutationLoading,
   };

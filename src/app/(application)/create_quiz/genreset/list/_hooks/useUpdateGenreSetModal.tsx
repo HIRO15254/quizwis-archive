@@ -1,10 +1,10 @@
-import { isNotEmpty, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import React, { useState } from 'react';
 
-import { useUpdateGenreSetMutation, useGetGenreSetLazyQuery, UpdateGenreSetInput } from 'gql';
+import { useUpdateGenreSetMutation, useGetGenreSetLazyQuery } from 'gql';
 import { errorNotification, successNotification } from 'util/notifications';
 
+import { useGenreSetForm } from './useGenreSetForm';
 import { UpdateGenreSetModal } from '../_components/presenter/UpdateGenreSetModal';
 
 export const useUpdateGenreSetModal = () => {
@@ -22,15 +22,10 @@ export const useUpdateGenreSetModal = () => {
     setId,
   ] = useState<string>('');
 
-  const form = useForm<Omit<UpdateGenreSetInput, 'id'>>({
-    initialValues: {
-      name: '',
-      description: '',
-    },
-    validate: {
-      name: isNotEmpty('このフィールドは必須です'),
-    },
-  });
+  const {
+    form,
+    genreSetForm,
+  } = useGenreSetForm();
 
   const open = async (open_id: string) => {
     form.reset();
@@ -56,7 +51,7 @@ export const useUpdateGenreSetModal = () => {
       variables: {
         input: {
           id,
-          ...values,
+          data: values,
         },
       },
       onCompleted: () => {
@@ -74,7 +69,7 @@ export const useUpdateGenreSetModal = () => {
     opened,
     onClose: handlers.close,
     onSubmit,
-    form,
+    genreSetForm,
     loading,
     submitButtonLoading: mutationLoading,
   };

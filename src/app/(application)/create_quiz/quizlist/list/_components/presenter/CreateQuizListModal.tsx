@@ -2,18 +2,11 @@
 import {
   Button, Group, LoadingOverlay, Modal, ModalProps, Stack,
 } from '@mantine/core';
-import { UseFormReturnType } from '@mantine/form';
 import { getHotkeyHandler } from '@mantine/hooks';
-import React from 'react';
-
-import { GenreSetDataFragment } from 'gql';
-
-import { QuizListForm } from './QuizListForm';
-import { QuizListFormType } from '../../_types/QuizListFormType';
+import React, { ReactNode } from 'react';
 
 export interface Props extends ModalProps {
-  form: UseFormReturnType<QuizListFormType>;
-  genreSetData: GenreSetDataFragment[];
+  quizListForm: ReactNode;
   onSubmit: () => void;
   loading?: boolean;
   buttonLoading?: boolean;
@@ -24,8 +17,7 @@ export interface Props extends ModalProps {
  */
 export const CreateQuizListModal: React.FC<Props> = (props) => {
   const {
-    form,
-    genreSetData,
+    quizListForm,
     onSubmit,
     loading = false,
     buttonLoading = false,
@@ -43,10 +35,7 @@ export const CreateQuizListModal: React.FC<Props> = (props) => {
       <form onSubmit={onSubmit}>
         <Stack>
           <LoadingOverlay visible={loading} />
-          <QuizListForm
-            form={form}
-            genreSetData={genreSetData}
-          />
+          {quizListForm}
           <Group position="right">
             <Button
               type="submit"

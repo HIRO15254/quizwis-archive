@@ -1,4 +1,3 @@
-import { isNotEmpty, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import React, { useState } from 'react';
 
@@ -8,8 +7,8 @@ import {
 } from 'gql';
 import { errorNotification, successNotification } from 'util/notifications';
 
+import { useGenreForm } from './useGenreForm';
 import { CreateGenreModal } from '../_components/presenter/CreateGenreModal';
-import { GenreFormType } from '../_types/GenreFormType';
 
 type Props = {
   genreSetId: string;
@@ -31,25 +30,17 @@ export const useCreateGenreModal = (props: Props) => {
     getGenre,
     { loading: getGenreLoading },
   ] = useGetGenreLazyQuery();
+  const {
+    form,
+    genreForm,
+  } = useGenreForm();
 
-  const form = useForm<GenreFormType>({
-    initialValues: {
-      name: '',
-      description: '',
-      ratio: 5,
-      color: 'gray',
-    },
-    validate: {
-      name: isNotEmpty('このフィールドは必須です'),
-    },
-  });
-
-  const open = (openParentGenreId?: string) => {
+  const open = async (openParentGenreId?: string) => {
     setParentGenreId(openParentGenreId);
     form.reset();
     handlers.open();
     if (openParentGenreId) {
-      getGenre({
+      await getGenre({
         variables: {
           input: {
             id: openParentGenreId,
@@ -68,7 +59,7 @@ export const useCreateGenreModal = (props: Props) => {
         input: {
           genreSetId,
           parentGenreId,
-          ...values,
+          data: values,
         },
       },
       onCompleted: () => {
@@ -86,7 +77,7 @@ export const useCreateGenreModal = (props: Props) => {
     opened,
     onClose: handlers.close,
     onSubmit,
-    form,
+    genreForm,
     loading: getGenreLoading,
     buttonLoading: createGenreLoading,
   };

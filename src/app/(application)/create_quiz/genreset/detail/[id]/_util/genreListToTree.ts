@@ -1,9 +1,6 @@
-export interface GenreTreeData {
-  id: string;
-  ratio: number;
-  color: string;
-  name: string;
-  description?: string;
+import { GenreDataFragment } from 'gql';
+
+export interface GenreTreeData extends GenreDataFragment {
   parentGenre?: {
     id: string;
   } | null;

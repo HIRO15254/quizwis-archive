@@ -41,7 +41,7 @@ export const GenreForm: React.FC<Props> = (props) => {
       <Text size="sm">
         プレビュー
         <br />
-        <GenreBadge color={form.values.color}>
+        <GenreBadge color={form.values.color ?? 'gray'}>
           {form.values.name}
         </GenreBadge>
       </Text>
