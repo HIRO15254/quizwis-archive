@@ -1,5 +1,5 @@
 import { useDisclosure } from '@mantine/hooks';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { useDeleteQuizListMutation, useGetQuizListLazyQuery } from 'gql';
 import { errorNotification, successNotification } from 'util/notifications';
@@ -18,7 +18,7 @@ export const useDeleteQuizListModal = () => {
       data: quizListData,
       loading: getQuizListLoading,
     },
-  ] = useGetQuizListLazyQuery({ fetchPolicy: 'cache-and-network' });
+  ] = useGetQuizListLazyQuery();
 
   const [id, setId] = useState<string>('');
 

@@ -40,9 +40,9 @@ export const useUpdateGenreModal = () => {
       onCompleted: (res) => {
         form.setValues({
           name: res.getGenre.name,
-          description: res.getGenre.description,
+          description: res.getGenre.description ?? '',
           ratio: res.getGenre.ratio,
-          color: res.getGenre.color,
+          color: res.getGenre.color ?? 'gray',
         });
       },
     });

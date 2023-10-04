@@ -1,9 +1,7 @@
-import './deleteUser';
-import './updateUser';
-import './updateLoginUser';
-import './quizList/createQuizList';
-import './quizList/deleteQuizList';
-import './quizList/updateQuizList';
+import './user/deleteUser';
+import './user/updateUser';
+import './user/updateLoginUser';
+import './quizList';
 import './quiz/createQuiz';
 import './quiz/deleteQuiz';
 import './quiz/updateQuiz';

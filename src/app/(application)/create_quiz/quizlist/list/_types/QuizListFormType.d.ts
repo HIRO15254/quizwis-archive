@@ -1,5 +1,5 @@
-import { CreateQuizListInput } from 'gql';
+import { QuizListInputData } from 'gql';
 
-export interface QuizListFormType extends CreateQuizListInput {
+export interface QuizListFormType extends QuizListInputData {
   useGoal: boolean;
 }

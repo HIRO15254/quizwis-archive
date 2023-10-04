@@ -1,8 +1,9 @@
-import { prisma } from '../../../lib/prisma';
-import { builder } from '../builder';
+import { prisma } from '../../../../lib/prisma';
+import { builder } from '../../builder';
 
-const UpdateLoginUserInput = builder.inputType('UpdateLoginUserInput', {
+const UpdateUserInput = builder.inputType('UpdateUserInput', {
   fields: (t) => ({
+    userId: t.string({ required: true }),
     newUserId: t.string({ required: false }),
     name: t.string({ required: false }),
     email: t.string({ required: false }),
@@ -11,14 +12,14 @@ const UpdateLoginUserInput = builder.inputType('UpdateLoginUserInput', {
 });
 
 builder.mutationFields((t) => ({
-  updateLoginUser: t.prismaField({
+  updateUser: t.prismaField({
     type: 'User',
     args: {
-      input: t.arg({ type: UpdateLoginUserInput, required: true }),
+      input: t.arg({ type: UpdateUserInput, required: true }),
     },
-    resolve: async (_query, _root, args, ctx, _info) => {
-      const ret = await prisma.user.update({
-        where: { userId: ctx.currentUserId },
+    resolve: (_query, _root, args, _ctx, _info) => {
+      const ret = prisma.user.update({
+        where: { userId: args.input?.userId },
         data: {
           userId: args.input.newUserId,
           name: args.input.name,

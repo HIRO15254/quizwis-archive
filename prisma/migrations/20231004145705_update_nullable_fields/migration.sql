@@ -1,0 +1,18 @@
+-- AlterTable
+ALTER TABLE "Genre" ALTER COLUMN "description" DROP NOT NULL,
+ALTER COLUMN "color" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "GenreSet" ALTER COLUMN "description" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "Quiz" ALTER COLUMN "question" DROP NOT NULL,
+ALTER COLUMN "answer" DROP NOT NULL,
+ALTER COLUMN "explanation" DROP NOT NULL,
+ALTER COLUMN "otherAnswer" DROP NOT NULL,
+ALTER COLUMN "source" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "QuizList" ALTER COLUMN "description" DROP NOT NULL,
+ALTER COLUMN "goal" DROP NOT NULL,
+ALTER COLUMN "goal" DROP DEFAULT;

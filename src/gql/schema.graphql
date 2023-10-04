@@ -23,10 +23,7 @@ input CreateQuizInput {
 }
 
 input CreateQuizListInput {
-  description: String!
-  genreSetId: String
-  goal: Int!
-  name: String!
+  data: QuizListInputData!
 }
 
 """
@@ -56,10 +53,10 @@ input DeleteUserInput {
 
 type Genre implements Node {
   childGenres: [Genre!]!
-  color: String!
+  color: String
   createdAt: Date!
   databaseId: String!
-  description: String!
+  description: String
   genreSet: GenreSet!
   id: ID!
   name: String!
@@ -70,12 +67,14 @@ type Genre implements Node {
 }
 
 type GenreSet implements Node {
+  createdAt: Date!
   databaseId: String!
-  description: String!
+  description: String
   genres: [Genre!]!
   id: ID!
   name: String!
   quizLists: [QuizList!]!
+  updatedAt: Date!
   user: User!
 }
 
@@ -157,29 +156,38 @@ type Query {
 }
 
 type Quiz implements Node {
-  answer: String!
+  answer: String
+  createdAt: Date!
   databaseId: String!
-  explanation: String!
-  genre: Genre
+  explanation: String
+  genre: Genre!
   id: ID!
   length: Int!
-  otherAnswer: String!
-  question: String!
+  otherAnswer: String
+  question: String
   quizList: QuizList!
-  source: String!
+  source: String
+  updatedAt: Date!
   user: User!
 }
 
 type QuizList implements Node {
   databaseId: String!
-  description: String!
-  genreSet: GenreSet!
-  goal: Int!
+  description: String
+  genreSet: GenreSet
+  goal: Int
   id: ID!
   name: String!
   quizCount: Int!
   quizzes: [Quiz!]!
   user: User!
+}
+
+input QuizListInputData {
+  description: String
+  genreSetId: String
+  goal: Int
+  name: String!
 }
 
 input UpdateGenreInput {
@@ -216,11 +224,8 @@ input UpdateQuizInput {
 }
 
 input UpdateQuizListInput {
-  description: String!
-  genreSetId: String
-  goal: Int!
+  data: QuizListInputData!
   id: String!
-  name: String!
 }
 
 input UpdateUserInput {
@@ -232,14 +237,17 @@ input UpdateUserInput {
 }
 
 type User implements Node {
+  createdAt: Date!
   databaseId: String!
   email: String
+  genreSets: [GenreSet!]!
   id: ID!
   image: String
   name: String
   quizLists: [QuizList!]!
   quizzes: [Quiz!]!
   role: UserRole!
+  updatedAt: Date!
   userId: String
 }
 

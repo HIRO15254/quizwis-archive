@@ -1,5 +1,5 @@
-import { prisma } from '../../../lib/prisma';
-import { builder } from '../builder';
+import { prisma } from '../../../../lib/prisma';
+import { builder } from '../../builder';
 
 const DeleteUserInput = builder.inputType('DeleteUserInput', {
   fields: (t) => ({

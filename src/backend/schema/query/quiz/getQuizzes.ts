@@ -30,7 +30,7 @@ builder.queryField('getQuizzes', (t) => t.prismaField({
       }
       const quizzes = await prisma.quiz.findMany({
         where: {
-          quizlistId: args.input.quizListDatabaseId,
+          quizListId: args.input.quizListDatabaseId,
           genre: {
             databaseId: args.input.genreId ? args.input.genreId : undefined,
           },

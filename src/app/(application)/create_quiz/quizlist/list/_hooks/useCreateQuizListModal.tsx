@@ -1,4 +1,3 @@
-import { isNotEmpty, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import React from 'react';
 
@@ -6,8 +5,7 @@ import { useCreateQuizListMutation, useGetGenreSetsQuery } from 'gql';
 import { errorNotification, successNotification } from 'util/notifications';
 
 import { CreateQuizListModal } from '../_components/presenter/CreateQuizListModal';
-
-import type { QuizListFormType } from '../_types/QuizListFormType';
+import { quizListMutationInputData, useQuizListForm } from '../utils/quizListFormUtils';
 
 export const useCreateQuizListModal = () => {
   const [opened, handlers] = useDisclosure(false);
@@ -20,18 +18,7 @@ export const useCreateQuizListModal = () => {
     loading,
   } = useGetGenreSetsQuery();
 
-  const form = useForm<QuizListFormType>({
-    initialValues: {
-      name: '',
-      description: '',
-      genreSetId: '',
-      useGoal: false,
-      goal: 100,
-    },
-    validate: {
-      name: isNotEmpty('このフィールドは必須です'),
-    },
-  });
+  const form = useQuizListForm();
 
   const open = () => {
     form.reset();
@@ -42,10 +29,7 @@ export const useCreateQuizListModal = () => {
     await createQuizList({
       variables: {
         input: {
-          name: values.name,
-          description: values.description,
-          genreSetId: values.genreSetId,
-          goal: values.useGoal ? values.goal : 0,
+          data: quizListMutationInputData(values),
         },
       },
       onCompleted: () => {

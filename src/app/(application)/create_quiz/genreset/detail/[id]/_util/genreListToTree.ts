@@ -3,7 +3,7 @@ export interface GenreTreeData {
   ratio: number;
   color: string;
   name: string;
-  description: string;
+  description?: string;
   parentGenre?: {
     id: string;
   } | null;

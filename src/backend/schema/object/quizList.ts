@@ -5,12 +5,12 @@ export const QuizList = builder.prismaNode('QuizList', {
   id: { field: 'databaseId' },
   fields: (t) => ({
     databaseId: t.exposeString('databaseId'),
+
     user: t.relation('user'),
 
     name: t.exposeString('name'),
-    description: t.exposeString('description'),
-
-    goal: t.exposeInt('goal'),
+    description: t.exposeString('description', { nullable: true }),
+    goal: t.exposeInt('goal', { nullable: true }),
 
     genreSet: t.relation('genreSet', { nullable: true }),
     quizzes: t.relation('quizzes'),
@@ -18,10 +18,7 @@ export const QuizList = builder.prismaNode('QuizList', {
       type: 'Int',
       resolve: async (
         parent,
-        _args,
-        _ctx,
-        _info,
-      ) => prisma.quiz.count({ where: { quizlistId: parent.databaseId } }) ?? 0,
+      ) => prisma.quiz.count({ where: { quizListId: parent.databaseId } }) ?? 0,
     }),
   }),
 });

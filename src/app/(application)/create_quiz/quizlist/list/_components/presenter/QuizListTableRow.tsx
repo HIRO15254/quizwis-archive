@@ -43,12 +43,12 @@ export const QuizListTableRow: React.FC<Props> = (props) => {
         )}
       </td>
       <td style={{ whiteSpace: 'nowrap' }}>
-        {data.goal > 0 && (
+        {!!data.goal && (
           <Text>
             {`${data.quizCount}/${data.goal}`}
           </Text>
         )}
-        {data.goal === 0 && (
+        {!data.goal && (
           <Text>
             {data.quizCount}
           </Text>
@@ -70,13 +70,13 @@ export const QuizListTableRow: React.FC<Props> = (props) => {
         <Group spacing={3} noWrap>
           <TableActionIcon
             tooltip="編集"
-            onClick={operation.delete}
+            onClick={operation.update}
             Icon={IconPencil}
           />
           <TableActionIcon
             color="red"
             tooltip="削除"
-            onClick={operation.update}
+            onClick={operation.delete}
             Icon={IconTrash}
           />
         </Group>

@@ -7,6 +7,7 @@ import { errorNotification, successNotification } from 'util/notifications';
 
 import { UpdateQuizListModal } from '../_components/presenter/UpdateQuizListModal';
 import { QuizListFormType } from '../_types/QuizListFormType';
+import { quizListMutationInputData, useQuizListForm } from '../utils/quizListFormUtils';
 
 export const useUpdateQuizListModal = () => {
   const [opened, handlers] = useDisclosure(false);
@@ -24,18 +25,7 @@ export const useUpdateQuizListModal = () => {
   } = useGetGenreSetsQuery();
   const [id, setId] = useState<string>('');
 
-  const form = useForm<QuizListFormType>({
-    initialValues: {
-      name: '',
-      description: '',
-      genreSetId: '',
-      useGoal: false,
-      goal: 100,
-    },
-    validate: {
-      name: isNotEmpty('このフィールドは必須です'),
-    },
-  });
+  const form = useQuizListForm();
 
   const open = async (openId: string) => {
     setId(openId);
@@ -52,7 +42,7 @@ export const useUpdateQuizListModal = () => {
           name: res.getQuizList.name,
           description: res.getQuizList.description,
           genreSetId: res.getQuizList.genreSet?.id,
-          useGoal: res.getQuizList.goal > 0,
+          useGoal: !!res.getQuizList.goal && res.getQuizList.goal > 0,
           goal: res.getQuizList.goal,
         });
       },
@@ -64,10 +54,7 @@ export const useUpdateQuizListModal = () => {
       variables: {
         input: {
           id,
-          name: values.name,
-          description: values.description,
-          genreSetId: values.genreSetId ?? undefined,
-          goal: values.useGoal ? values.goal : 0,
+          data: quizListMutationInputData(values),
         },
       },
       onCompleted: () => {
