@@ -7,7 +7,7 @@ export const metadata = {
 };
 
 const QuizListPage = ({ params }: { params: { id: string } }) => (
-  <GenreTableContainer setId={params.id} />
+  <GenreTableContainer genreSetDatabaseId={params.id} />
 );
 
 export default QuizListPage;

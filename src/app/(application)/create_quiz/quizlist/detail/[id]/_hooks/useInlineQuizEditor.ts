@@ -17,12 +17,13 @@ import { Ruby } from 'util/tiptap/ruby';
 import { Editors } from '../_types/Editors';
 
 interface UseInlineQuizEditorProps {
-  reload: () => void;
   listId: string;
 }
 
 export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
-  const { reload, listId } = props;
+  const {
+    listId,
+  } = props;
 
   const [editingQuizId, setEditingQuizId] = useState<string | null>(null);
   const [updateQuiz] = useUpdateQuizMutation();
@@ -33,7 +34,7 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
     fetchPolicy: 'cache-and-network',
     variables: {
       input: {
-        databaseId: listId,
+        id: listId,
       },
     },
   });
@@ -59,15 +60,15 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
     (genre) => genre.childGenres.length === 0,
   ).map((genre) => {
     let val = '';
-    let parentId = genre.parentGenre?.databaseId;
+    let parentId = genre.parentGenre?.id;
     while (parentId) {
       const oldParentId = parentId;
-      const parent = genres?.find((g) => g.databaseId === oldParentId);
+      const parent = genres?.find((g) => g.id === oldParentId);
       val = `${parent?.name}${val ? '.' : ''}${val}`;
-      parentId = parent?.parentGenre?.databaseId;
+      parentId = parent?.parentGenre?.id;
     }
     return ({
-      value: genre.name,
+      value: genre.id,
       searchText: `${genre.name} ${val}`,
       label: genre.name,
       color: genre.color,
@@ -91,37 +92,36 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
   } as Editors;
 
   const newSetEditingQuizId = (id: string | null) => {
-    getQuiz({
-      variables: {
-        input: {
-          databaseId: id ?? '',
+    setEditingQuizId(id);
+    if (id !== null) {
+      getQuiz({
+        variables: {
+          input: {
+            id,
+          },
         },
-      },
-      onCompleted: (res) => {
-        const quiz = res.getQuiz;
-        questionEditor?.commands.setContent(quiz?.question ?? '', true);
-        answerEditor?.commands.setContent(quiz?.answer ?? '', true);
-        otherAnswerEditor?.commands.setContent(quiz?.otherAnswer ?? '', true);
-        explanationEditor?.commands.setContent(quiz?.explanation ?? '', true);
-        sourceEditor?.commands.setContent(quiz?.source ?? '', true);
-        form.setFieldValue('genre', quiz?.genre?.name ?? '');
-      },
-    }).then(() => {
-      setEditingQuizId(id);
-    });
+        onCompleted: (res) => {
+          const quiz = res.getQuiz;
+          questionEditor?.commands.setContent(quiz?.question ?? '', true);
+          answerEditor?.commands.setContent(quiz?.answer ?? '', true);
+          otherAnswerEditor?.commands.setContent(quiz?.otherAnswer ?? '', true);
+          explanationEditor?.commands.setContent(quiz?.explanation ?? '', true);
+          sourceEditor?.commands.setContent(quiz?.source ?? '', true);
+          form.setFieldValue('genre', quiz?.genre?.id ?? '');
+        },
+      });
+    }
   };
 
-  const createNewQuiz = () => {
-    createQuiz({
+  const createNewQuiz = async () => {
+    await createQuiz({
       variables: {
         input: {
-          quizListDatabaseId: listId,
+          quizListId: listId,
+          data: {},
         },
       },
-      onCompleted: (res) => {
-        newSetEditingQuizId(res.createQuiz.databaseId ?? null);
-        reload();
-      },
+      refetchQueries: ['GetQuizzes', 'GetQuizCount'],
     });
   };
 
@@ -131,23 +131,25 @@ export const useInlineQuizEditor = (props: UseInlineQuizEditorProps) => {
       updateQuiz({
         variables: {
           input: {
-            quizDatabaseId: editingQuizId,
-            question: editors.question?.getHTML() ?? '',
-            answer: editors.answer?.getHTML() ?? '',
-            otherAnswer: editors.otherAnswer?.getHTML() ?? '',
-            explanation: editors.explanation?.getHTML() ?? '',
-            source: editors.source?.getHTML() ?? '',
-            genreName: form.values.genre,
-            length: questionEditor?.getText().length ?? 0,
+            id: editingQuizId,
+            data: {
+              question: editors.question?.getHTML() ?? '',
+              answer: editors.answer?.getHTML() ?? '',
+              otherAnswer: editors.otherAnswer?.getHTML() ?? '',
+              explanation: editors.explanation?.getHTML() ?? '',
+              source: editors.source?.getHTML() ?? '',
+              genreId: form.values.genre,
+              length: questionEditor?.getText().length ?? 0,
+            },
           },
         },
         onCompleted: () => {
           successNotification({ message: 'クイズを更新しました' });
-          reload();
         },
         onError: () => {
           errorNotification({ message: 'クイズの更新に失敗しました' });
         },
+        refetchQueries: ['GetQuizzes', 'GetQuizCount'],
       });
     }
   };

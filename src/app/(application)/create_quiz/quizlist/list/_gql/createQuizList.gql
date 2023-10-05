@@ -1,8 +1,0 @@
-mutation CreateQuizList($input: CreateQuizListInput!) {
-  createQuizList(input: $input) {
-    id
-    name
-    databaseId
-    description
-  }
-}

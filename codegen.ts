@@ -16,6 +16,9 @@ const config: CodegenConfig = {
         'typescript-react-apollo',
       ],
     },
+    './src/gql/schema.graphql': {
+      plugins: ['schema-ast'],
+    },
   },
 };
 

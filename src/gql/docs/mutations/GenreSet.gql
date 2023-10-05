@@ -1,0 +1,17 @@
+mutation CreateGenreSet($input: CreateGenreSetInput!) {
+  createGenreSet(input: $input) {
+    ...GenreSetData
+  }
+}
+
+mutation UpdateGenreSet($input: UpdateGenreSetInput!) {
+  updateGenreSet(input: $input) {
+    ...GenreSetData
+  }
+}
+
+mutation DeleteGenreSet($input: DeleteGenreSetInput!) {
+  deleteGenreSet(input: $input) {
+    id
+  }
+}

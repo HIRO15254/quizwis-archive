@@ -1,0 +1,5 @@
+query GetGenre($input: GetGenreInput!) {
+  getGenre(input: $input) {
+    ...GenreData
+  }
+}

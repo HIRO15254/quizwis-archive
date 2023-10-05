@@ -1,0 +1,253 @@
+input CreateGenreInput {
+  data: GenreInputData!
+  genreSetId: String!
+  parentGenreId: String
+}
+
+input CreateGenreSetInput {
+  data: GenreSetInputData!
+}
+
+input CreateQuizInput {
+  data: QuizInputData!
+  quizListId: String!
+}
+
+input CreateQuizListInput {
+  data: QuizListInputData!
+}
+
+"""
+A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar Date
+
+input DeleteGenreInput {
+  id: String!
+}
+
+input DeleteGenreSetInput {
+  id: String!
+}
+
+input DeleteQuizInput {
+  id: String!
+}
+
+input DeleteQuizListInput {
+  id: String!
+}
+
+input DeleteUserInput {
+  userId: String!
+}
+
+type Genre implements Node {
+  childGenres: [Genre!]!
+  color: String!
+  createdAt: Date!
+  databaseId: String!
+  description: String
+  genreSet: GenreSet!
+  id: ID!
+  name: String!
+  parentGenre: Genre
+  quizzes: [Quiz!]!
+  ratio: Int!
+  updatedAt: Date!
+}
+
+input GenreInputData {
+  color: String!
+  description: String
+  name: String!
+  ratio: Int!
+}
+
+type GenreSet implements Node {
+  createdAt: Date!
+  databaseId: String!
+  description: String
+  genres: [Genre!]!
+  id: ID!
+  name: String!
+  quizLists: [QuizList!]!
+  updatedAt: Date!
+  user: User!
+}
+
+input GenreSetInputData {
+  description: String
+  name: String!
+}
+
+input GetGenreInput {
+  id: String!
+}
+
+input GetGenreSetInput {
+  id: String!
+}
+
+input GetQuizInput {
+  id: String!
+}
+
+input GetQuizListInput {
+  id: String!
+}
+
+input GetQuizzesInput {
+  filter: QuizFilterInput
+  listId: String!
+  pagination: PaginationInput!
+}
+
+input GetUserInput {
+  userId: String!
+}
+
+type Mutation {
+  createGenre(input: CreateGenreInput!): Genre!
+  createGenreSet(input: CreateGenreSetInput!): GenreSet!
+  createQuiz(input: CreateQuizInput!): Quiz!
+  createQuizList(input: CreateQuizListInput!): QuizList!
+  deleteGenre(input: DeleteGenreInput!): Genre!
+  deleteGenreSet(input: DeleteGenreSetInput!): GenreSet!
+  deleteQuiz(input: DeleteQuizInput!): Quiz!
+  deleteQuizList(input: DeleteQuizListInput!): QuizList!
+  deleteUser(input: DeleteUserInput!): User!
+  updateGenre(input: UpdateGenreInput!): Genre!
+  updateGenreSet(input: UpdateGenreSetInput!): GenreSet!
+  updateLoginUser(input: UpdateLoginUserInput!): User!
+  updateQuiz(input: UpdateQuizInput!): Quiz!
+  updateQuizList(input: UpdateQuizListInput!): QuizList!
+  updateUser(input: UpdateUserInput!): User!
+}
+
+interface Node {
+  id: ID!
+}
+
+input PaginationInput {
+  skip: Int!
+  take: Int!
+}
+
+type Query {
+  getGenre(input: GetGenreInput!): Genre!
+  getGenreSet(input: GetGenreSetInput!): GenreSet!
+  getGenreSets: [GenreSet!]!
+  getQuiz(input: GetQuizInput!): Quiz!
+  getQuizList(input: GetQuizListInput!): QuizList!
+  getQuizLists: [QuizList!]!
+  getQuizzes(input: GetQuizzesInput!): [Quiz!]!
+  getUser(input: GetUserInput!): User!
+  loginUser: User!
+  node(id: ID!): Node
+  nodes(ids: [ID!]!): [Node]!
+}
+
+type Quiz implements Node {
+  answer: String
+  createdAt: Date!
+  databaseId: String!
+  explanation: String
+  genre: Genre
+  id: ID!
+  length: Int!
+  otherAnswer: String
+  question: String
+  quizList: QuizList!
+  source: String
+  updatedAt: Date!
+  user: User!
+}
+
+input QuizFilterInput {
+  genreId: String
+}
+
+input QuizInputData {
+  answer: String
+  explanation: String
+  genreId: String
+  length: Int! = 0
+  otherAnswer: String
+  question: String
+  source: String
+}
+
+type QuizList implements Node {
+  databaseId: String!
+  description: String
+  genreSet: GenreSet
+  goal: Int
+  id: ID!
+  name: String!
+  quizCount(filter: QuizFilterInput): Int!
+  quizzes: [Quiz!]!
+  user: User!
+}
+
+input QuizListInputData {
+  description: String
+  genreSetId: String
+  goal: Int
+  name: String!
+}
+
+input UpdateGenreInput {
+  data: GenreInputData!
+  id: String!
+}
+
+input UpdateGenreSetInput {
+  data: GenreSetInputData!
+  id: String!
+}
+
+input UpdateLoginUserInput {
+  email: String
+  image: String
+  name: String
+  newUserId: String
+}
+
+input UpdateQuizInput {
+  data: QuizInputData!
+  id: String!
+}
+
+input UpdateQuizListInput {
+  data: QuizListInputData!
+  id: String!
+}
+
+input UpdateUserInput {
+  email: String
+  image: String
+  name: String
+  newUserId: String
+  userId: String!
+}
+
+type User implements Node {
+  createdAt: Date!
+  databaseId: String!
+  email: String
+  genreSets: [GenreSet!]!
+  id: ID!
+  image: String
+  name: String
+  quizLists: [QuizList!]!
+  quizzes: [Quiz!]!
+  role: UserRole!
+  updatedAt: Date!
+  userId: String
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}

@@ -1,0 +1,5 @@
+fragment GenreSetData on GenreSet {
+  id
+  name
+  description
+}

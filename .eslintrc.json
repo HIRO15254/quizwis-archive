@@ -19,7 +19,9 @@
         "plugin:@typescript-eslint/recommended",
         "plugin:react/recommended",
         "airbnb",
-        "airbnb-typescript"
+        "airbnb-typescript",
+        "plugin:storybook/recommended",
+        "plugin:storybook/recommended"
     ],
     "overrides": [],
     "plugins": [

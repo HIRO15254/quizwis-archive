@@ -23,14 +23,14 @@ export const GenreBadge: React.FC<GenreBadgeProps> = (props) => {
   if (children.length > 10) {
     if (noTooltip) {
       return (
-        <Badge variant="light" size="lg" {...others}>
+        <Badge variant="light" size="lg" color="gray" {...others}>
           {`${children.slice(0, 9)}...`}
         </Badge>
       );
     }
     return (
       <Tooltip label={children}>
-        <Badge variant="light" size="lg" {...others}>
+        <Badge variant="light" size="lg" color="gray" {...others}>
           {`${children.slice(0, 9)}...`}
         </Badge>
       </Tooltip>

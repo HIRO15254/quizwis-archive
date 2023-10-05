@@ -1,4 +1,3 @@
-export interface GenreSetFormType {
-  name: string;
-  description: string;
-}
+import { GenreSetInputData } from 'gql';
+
+export type GenreSetFormType = GenreSetInputData;

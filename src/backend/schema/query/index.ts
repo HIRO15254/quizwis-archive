@@ -1,10 +1,6 @@
 import './getUser';
 import './loginUser';
-import './quizList/getQuizLists';
-import './quizList/getQuizList';
-import './quiz/getQuizzes';
-import './quiz/getQuiz';
-import './genre/getGenres';
-import './genre/getGenre';
-import './genreSet/getGenreSets';
-import './genreSet/getGenreSet';
+import './quizList';
+import './quiz';
+import './genre';
+import './genreSet';

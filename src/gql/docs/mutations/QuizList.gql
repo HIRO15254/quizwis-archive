@@ -1,0 +1,17 @@
+mutation CreateQuizList($input: CreateQuizListInput!) {
+  createQuizList(input: $input) {
+    ...QuizListData
+  }
+}
+
+mutation UpdateQuizList($input: UpdateQuizListInput!) {
+  updateQuizList(input: $input) {
+    ...QuizListData
+  }
+}
+
+mutation DeleteQuizList($input: DeleteQuizListInput!) {
+  deleteQuizList(input: $input) {
+    id
+  }
+}

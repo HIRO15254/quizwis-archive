@@ -56,13 +56,14 @@ model User {
 
 model QuizList {
   databaseId String @id @default(cuid())
+
   name String
-  description String
+  description String?
 
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  goal Int @default(0)
+  goal Int?
 
   quizzes Quiz[]
   genreSetId String?
@@ -75,21 +76,37 @@ model QuizList {
 model Quiz {
   databaseId String @id @default(cuid())
 
+  userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  quizList QuizList @relation(fields: [quizlistId], references: [databaseId], onDelete: Cascade)
+  quizListId String @map("quizlistId")
+  quizList QuizList @relation(fields: [quizListId], references: [databaseId], onDelete: Cascade)
 
-  question String
-  answer String
-  otherAnswer String
-  explanation String
-  source String
+  question String?
+  answer String?
+  otherAnswer String?
+  explanation String?
+  source String?
   length Int @default(0)
 
   genre Genre? @relation(fields: [genreId], references: [databaseId], onDelete: SetNull)
   genreId String?
 
-  quizlistId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model GenreSet {
+  databaseId String @id @default(cuid())
+
   userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name String
+  description String?
+
+  genres Genre[]
+
+  quizLists QuizList[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -98,41 +115,24 @@ model Quiz {
 model Genre {
   databaseId String @id @default(cuid())
 
+  genreSetId String
   genreSet GenreSet @relation(fields: [genreSetId], references: [databaseId], onDelete: Cascade)
-  parentGenre Genre? @relation("GenreTree", fields: [parentGenreId], references: [databaseId], onDelete: Cascade)
 
-  color String
+  parentGenreId String?
+  parentGenre Genre? @relation("GenreTree", fields: [parentGenreId], references: [databaseId], onDelete: Cascade)
+  childGenres Genre[] @relation("GenreTree")
+
   name String
-  description String
+  color String @default("gray")
+  description String?
   ratio Int @default(1)
 
   quizzes Quiz[]
-  childGenres Genre[] @relation("GenreTree")
-
-  genreSetId String
-  parentGenreId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([genreSetId, name])
-}
-
-model GenreSet {
-  databaseId String @id @default(cuid())
-
-  genres Genre[]
-
-  name String
-  description String
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  quizLists QuizList[]
-  userId String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 enum UserRole {

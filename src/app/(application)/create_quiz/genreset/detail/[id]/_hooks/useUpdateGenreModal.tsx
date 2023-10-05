@@ -1,85 +1,74 @@
-import { isNotEmpty, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { useUpdateGenreMutation, useGetGenreLazyQuery } from 'gql';
 import { errorNotification, successNotification } from 'util/notifications';
 
-import type { GenreFormType } from '../_types/GenreFormType';
+import { useGenreForm } from './useGenreForm';
+import { UpdateGenreModal } from '../_components/presenter/UpdateGenreModal';
 
-type UseUpdateGenreModalProps = {
-  reload: () => void;
-};
-
-export const useUpdateGenreModal = (props: UseUpdateGenreModalProps) => {
-  const { reload } = props;
+export const useUpdateGenreModal = () => {
   const [opened, handlers] = useDisclosure();
-  const [updateGenre] = useUpdateGenreMutation();
-  const [getGenre, { loading }] = useGetGenreLazyQuery({ fetchPolicy: 'cache-and-network' });
-  const [databaseId, setDatabaseId] = useState<string>('');
+  const [updateGenre, { loading: mutationLoading }] = useUpdateGenreMutation();
+  const [getGenre, { loading }] = useGetGenreLazyQuery();
+  const [id, setId] = useState<string>('');
 
-  const form = useForm<GenreFormType>({
-    initialValues: {
-      name: '',
-      description: '',
-      ratio: 1,
-      color: 'gray',
-    },
-    validate: {
-      name: isNotEmpty('このフィールドは必須です'),
-    },
-  });
+  const {
+    form,
+    genreForm,
+  } = useGenreForm();
 
-  const open = async (openDatabaseId: string) => {
-    setDatabaseId(openDatabaseId);
-    getGenre({
-      variables: { input: { databaseId: openDatabaseId } },
+  const open = async (openId: string) => {
+    handlers.open();
+    form.reset();
+    setId(openId);
+    await getGenre({
+      variables: {
+        input: {
+          id: openId,
+        },
+      },
       onCompleted: (res) => {
         form.setValues({
           name: res.getGenre.name,
-          description: res.getGenre.description,
+          description: res.getGenre.description ?? '',
           ratio: res.getGenre.ratio,
-          color: res.getGenre.color,
+          color: res.getGenre.color ?? 'gray',
         });
       },
-    }).then(() => {
-      handlers.open();
     });
   };
 
   const onSubmit = form.onSubmit(async (values) => {
-    handlers.close();
-    form.reset();
-    updateGenre({
+    await updateGenre({
       variables: {
         input: {
-          databaseId,
-          ...values,
+          id,
+          data: values,
         },
       },
       onCompleted: () => {
         successNotification({ message: '更新しました' });
-        reload();
+        handlers.close();
       },
       onError: () => {
         errorNotification({ message: '更新に失敗しました' });
       },
+      refetchQueries: ['GetGenreDetailPageData'],
     });
   });
 
-  const newHandlers = {
-    ...handlers,
-    open,
+  const modalProps = {
+    opened,
+    onClose: handlers.close,
+    onSubmit,
+    genreForm,
+    loading,
+    buttonLoading: mutationLoading,
   };
 
   return {
-    genreFormModalProps: {
-      opened,
-      close: handlers.close,
-      onSubmit,
-      form,
-      loading,
-    },
-    handlers: newHandlers,
+    updateGenreModal: <UpdateGenreModal {...modalProps} />,
+    updateGenre: open,
   };
 };

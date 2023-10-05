@@ -1,0 +1,6 @@
+query GetQuizCount($input: GetQuizListInput!, $filter: QuizFilterInput) {
+  getQuizList(input: $input) {
+    id
+    quizCount(filter: $filter)
+  }
+}

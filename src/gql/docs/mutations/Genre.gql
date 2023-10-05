@@ -1,0 +1,17 @@
+mutation CreateGenre($input: CreateGenreInput!) {
+  createGenre(input: $input) {
+    ...GenreData
+  }
+}
+
+mutation UpdateGenre($input: UpdateGenreInput!) {
+  updateGenre(input: $input) {
+    ...GenreData
+  }
+}
+
+mutation DeleteGenre($input: DeleteGenreInput!) {
+  deleteGenre(input: $input) {
+    id
+  }
+}

@@ -1,0 +1,9 @@
+[1/4] Resolving packages...
+warning @storybook/nextjs > @babel/plugin-proposal-class-properties@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-class-properties instead.
+warning @storybook/nextjs > @babel/plugin-proposal-numeric-separator@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-numeric-separator instead.
+warning @storybook/nextjs > @babel/plugin-proposal-object-rest-spread@7.20.7: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-object-rest-spread instead.
+warning @storybook/nextjs > @storybook/builder-webpack5 > fork-ts-checker-webpack-plugin > memfs@3.6.0: this will be v4
+warning @storybook/nextjs > @storybook/builder-webpack5 > webpack-dev-middleware > memfs@3.6.0: this will be v4
+[2/4] Fetching packages...
+info There appears to be trouble with your network connection. Retrying...
+Terminate batch job (Y/N)? 

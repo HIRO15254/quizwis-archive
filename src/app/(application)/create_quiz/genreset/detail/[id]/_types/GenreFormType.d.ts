@@ -1,6 +1,3 @@
-export type GenreFormType = {
-  name: string;
-  description: string;
-  color: string;
-  ratio: number;
-};
+import { GenreInputData } from 'gql';
+
+export type GenreFormType = GenreInputData;

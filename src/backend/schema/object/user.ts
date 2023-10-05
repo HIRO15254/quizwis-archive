@@ -13,5 +13,9 @@ export const User = builder.prismaNode('User', {
 
     quizzes: t.relation('quizzes'),
     quizLists: t.relation('quizLists'),
+    genreSets: t.relation('genreSets'),
+
+    createdAt: t.expose('createdAt', { type: 'Date' }),
+    updatedAt: t.expose('updatedAt', { type: 'Date' }),
   }),
 });

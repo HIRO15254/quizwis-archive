@@ -1,0 +1,5 @@
+query GetQuizzes($input: GetQuizzesInput!) {
+  getQuizzes(input: $input) {
+    ...QuizData
+  }
+}

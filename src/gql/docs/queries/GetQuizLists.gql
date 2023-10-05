@@ -1,0 +1,5 @@
+query GetQuizLists {
+  getQuizLists {
+    ...QuizListData
+  }
+}

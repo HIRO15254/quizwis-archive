@@ -1,0 +1,11 @@
+fragment QuizListData on QuizList {
+  id
+  name
+  description
+  quizCount
+  goal
+  genreSet {
+    name
+    id
+  }
+}

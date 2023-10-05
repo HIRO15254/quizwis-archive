@@ -1,0 +1,15 @@
+query GetGenresFromQuizList($input: GetQuizListInput!) {
+  getQuizList(input: $input) {
+    genreSet {
+      genres {
+        ...GenreData
+        parentGenre {
+          id
+        }
+        childGenres{
+          id
+        }
+      }
+    }
+  }
+}
