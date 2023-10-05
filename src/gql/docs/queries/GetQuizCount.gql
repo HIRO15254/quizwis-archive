@@ -1,7 +1,6 @@
-query GetQuizCount($input: GetQuizListInput!) {
+query GetQuizCount($input: GetQuizListInput!, $filter: QuizFilterInput) {
   getQuizList(input: $input) {
     id
-    databaseId
-    quizCount
+    quizCount(filter: $filter)
   }
 }

@@ -47,7 +47,7 @@ builder.mutationFields((t) => ({
       const { data } = args.input;
       const genreSetDatabaseId = await checkId({
         userId: ctx.currentUserId,
-        targetId: data.genreSetId,
+        targetId: data.genreSetId !== '' ? data.genreSetId : undefined,
         expectedTypeName: 'GenreSet',
       }).then((ret) => ret?.databaseId);
       return prisma.quizList.create({

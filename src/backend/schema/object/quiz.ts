@@ -15,7 +15,7 @@ export const Quiz = builder.prismaNode('Quiz', {
     source: t.exposeString('source', { nullable: true }),
     length: t.exposeInt('length'),
 
-    genre: t.relation('genre'),
+    genre: t.relation('genre', { nullable: true }),
 
     createdAt: t.expose('createdAt', { type: 'Date' }),
     updatedAt: t.expose('updatedAt', { type: 'Date' }),

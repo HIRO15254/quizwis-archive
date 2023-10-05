@@ -2,45 +2,46 @@
 
 import {
   Button,
-  Group, LoadingOverlay,
-  Modal, ModalProps, Text,
+  Group,
+  Text,
+  Modal,
+  ModalProps,
 } from '@mantine/core';
 import { getHotkeyHandler } from '@mantine/hooks';
 import React from 'react';
 
-import { QuizListDataFragment } from 'gql';
 // 各種import
 
+/**
+ * クイズリストを削除するためのモーダル
+ */
+
 interface Props extends ModalProps {
-  data: QuizListDataFragment | undefined
   onConfirm: () => void
-  loading?: boolean
   buttonLoading?: boolean
 }
 
 /**
  * クイズリストを削除するためのモーダル
  */
-export const DeleteQuizListModal: React.FC<Props> = (props) => {
+export const DeleteQuizModal: React.FC<Props> = (props) => {
   const {
-    data,
     onConfirm,
-    loading = false,
     buttonLoading = false,
     ...other
   } = props;
 
   return (
     <Modal
-      title="問題セット削除"
+      title="問題削除"
       onKeyDown={getHotkeyHandler([
         ['mod+Enter', onConfirm],
       ])}
       {...other}
     >
-      <LoadingOverlay visible={loading} />
-      <Text mb="xs">{`問題セット「${data?.name}」を本当に削除しますか？`}</Text>
-      <Text>削除すると、問題セット内のすべての問題も削除されます。</Text>
+      <Text>
+        この問題を削除しますか？
+      </Text>
       <Group position="right" mt="md">
         <Button
           color="gray"

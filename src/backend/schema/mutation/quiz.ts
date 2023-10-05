@@ -11,7 +11,7 @@ const QuizInputData = builder.inputType('QuizInputData', {
     explanation: t.string(),
     otherAnswer: t.string(),
     source: t.string(),
-    length: t.int({ required: true }),
+    length: t.int({ required: true, defaultValue: 0 }),
     genreId: t.string(),
   }),
 });

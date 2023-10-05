@@ -1,5 +1,5 @@
 import {
-  Checkbox, NativeSelect, NumberInput, SelectItem, Textarea, TextInput,
+  Checkbox, NativeSelect, NumberInput, Textarea, TextInput,
 } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import React from 'react';

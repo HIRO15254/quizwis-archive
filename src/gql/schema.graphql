@@ -44,7 +44,7 @@ input DeleteUserInput {
 
 type Genre implements Node {
   childGenres: [Genre!]!
-  color: String
+  color: String!
   createdAt: Date!
   databaseId: String!
   description: String
@@ -58,7 +58,7 @@ type Genre implements Node {
 }
 
 input GenreInputData {
-  color: String
+  color: String!
   description: String
   name: String!
   ratio: Int!
@@ -89,10 +89,6 @@ input GetGenreSetInput {
   id: String!
 }
 
-input GetGenreSetsInput {
-  userId: String!
-}
-
 input GetQuizInput {
   id: String!
 }
@@ -101,8 +97,10 @@ input GetQuizListInput {
   id: String!
 }
 
-input GetQuizListsInput {
-  userId: String!
+input GetQuizzesInput {
+  filter: QuizFilterInput
+  listId: String!
+  pagination: PaginationInput!
 }
 
 input GetUserInput {
@@ -131,13 +129,19 @@ interface Node {
   id: ID!
 }
 
+input PaginationInput {
+  skip: Int!
+  take: Int!
+}
+
 type Query {
   getGenre(input: GetGenreInput!): Genre!
   getGenreSet(input: GetGenreSetInput!): GenreSet!
-  getGenreSets(input: GetGenreSetsInput): [GenreSet!]!
+  getGenreSets: [GenreSet!]!
   getQuiz(input: GetQuizInput!): Quiz!
   getQuizList(input: GetQuizListInput!): QuizList!
-  getQuizLists(input: GetQuizListsInput): [QuizList!]!
+  getQuizLists: [QuizList!]!
+  getQuizzes(input: GetQuizzesInput!): [Quiz!]!
   getUser(input: GetUserInput!): User!
   loginUser: User!
   node(id: ID!): Node
@@ -149,7 +153,7 @@ type Quiz implements Node {
   createdAt: Date!
   databaseId: String!
   explanation: String
-  genre: Genre!
+  genre: Genre
   id: ID!
   length: Int!
   otherAnswer: String
@@ -160,11 +164,15 @@ type Quiz implements Node {
   user: User!
 }
 
+input QuizFilterInput {
+  genreId: String
+}
+
 input QuizInputData {
   answer: String
   explanation: String
   genreId: String
-  length: Int!
+  length: Int! = 0
   otherAnswer: String
   question: String
   source: String
@@ -177,7 +185,7 @@ type QuizList implements Node {
   goal: Int
   id: ID!
   name: String!
-  quizCount: Int!
+  quizCount(filter: QuizFilterInput): Int!
   quizzes: [Quiz!]!
   user: User!
 }

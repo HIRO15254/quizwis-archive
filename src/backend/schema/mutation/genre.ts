@@ -9,7 +9,7 @@ const GenreInputData = builder.inputType('GenreInputData', {
     name: t.string({ required: true }),
     description: t.string(),
     ratio: t.int({ required: true }),
-    color: t.string(),
+    color: t.string({ required: true }),
   }),
 });
 

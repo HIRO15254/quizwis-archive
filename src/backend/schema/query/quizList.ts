@@ -9,12 +9,6 @@ const GetQuizListInput = builder.inputType('GetQuizListInput', {
   }),
 });
 
-const GetQuizListsInput = builder.inputType('GetQuizListsInput', {
-  fields: (t) => ({
-    userId: t.string({ required: true }),
-  }),
-});
-
 builder.queryFields((t) => ({
   getQuizList: t.prismaField({
     type: QuizList,
@@ -39,18 +33,19 @@ builder.queryFields((t) => ({
   }),
   getQuizLists: t.prismaField({
     type: [QuizList],
-    args: { input: t.arg({ type: GetQuizListsInput }) },
-    resolve: async (_query, _root, args, ctx, _info) => {
-      const userId = args.input?.userId;
-      const { databaseId: userDatabaseId } = await checkId({
-        userId: ctx.currentUserId,
-        targetId: userId,
-        expectedTypeName: 'User',
-      });
-      return prisma.quizList.findMany({
-        where: { user: { id: userDatabaseId ?? ctx.currentUserId } },
-        orderBy: { updatedAt: 'desc' },
-      });
-    },
+    resolve: async (
+      _query,
+      _root,
+      _args,
+      ctx,
+      _info,
+    ) => prisma.quizList.findMany({
+      where: {
+        user: {
+          userId: ctx.currentUserId,
+        },
+      },
+      orderBy: { updatedAt: 'desc' },
+    }),
   }),
 }));

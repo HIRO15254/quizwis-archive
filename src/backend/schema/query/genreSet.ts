@@ -9,12 +9,6 @@ const GetGenreSetInput = builder.inputType('GetGenreSetInput', {
   }),
 });
 
-const GetGenreSetsInput = builder.inputType('GetGenreSetsInput', {
-  fields: (t) => ({
-    userId: t.string({ required: true }),
-  }),
-});
-
 builder.queryFields((t) => ({
   getGenreSet: t.prismaField({
     type: GenreSet,
@@ -53,18 +47,9 @@ builder.queryFields((t) => ({
   }),
   getGenreSets: t.prismaField({
     type: [GenreSet],
-    args: { input: t.arg({ type: GetGenreSetsInput }) },
-    resolve: async (_query, _root, args, ctx, _info) => {
-      const userId = args.input?.userId;
-      const { databaseId: userDatabaseId } = await checkId({
-        userId: ctx.currentUserId,
-        targetId: userId,
-        expectedTypeName: 'User',
-      });
-      return prisma.genreSet.findMany({
-        where: { user: { id: userDatabaseId ?? ctx.currentUserId } },
-        orderBy: { updatedAt: 'desc' },
-      });
-    },
+    resolve: async (_query, _root, args, ctx, _info) => prisma.genreSet.findMany({
+      where: { user: { userId: ctx.currentUserId } },
+      orderBy: { updatedAt: 'desc' },
+    }),
   }),
 }));

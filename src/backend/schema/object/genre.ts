@@ -8,7 +8,7 @@ export const Genre = builder.prismaNode('Genre', {
 
     name: t.exposeString('name'),
     description: t.exposeString('description', { nullable: true }),
-    color: t.exposeString('color', { nullable: true }),
+    color: t.exposeString('color'),
     ratio: t.exposeInt('ratio'),
 
     parentGenre: t.relation('parentGenre', { nullable: true }),

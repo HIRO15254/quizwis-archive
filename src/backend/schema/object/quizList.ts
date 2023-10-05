@@ -1,5 +1,6 @@
 import { prisma } from '../../../lib/prisma';
 import { builder } from '../builder';
+import { QuizFilterInput } from '../query/quiz';
 
 export const QuizList = builder.prismaNode('QuizList', {
   id: { field: 'databaseId' },
@@ -16,9 +17,23 @@ export const QuizList = builder.prismaNode('QuizList', {
     quizzes: t.relation('quizzes'),
     quizCount: t.field({
       type: 'Int',
+      args: {
+        filter: t.arg({ type: QuizFilterInput }),
+      },
       resolve: async (
         parent,
-      ) => prisma.quiz.count({ where: { quizListId: parent.databaseId } }) ?? 0,
+        args,
+      ) => {
+        const { filter } = args;
+        return prisma.quiz.count({
+          where: {
+            quizListId: parent.databaseId,
+            genreId: filter?.genreId ? {
+              equals: filter.genreId,
+            } : undefined,
+          },
+        }) ?? 0;
+      },
     }),
   }),
 });

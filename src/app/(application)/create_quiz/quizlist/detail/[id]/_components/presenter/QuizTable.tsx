@@ -4,7 +4,7 @@
 
 // 各種import
 import {
-  Button, Group, NativeSelect, Pagination, PaginationProps, Select, Skeleton, Stack, Table, Text,
+  Button, Group, Skeleton, Stack, Table, Text,
 } from '@mantine/core';
 import {
   IconArrowsSplit, IconBook2, IconNote, IconPencil, IconPlus, IconTrash,
@@ -13,25 +13,11 @@ import React from 'react';
 
 import { GenreBadge } from 'components/common/GenreBadge';
 import { TableActionIcon } from 'components/common/TableActionICon';
+import { QuizDataFragment } from 'gql';
 
-import { AdditionalInfoIcon } from '../AdditionalInfoIcon';
-import { InlineQuizEditor, InlineQuizEditorProps } from '../InlineQuizEditor';
+import { AdditionalInfoIcon } from './AdditionalInfoIcon';
+import { InlineQuizEditor, InlineQuizEditorProps } from './InlineQuizEditor';
 // Propsの型定義
-interface QuizData {
-  id: string;
-  databaseId: string;
-  question?: string | null | undefined;
-  answer?: string | null | undefined;
-  otherAnswer?: string | null | undefined;
-  explanation?: string | null | undefined;
-  source?: string | null | undefined;
-  length: number;
-  genre?: {
-    databaseId: string;
-    name: string;
-    color?: string | null | undefined;
-  } | null | undefined;
-}
 
 interface QuizTableProps {
   inlineQuizEditorProps: InlineQuizEditorProps;
@@ -41,16 +27,10 @@ interface QuizTableProps {
     delete: (databaseId: string) => void;
     update: (databaseId: string) => void;
   }
-  genres: {
-    value: string;
-    label: string;
-  }[]
-  changeGenre: (id?: string) => void;
   loading: boolean;
-  data: QuizData[];
-  dataPerPage: number;
-  setDataPerPage: (newDataPerPage: number) => void;
-  paginationProps: PaginationProps;
+  data: QuizDataFragment[];
+  dataPerPageSelect: React.ReactNode;
+  genreFilterSelect: React.ReactNode;
 }
 
 /**
@@ -58,21 +38,18 @@ interface QuizTableProps {
  */
 export const QuizTable: React.FC<QuizTableProps> = (props) => {
   const {
-    genres,
-    changeGenre,
     inlineQuizEditorProps,
     editingQuizId,
     operations,
     data,
     loading,
-    dataPerPage,
-    setDataPerPage,
-    paginationProps,
+    dataPerPageSelect,
+    genreFilterSelect,
   } = props;
 
   // 部分的なコンポーネントの宣言
   const rows = data.map((quiz) => {
-    if (quiz.databaseId === editingQuizId) {
+    if (quiz.id === editingQuizId) {
       return (
         <tr key={quiz.id}>
           <InlineQuizEditor {...inlineQuizEditorProps} />
@@ -112,12 +89,12 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
             <TableActionIcon
               tooltip="編集"
               Icon={IconPencil}
-              onClick={() => operations.update(quiz.databaseId)}
+              onClick={() => operations.update(quiz.id)}
             />
             <TableActionIcon
               tooltip="削除"
               Icon={IconTrash}
-              onClick={() => operations.delete(quiz.databaseId)}
+              onClick={() => operations.delete(quiz.id)}
               color="red"
             />
           </Group>
@@ -141,22 +118,12 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
     );
   }
   return (
-    <Skeleton visible={loading}>
+    <>
       <Group position="right">
         <Text>ジャンルフィルター</Text>
-        <Select
-          clearable
-          onChange={(e) => changeGenre(e ?? undefined)}
-          style={{ width: 300 }}
-          data={genres}
-        />
+        {genreFilterSelect}
         <Text>表示件数</Text>
-        <NativeSelect
-          value={dataPerPage}
-          onChange={(e) => setDataPerPage(Number(e.currentTarget.value))}
-          style={{ width: 100 }}
-          data={['10', '20', '50', '100']}
-        />
+        {dataPerPageSelect}
         <Button
           onClick={() => operations.create()}
           leftIcon={<IconPlus />}
@@ -164,29 +131,28 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
           問題を追加
         </Button>
       </Group>
-      <Table
-        mt="md"
-        highlightOnHover
-        fontSize="md"
-        verticalSpacing={0}
-      >
-        <thead>
-          <tr>
-            <th>問題文</th>
-            <th style={{ width: 0, whiteSpace: 'nowrap' }}>文字数</th>
-            <th style={{ width: '15%' }}>解答</th>
-            <th style={{ width: '13rem' }}>ジャンル</th>
-            <th style={{ width: 0 }}>追加情報</th>
-            <th style={{ width: 0 }}>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows}
-        </tbody>
-      </Table>
-      <Group position="center" mt="md">
-        <Pagination {...paginationProps} withEdges />
-      </Group>
-    </Skeleton>
+      <Skeleton visible={loading}>
+        <Table
+          mt="md"
+          highlightOnHover
+          fontSize="md"
+          verticalSpacing={0}
+        >
+          <thead>
+            <tr>
+              <th>問題文</th>
+              <th style={{ width: 0, whiteSpace: 'nowrap' }}>文字数</th>
+              <th style={{ width: '15%' }}>解答</th>
+              <th style={{ width: '13rem' }}>ジャンル</th>
+              <th style={{ width: 0 }}>追加情報</th>
+              <th style={{ width: 0 }}>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows}
+          </tbody>
+        </Table>
+      </Skeleton>
+    </>
   );
 };

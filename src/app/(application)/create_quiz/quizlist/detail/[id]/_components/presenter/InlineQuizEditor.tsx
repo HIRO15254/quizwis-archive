@@ -6,15 +6,15 @@ import React from 'react';
 
 import { TableActionIcon } from 'components/common/TableActionICon';
 
-import { AdditionalInfoEditIcon } from '../AdditionalInfoEditIcon';
-import { ExplanationEditor } from '../Editors/ExplanationEditor';
-import { GenreSelector, GenreSelectorProps } from '../Editors/GenreSelector';
-import { InlineAnswerEditor } from '../Editors/InlineAnswerEditor';
-import { InlineQuestionEditor } from '../Editors/InlineQuestionEditor';
-import { OtherAnswerEditor } from '../Editors/OtherAnswerEditor';
-import { SourceEditor } from '../Editors/SourceEditor';
+import { AdditionalInfoEditIcon } from './AdditionalInfoEditIcon';
+import { ExplanationEditor } from './Editors/ExplanationEditor';
+import { GenreSelector, GenreSelectorProps } from './Editors/GenreSelector';
+import { InlineAnswerEditor } from './Editors/InlineAnswerEditor';
+import { InlineQuestionEditor } from './Editors/InlineQuestionEditor';
+import { OtherAnswerEditor } from './Editors/OtherAnswerEditor';
+import { SourceEditor } from './Editors/SourceEditor';
 
-import type { Editors } from '../../../_types/Editors';
+import type { Editors } from '../../_types/Editors';
 
 export interface InlineQuizEditorProps {
   databaseId: string | null;
