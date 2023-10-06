@@ -40,7 +40,7 @@ export const QuizListTable: React.FC<Props> = (props) => {
         <Text size="lg">問題リストがありません</Text>
         <Button
           onClick={operation.create}
-          leftIcon={<IconPlus />}
+          leftSection={<IconPlus />}
         >
           新規問題リスト
         </Button>
@@ -49,10 +49,10 @@ export const QuizListTable: React.FC<Props> = (props) => {
   }
   return (
     <Skeleton visible={loading}>
-      <Group position="right">
+      <Group justify="flex-end">
         <Button
           onClick={operation.create}
-          leftIcon={<IconPlus />}
+          leftSection={<IconPlus />}
         >
           新規問題リスト
         </Button>
@@ -60,7 +60,6 @@ export const QuizListTable: React.FC<Props> = (props) => {
       <Table
         mt="md"
         highlightOnHover
-        fontSize="md"
       >
         <thead>
           <tr>

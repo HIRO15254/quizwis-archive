@@ -41,7 +41,7 @@ export const AvatarSettingForm: React.FC = () => {
         <FileInput
           placeholder="ファイルを選択…"
           accept="image/*"
-          icon={<IconUpload />}
+          leftSection={<IconUpload />}
           onChange={onImageChange}
           value={image}
         />

@@ -36,7 +36,7 @@ export const UpdateGenreSetModal: React.FC<Props> = (props) => {
         <Stack>
           <LoadingOverlay visible={loading} />
           {genreSetForm}
-          <Group position="right">
+          <Group justify="flex-end">
             <Button
               type="submit"
               loading={submitButtonLoading}

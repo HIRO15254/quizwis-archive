@@ -18,7 +18,7 @@ interface LoginFormProps {
 const LoginForm: React.FC<LoginFormProps> = (props) => {
   const { callbackUrl } = props;
   return (
-    <Group position="center" pb="sm">
+    <Group justify="center" pb="sm">
       <Paper w="100%" maw={500} p="xl" shadow="xs">
         <Title order={1} p="md">
           ログイン

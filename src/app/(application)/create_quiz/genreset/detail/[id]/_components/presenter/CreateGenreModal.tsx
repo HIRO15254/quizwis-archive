@@ -36,7 +36,7 @@ export const CreateGenreModal: React.FC<Props> = (props) => {
         <Stack>
           <LoadingOverlay visible={loading} />
           {genreForm}
-          <Group position="right">
+          <Group justify="flex-end">
             <Button
               type="submit"
               loading={buttonLoading}

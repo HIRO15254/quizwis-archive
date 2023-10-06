@@ -36,7 +36,7 @@ export const CreateQuizListModal: React.FC<Props> = (props) => {
         <Stack>
           <LoadingOverlay visible={loading} />
           {quizListForm}
-          <Group position="right">
+          <Group justify="flex-end">
             <Button
               type="submit"
               loading={buttonLoading}

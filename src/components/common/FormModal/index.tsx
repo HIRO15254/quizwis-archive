@@ -43,7 +43,7 @@ export const FormModal: React.FC<FormModalProps> = (props) => {
         <Stack>
           <LoadingOverlay visible={loading} />
           {children}
-          <Group position="right">
+          <Group justify="flex-end">
             <Button type="submit">
               {submitText}
             </Button>

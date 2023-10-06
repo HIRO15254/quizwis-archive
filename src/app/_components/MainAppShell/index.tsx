@@ -1,7 +1,7 @@
 'use client';
 
 import {
-  AppShell,
+  AppShell, useComputedColorScheme,
   useMantineTheme,
 } from '@mantine/core';
 import React, { useState } from 'react';
@@ -29,30 +29,38 @@ export const MainAppShell: React.FC<MainAppShellProps> = (props) => {
 
   const [opened, setOpened] = useState(false);
   const theme = useMantineTheme();
+  const colorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
   return (
     <AppShell
-      styles={{
-        main: {
-          background: colors.pageBackground(theme),
-          paddingLeft: !noNavbar ? 300 : undefined,
+      transitionDuration={300}
+      transitionTimingFunction="ease"
+      header={{
+        height: 80,
+      }}
+      navbar={{
+        breakpoint: 'md',
+        width: 300,
+        collapsed: {
+          mobile: !opened,
+          desktop: !opened,
         },
       }}
-      navbarOffsetBreakpoint={noNavbar ? 100000 : MANTINE_SMARTPHONE_BREAKPOINT}
-      navbar={
-        !noNavbar ? <MainNavBar opened={opened} /> : undefined
-      }
-      header={
-        !noHeader ? (
-          <MainHeader
-            opened={opened}
-            noBurger={noNavbar}
-            onBurgerClick={() => setOpened((o) => !o)}
-          />
-        ) : undefined
-      }
+      styles={{ main: { background: colors.pageBackground(theme, colorScheme) } }}
     >
-      {children}
+      {!noHeader && (
+        <MainHeader
+          opened={opened}
+          noBurger={noNavbar}
+          onBurgerClick={() => setOpened((o) => !o)}
+        />
+      )}
+      {!noNavbar && (
+        <MainNavBar />
+      )}
+      <AppShell.Main>
+        {children}
+      </AppShell.Main>
     </AppShell>
   );
 };

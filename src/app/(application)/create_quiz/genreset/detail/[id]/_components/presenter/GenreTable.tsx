@@ -38,7 +38,7 @@ export const GenreTable: React.FC<Props> = (props) => {
         <Text size="lg">ジャンルがありません</Text>
         <Button
           onClick={() => operations.create()}
-          leftIcon={<IconPlus />}
+          leftSection={<IconPlus />}
         >
           新規ジャンル
         </Button>
@@ -47,10 +47,10 @@ export const GenreTable: React.FC<Props> = (props) => {
   }
   return (
     <Skeleton visible={loading}>
-      <Group position="right" pb="sm">
+      <Group justify="flex-end" pb="sm">
         <Button
           onClick={() => operations.create()}
-          leftIcon={<IconPlus />}
+          leftSection={<IconPlus />}
         >
           ジャンルを追加
         </Button>

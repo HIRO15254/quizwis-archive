@@ -40,7 +40,7 @@ export const GenreSetTableContainer: React.FC = () => {
 
   // 実際のコンポーネント
   return (
-    <Group position="center" pb="sm">
+    <Group justify="center" pb="sm">
       <Paper w="100%" maw={800} p="xl" shadow="xs">
         <Title order={1}>ジャンルセット一覧</Title>
         {createGenreSetModal}

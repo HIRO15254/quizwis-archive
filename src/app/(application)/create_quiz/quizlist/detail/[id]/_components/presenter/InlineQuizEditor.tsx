@@ -52,7 +52,7 @@ export const InlineQuizEditor = (props: InlineQuizEditorProps) => {
         <GenreSelector genres={genreSelectorData} {...genreSelectorFormProps} />
       </td>
       <td>
-        <Group spacing={3} noWrap>
+        <Group gap={3} wrap="nowrap">
           <AdditionalInfoEditIcon
             label="別解"
             editor={editors.otherAnswer}
@@ -77,7 +77,7 @@ export const InlineQuizEditor = (props: InlineQuizEditorProps) => {
         </Group>
       </td>
       <td>
-        <Group spacing={3} noWrap>
+        <Group gap={3} wrap="nowrap">
           <TableActionIcon
             tooltip="確定"
             color="green"

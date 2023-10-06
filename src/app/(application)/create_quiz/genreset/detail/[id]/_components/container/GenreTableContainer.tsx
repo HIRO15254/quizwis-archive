@@ -52,7 +52,7 @@ export const GenreTableContainer: React.FC<Props> = (props) => {
   ]);
 
   return (
-    <Group position="center" pb="sm">
+    <Group justify="center" pb="sm">
       <Paper w="100%" maw={800} p="xl" shadow="xs">
         <Anchor href="/create_quiz/genreset/list" unstyled>
           {'< ジャンルセット一覧に戻る'}

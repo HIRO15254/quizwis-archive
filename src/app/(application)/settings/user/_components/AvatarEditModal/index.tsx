@@ -67,7 +67,7 @@ const AvatarEditModal: React.FC<AvatarEditModalProps> = (props) => {
           defaultValue={scale}
           onChange={(value) => { setScale(value / 100); }}
         />
-        <Group position="right">
+        <Group justify="flex-end">
           <Button onClick={onSaveButtonClick}>
             更新
           </Button>

@@ -1,9 +1,13 @@
+import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import React from 'react';
 
 import { AuthProvider } from 'components/providers/AuthProvider';
 import { GqlProvider } from 'components/providers/GqlProvider';
-import { StyleProvider } from 'components/providers/StyleProvider';
-import useColorSchemeCookie from 'hooks/useColorSchemeCookie';
+
+import '@mantine/core/styles.css';
+
+import { StyleProvider } from '../components/providers/StyleProvider';
+import { theme } from '../styles/theme';
 
 interface RootLayoutProps {
   children: React.ReactNode
@@ -17,8 +21,6 @@ export const metadata = {
 const RootLayout: React.FC<RootLayoutProps> = (props) => {
   const { children } = props;
 
-  const { colorScheme, setColorScheme } = useColorSchemeCookie();
-
   return (
     <html lang="ja">
       <head>
@@ -29,13 +31,16 @@ const RootLayout: React.FC<RootLayoutProps> = (props) => {
         <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5bbad5" />
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
+        <ColorSchemeScript />
       </head>
       <body>
         <GqlProvider>
           <AuthProvider>
-            <StyleProvider colorScheme={colorScheme} setColorScheme={setColorScheme}>
-              {children}
-            </StyleProvider>
+            <MantineProvider theme={theme}>
+              <StyleProvider>
+                {children}
+              </StyleProvider>
+            </MantineProvider>
           </AuthProvider>
         </GqlProvider>
       </body>

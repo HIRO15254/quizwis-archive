@@ -1,5 +1,5 @@
 import {
-  HoverCardProps, Popover, Tooltip, useMantineTheme,
+  HoverCardProps, Popover, Tooltip, useComputedColorScheme, useMantineTheme,
 } from '@mantine/core';
 import { Icon as IconType } from '@tabler/icons-react';
 import { Editor } from '@tiptap/react';
@@ -20,12 +20,21 @@ export const AdditionalInfoEditIcon = (props: AdditionalInfoEditIconProps) => {
   } = props;
 
   const theme = useMantineTheme();
+  const colorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
   return (
     <Popover shadow="md" width={400} {...rest} trapFocus>
       <Popover.Target>
         <Tooltip label={label}>
-          <Icon size="1.5rem" stroke={1.4} color={editor.getText() ? colors.active(theme) : colors.disabled(theme)} />
+          <Icon
+            size="1.5rem"
+            stroke={1.4}
+            color={
+              editor.getText()
+                ? colors.active(theme, colorScheme)
+                : colors.disabled(theme, colorScheme)
+            }
+          />
         </Tooltip>
       </Popover.Target>
       <Popover.Dropdown p={0}>

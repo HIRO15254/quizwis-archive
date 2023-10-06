@@ -30,7 +30,7 @@ export const GenreTableRow: React.FC<Props> = (props) => {
     <>
       <tr>
         <td style={{ paddingLeft: nest * 20 }}>
-          <Group noWrap>
+          <Group wrap="nowrap">
             <IconPlus
               onClick={toggle}
               style={{ visibility: genre.children.length === 0 ? 'hidden' : undefined }}
@@ -48,7 +48,7 @@ export const GenreTableRow: React.FC<Props> = (props) => {
           )}
         </td>
         <td style={{ whiteSpace: 'nowrap' }}>
-          <Group noWrap>
+          <Group wrap="nowrap">
             <Text fw="bold">{genre.data.ratio}</Text>
             <Text fz="xs">
               { nest === 0 && (
@@ -61,7 +61,7 @@ export const GenreTableRow: React.FC<Props> = (props) => {
           </Group>
         </td>
         <td>
-          <Group spacing={2} noWrap>
+          <Group gap={2} wrap="nowrap">
             <TableActionIcon
               tooltip="サブジャンルを追加"
               onClick={() => operations.create(genre.data.id)}

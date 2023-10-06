@@ -1,14 +1,12 @@
 'use client';
 
 import {
-  Code, Header, Burger, useMantineTheme, Group, Title, Anchor,
+  AppShell, Code, Burger, useMantineTheme, Group, Title, Anchor,
 } from '@mantine/core';
 import { useSession } from 'next-auth/react';
 import React from 'react';
 
 import { MainHeaderUserMenu } from 'app/_components/MainHeaderUserMenu';
-import { Responsive } from 'components/layout/Responsive';
-import { colors } from 'styles/colors';
 
 import packageJson from '../../../../package.json';
 import { MainHeaderLoginButton } from '../MainHeaderLoginButton';
@@ -33,24 +31,22 @@ export const MainHeader: React.FC<MainHeaderProps> = (props) => {
   const { data: session } = useSession();
 
   return (
-    <Header height={70} p="md">
-      <Group position="apart">
-        <Group position="apart">
+    <AppShell.Header p="xs">
+      <Group justify="space-between">
+        <Group justify="space-between">
           {!noBurger && (
-            <Responsive.SmartPhone>
-              <Burger
-                opened={opened}
-                onClick={onBurgerClick}
-                size="sm"
-                color={theme.colors.gray[6]}
-                mr="xl"
-              />
-            </Responsive.SmartPhone>
+            <Burger
+              opened={opened}
+              onClick={onBurgerClick}
+              size="sm"
+              color={theme.colors.gray[6]}
+              mr="xl"
+            />
           )}
-          <Anchor href="/" unstyled>
-            <Title order={3} color={colors.text(theme)}>{packageJson.name}</Title>
+          <Anchor href="/">
+            <Title order={3}>{packageJson.name}</Title>
           </Anchor>
-          <Code sx={{ fontWeight: 700 }}>{`v${packageJson.version}`}</Code>
+          <Code>{`v${packageJson.version}`}</Code>
         </Group>
         {!session && (
           <MainHeaderLoginButton />
@@ -66,6 +62,6 @@ export const MainHeader: React.FC<MainHeaderProps> = (props) => {
           </Group>
         )}
       </Group>
-    </Header>
+    </AppShell.Header>
   );
 };

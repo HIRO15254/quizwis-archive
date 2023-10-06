@@ -41,7 +41,7 @@ export const DeleteGenreSetModal: React.FC<Props> = (props) => {
       <LoadingOverlay visible={loading} />
       <Text mb="xs">{`ジャンルセット「${data?.name}」を本当に削除しますか？`}</Text>
       <Text>削除した場合、このジャンルセットが使用されているすべての問題リストのジャンルが「なし」に変更されます。</Text>
-      <Group position="right" mt="md">
+      <Group justify="flex-end" mt="md">
         <Button
           color="gray"
           onClick={other.onClose}

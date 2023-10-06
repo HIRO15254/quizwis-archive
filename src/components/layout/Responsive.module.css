@@ -1,0 +1,11 @@
+.smartphone {
+    @media (min-width: var(--mantine-breakpoint-lg)) {
+        display: none
+    }
+}
+
+.desktop {
+    @media (max-width: var(--mantine-breakpoint-lg)) {
+        display: none
+    }
+}

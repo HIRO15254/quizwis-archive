@@ -43,7 +43,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = (props) => {
       ])}
     >
       {children}
-      <Group position="right" mt="md">
+      <Group justify="flex-end" mt="md">
         <Button
           color="gray"
           onClick={close}

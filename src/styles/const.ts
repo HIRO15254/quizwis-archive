@@ -1,0 +1,16 @@
+export const DEFAULT_COLORS = [
+  'dark',
+  'gray',
+  'red',
+  'pink',
+  'grape',
+  'violet',
+  'indigo',
+  'blue',
+  'cyan',
+  'green',
+  'lime',
+  'yellow',
+  'orange',
+  'teal',
+];

@@ -5,6 +5,7 @@ import { UseFormReturnType, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { RichTextEditor, useRichTextEditorContext } from '@mantine/tiptap';
 import { IconLanguageHiragana } from '@tabler/icons-react';
+import { Editor } from '@tiptap/react';
 import React from 'react';
 
 interface FormUsingRubyProps {
@@ -21,7 +22,7 @@ export const RubyForm: React.FC<RubyFormProps> = (props) => {
   const { form, onSubmit, target } = props;
   return (
     <form onSubmit={onSubmit}>
-      <Group spacing={0}>
+      <Group gap={0}>
         <TextInput
           placeholder={target}
           {...form.getInputProps('text')}
@@ -44,13 +45,13 @@ export const RubyControl = () => {
   });
 
   const onSubmit = form.onSubmit((values) => {
-    editor.commands.setRuby({ text: values.text });
+    editor?.commands.setRuby({ text: values.text });
     close();
     form.reset();
   });
 
   const selectedText = () => {
-    const { state } = editor;
+    const { state } = editor as Editor;
     const { from, to } = state.selection;
     return state.doc.textBetween(from, to);
   };

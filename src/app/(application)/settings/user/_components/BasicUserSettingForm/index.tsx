@@ -29,7 +29,7 @@ export const BasicUserSettingForm: React.FC = () => {
           withAsterisk
           label="ユーザーID"
           description="半角英数字とハイフン、アンダーバーのみ使用可能です"
-          icon={<IconAt size="1.2rem" />}
+          leftSection={<IconAt size="1.2rem" />}
           rightSection={publicTooltip}
           {...form.getInputProps('userId')}
           pb="md"
@@ -46,7 +46,7 @@ export const BasicUserSettingForm: React.FC = () => {
           {...form.getInputProps('email')}
           pb="md"
         />
-        <Group position="right">
+        <Group justify="flex-end">
           <Button type="submit" color="blue">
             更新
           </Button>

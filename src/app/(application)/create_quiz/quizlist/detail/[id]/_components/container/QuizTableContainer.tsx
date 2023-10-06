@@ -108,7 +108,7 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
 
   // 実際のコンポーネント
   return (
-    <Group position="center" pb="sm">
+    <Group justify="flex-end" pb="sm">
       <Paper w="100%" maw={1200} p="xl" shadow="xs">
         <Anchor href="/create_quiz/quizlist/list" unstyled>
           {'< 問題リスト一覧に戻る'}

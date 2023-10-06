@@ -41,7 +41,7 @@ export const DeleteQuizListModal: React.FC<Props> = (props) => {
       <LoadingOverlay visible={loading} />
       <Text mb="xs">{`問題セット「${data?.name}」を本当に削除しますか？`}</Text>
       <Text>削除すると、問題セット内のすべての問題も削除されます。</Text>
-      <Group position="right" mt="md">
+      <Group justify="flex-end" mt="md">
         <Button
           color="gray"
           onClick={other.onClose}

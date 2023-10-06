@@ -67,7 +67,7 @@ export const QuizListTableRow: React.FC<Props> = (props) => {
         )}
       </td>
       <td>
-        <Group spacing={3} noWrap>
+        <Group gap={3} wrap="nowrap">
           <TableActionIcon
             tooltip="編集"
             onClick={operation.update}

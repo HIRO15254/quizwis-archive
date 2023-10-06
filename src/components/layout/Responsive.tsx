@@ -1,9 +1,7 @@
 // "use client";
-
-import { MediaQuery } from '@mantine/core';
 import React from 'react';
 
-import { MANTINE_SMARTPHONE_BREAKPOINT } from 'config/layoutConfig';
+import classes from './Responsive.module.css';
 
 interface ResponsiveProps {
   children: React.ReactNode;
@@ -25,9 +23,9 @@ export const Responsive: ResponsiveType = {
     // eslint-disable-next-line react/prop-types
     const { children } = props;
     return (
-      <MediaQuery smallerThan={MANTINE_SMARTPHONE_BREAKPOINT} styles={{ display: 'none' }}>
+      <div className={classes.desktop}>
         {children}
-      </MediaQuery>
+      </div>
     );
   },
   /**
@@ -37,9 +35,9 @@ export const Responsive: ResponsiveType = {
     // eslint-disable-next-line react/prop-types
     const { children } = props;
     return (
-      <MediaQuery largerThan={MANTINE_SMARTPHONE_BREAKPOINT} styles={{ display: 'none' }}>
+      <div className={classes.smartphone}>
         {children}
-      </MediaQuery>
+      </div>
     );
   },
 };

@@ -1,6 +1,5 @@
 import {
   Grid,
-  MANTINE_COLORS,
   NativeSelect,
   NumberInput,
   Text,
@@ -11,6 +10,7 @@ import { UseFormReturnType } from '@mantine/form';
 import React from 'react';
 
 import { GenreBadge } from 'components/common/GenreBadge';
+import { DEFAULT_COLORS } from 'styles/const';
 
 import { GenreFormType } from '../../_types/GenreFormType';
 
@@ -33,7 +33,7 @@ export const GenreForm: React.FC<Props> = (props) => {
         <Grid.Col span={4}>
           <NativeSelect
             label="ジャンルの色"
-            data={MANTINE_COLORS}
+            data={DEFAULT_COLORS}
             {...form.getInputProps('color')}
           />
         </Grid.Col>

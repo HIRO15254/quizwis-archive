@@ -78,14 +78,14 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
           )}
         </td>
         <td>
-          <Group spacing={3} noWrap>
+          <Group gap={3} wrap="nowrap">
             <AdditionalInfoIcon tooltipLabel="別解" data={quiz.otherAnswer} Icon={IconArrowsSplit} />
             <AdditionalInfoIcon tooltipLabel="解説" data={quiz.explanation} Icon={IconNote} />
             <AdditionalInfoIcon tooltipLabel="出典" data={quiz.source} Icon={IconBook2} />
           </Group>
         </td>
         <td>
-          <Group spacing={3} noWrap>
+          <Group gap={3} wrap="nowrap">
             <TableActionIcon
               tooltip="編集"
               Icon={IconPencil}
@@ -110,7 +110,7 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
         <Text size="lg">問題がありません</Text>
         <Button
           onClick={() => operations.create()}
-          leftIcon={<IconPlus />}
+          leftSection={<IconPlus />}
         >
           問題を追加
         </Button>
@@ -119,14 +119,14 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
   }
   return (
     <>
-      <Group position="right">
+      <Group justify="flex-end">
         <Text>ジャンルフィルター</Text>
         {genreFilterSelect}
         <Text>表示件数</Text>
         {dataPerPageSelect}
         <Button
           onClick={() => operations.create()}
-          leftIcon={<IconPlus />}
+          leftSection={<IconPlus />}
         >
           問題を追加
         </Button>
@@ -135,7 +135,6 @@ export const QuizTable: React.FC<QuizTableProps> = (props) => {
         <Table
           mt="md"
           highlightOnHover
-          fontSize="md"
           verticalSpacing={0}
         >
           <thead>

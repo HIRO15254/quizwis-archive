@@ -6,10 +6,10 @@ import {
 import React from 'react';
 
 export const TermsOfService = () => (
-  <Group position="center" pb="sm">
+  <Group justify="center" pb="sm">
     <Paper w="100%" maw={1000} p="xl" shadow="xs">
       <Stack
-        spacing="md"
+        gap="md"
         p="lg"
       >
         <Title>

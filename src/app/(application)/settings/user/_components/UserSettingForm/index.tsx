@@ -12,12 +12,12 @@ import { BasicUserSettingForm } from '../BasicUserSettingForm';
  * 各種ユーザー設定フォームをまとめたタブ
  */
 export const UserSettingForm: React.FC = () => (
-  <Group position="center" pb="sm">
+  <Group justify="center" pb="sm">
     <Paper w="100%" maw={800} p="xl" shadow="xs">
       <Title order={1}>
         ユーザー設定
       </Title>
-      <Group position="center">
+      <Group justify="center">
         <Tabs defaultValue="basic" w="100%" mt="md">
           <Tabs.List>
             <Tabs.Tab value="basic">基本設定</Tabs.Tab>

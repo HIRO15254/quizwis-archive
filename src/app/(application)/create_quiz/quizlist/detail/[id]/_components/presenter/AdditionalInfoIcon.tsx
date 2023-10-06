@@ -1,6 +1,6 @@
 /* eslint-disable react/no-danger */
 import {
-  HoverCardProps, useMantineTheme, HoverCard, Tooltip,
+  HoverCardProps, useMantineTheme, HoverCard, Tooltip, useComputedColorScheme,
 } from '@mantine/core';
 import { Icon as IconType } from '@tabler/icons-react';
 import React from 'react';
@@ -19,13 +19,14 @@ export const AdditionalInfoIcon = (props: AdditionalInfoIconProps) => {
   } = props;
 
   const theme = useMantineTheme();
+  const colorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
   if (data && data !== '<p></p>') {
     return (
       <HoverCard shadow="md" {...rest}>
         <HoverCard.Target>
           <Tooltip label={tooltipLabel}>
-            <Icon size="1.5rem" stroke={1.4} color={colors.active(theme)} />
+            <Icon size="1.5rem" stroke={1.4} color={colors.active(theme, colorScheme)} />
           </Tooltip>
         </HoverCard.Target>
         <HoverCard.Dropdown p={0}>
@@ -39,7 +40,7 @@ export const AdditionalInfoIcon = (props: AdditionalInfoIconProps) => {
   }
   return (
     <Tooltip label={tooltipLabel}>
-      <Icon size="1.5rem" stroke={1.4} color={colors.disabled(theme)} />
+      <Icon size="1.5rem" stroke={1.4} color={colors.disabled(theme, colorScheme)} />
     </Tooltip>
   );
 };

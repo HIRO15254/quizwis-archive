@@ -37,7 +37,7 @@ export const QuizListTableContainer: React.FC = () => {
   ]);
 
   return (
-    <Group position="center" pb="sm">
+    <Group justify="flex-end" pb="sm">
       <Paper w="100%" maw={800} p="xl" shadow="xs">
         <Title order={1}>問題リスト一覧</Title>
         {createQuizListModal}

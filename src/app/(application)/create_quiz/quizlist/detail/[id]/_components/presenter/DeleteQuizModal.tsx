@@ -42,7 +42,7 @@ export const DeleteQuizModal: React.FC<Props> = (props) => {
       <Text>
         この問題を削除しますか？
       </Text>
-      <Group position="right" mt="md">
+      <Group justify="flex-end" mt="md">
         <Button
           color="gray"
           onClick={other.onClose}

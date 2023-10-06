@@ -37,7 +37,7 @@ export const GenreSetTable: React.FC<Props> = (props) => {
         <Text size="lg">ジャンルセットがありません</Text>
         <Button
           onClick={operations.create}
-          leftIcon={<IconPlus />}
+          leftSection={<IconPlus />}
         >
           新規ジャンルセット
         </Button>
@@ -46,10 +46,10 @@ export const GenreSetTable: React.FC<Props> = (props) => {
   }
   return (
     <Skeleton visible={loading}>
-      <Group position="right">
+      <Group>
         <Button
           onClick={operations.create}
-          leftIcon={<IconPlus />}
+          leftSection={<IconPlus />}
         >
           新規ジャンルセット
         </Button>

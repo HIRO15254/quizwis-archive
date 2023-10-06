@@ -42,7 +42,7 @@ export const DeleteGenreModal: React.FC<Props> = (props) => {
       <Text mb="xs">{`ジャンル「${data?.name}」を本当に削除しますか？`}</Text>
       <Text mb="xs">削除すると、サブジャンルもすべて削除され、このジャンルやサブジャンルが使用されているすべての問題はジャンルなしになります。</Text>
       <Text>新たな問題セット用にジャンルセットを変更する場合は、ジャンルセットをコピーしてからの編集を推奨します。</Text>
-      <Group position="right" mt="md">
+      <Group justify="flex-end" mt="md">
         <Button
           color="gray"
           onClick={other.onClose}

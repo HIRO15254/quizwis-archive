@@ -33,7 +33,7 @@ export const CreateGenreSetModal: React.FC<Props> = (props) => {
       <form onSubmit={onSubmit}>
         <Stack>
           {genreSetForm}
-          <Group position="right">
+          <Group justify="flex-end">
             <Button
               type="submit"
               loading={submitButtonLoading}
