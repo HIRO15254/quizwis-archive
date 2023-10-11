@@ -55,21 +55,18 @@ export const InlineQuizEditor = (props: InlineQuizEditorProps) => {
         <Group gap={3} wrap="nowrap">
           <AdditionalInfoEditIcon
             label="別解"
-            editor={editors.otherAnswer}
             Icon={IconArrowsSplit}
           >
             <OtherAnswerEditor editor={editors.otherAnswer} />
           </AdditionalInfoEditIcon>
           <AdditionalInfoEditIcon
             label="解説"
-            editor={editors.explanation}
             Icon={IconNote}
           >
             <ExplanationEditor editor={editors.explanation} />
           </AdditionalInfoEditIcon>
           <AdditionalInfoEditIcon
             label="出典"
-            editor={editors.source}
             Icon={IconBook2}
           >
             <SourceEditor editor={editors.source} />

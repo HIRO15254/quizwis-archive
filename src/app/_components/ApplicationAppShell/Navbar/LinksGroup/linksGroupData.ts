@@ -3,7 +3,7 @@ import {
   IconHome,
 } from '@tabler/icons-react';
 
-export const mockData = [
+export const linksGroupData = [
   { label: 'ダッシュボード', icon: IconHome, link: '/dashboard' },
   {
     label: '問題作成',

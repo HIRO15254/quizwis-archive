@@ -1,13 +1,13 @@
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import { ColorSchemeScript } from '@mantine/core';
 import React from 'react';
 
 import { AuthProvider } from 'components/providers/AuthProvider';
 import { GqlProvider } from 'components/providers/GqlProvider';
 
 import '@mantine/core/styles.css';
+import 'styles/globalColor.css';
 
 import { StyleProvider } from '../components/providers/StyleProvider';
-import { theme } from '../styles/theme';
 
 interface RootLayoutProps {
   children: React.ReactNode
@@ -24,6 +24,9 @@ const RootLayout: React.FC<RootLayoutProps> = (props) => {
   return (
     <html lang="ja">
       <head>
+        <meta charSet="utf-8" />
+        <title>{metadata.title}</title>
+        {/* PWA用ここから */}
         <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
@@ -31,16 +34,15 @@ const RootLayout: React.FC<RootLayoutProps> = (props) => {
         <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5bbad5" />
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
+        {/* PWA用ここまで */}
         <ColorSchemeScript />
       </head>
       <body>
         <GqlProvider>
           <AuthProvider>
-            <MantineProvider theme={theme}>
-              <StyleProvider>
-                {children}
-              </StyleProvider>
-            </MantineProvider>
+            <StyleProvider>
+              {children}
+            </StyleProvider>
           </AuthProvider>
         </GqlProvider>
       </body>

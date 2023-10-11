@@ -1,5 +1,9 @@
 mutation UpdateLoginUser($input: UpdateLoginUserInput!) {
   updateLoginUser(input: $input) {
     id
+    image
+    name
+    userId
+    email
   }
 }

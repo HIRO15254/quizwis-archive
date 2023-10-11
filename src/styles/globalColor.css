@@ -1,0 +1,10 @@
+:root {
+  --my-paper-background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+  --my-paper-background-hover: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
+  --my-page-background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  --my-text-color: light-dark(var(--mantine-color-black), var(--mantine-color-dark-0));
+  --my-text-color-hover: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  --my-border-color: light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  --my-icon-color: light-dark(var(--mantine-color-blue-5), var(--mantine-color-blue-3));
+  --my-icon-color-disabled: light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-3));
+}

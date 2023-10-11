@@ -1,9 +1,6 @@
-import { headers } from 'next/headers';
-import { redirect } from 'next/navigation';
-import { getServerSession } from 'next-auth';
 import React from 'react';
 
-import { MainAppShell } from 'app/_components/MainAppShell';
+import { ApplicationAppShell } from '../_components/ApplicationAppShell';
 
 interface ApplicationLayoutProps {
   children: React.ReactNode
@@ -12,19 +9,13 @@ interface ApplicationLayoutProps {
 /**
  * アプリケーション内のページに共通するレイアウト
  */
-const RootLayout: React.FC<ApplicationLayoutProps> = async (props) => {
+const RootLayout = async (props: ApplicationLayoutProps) => {
   const { children } = props;
 
-  const url = headers().get('referer') ?? '';
-  const session = await getServerSession();
-
-  if (!session) {
-    redirect(`/auth/login?callbackUrl=${url}`);
-  }
   return (
-    <MainAppShell>
+    <ApplicationAppShell>
       {children}
-    </MainAppShell>
+    </ApplicationAppShell>
   );
 };
 

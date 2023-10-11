@@ -405,7 +405,7 @@ export type UpdateLoginUserMutationVariables = Exact<{
 }>;
 
 
-export type UpdateLoginUserMutation = { __typename?: 'Mutation', updateLoginUser: { __typename?: 'User', id: string } };
+export type UpdateLoginUserMutation = { __typename?: 'Mutation', updateLoginUser: { __typename?: 'User', id: string, image?: string | null, name?: string | null, userId?: string | null, email?: string | null } };
 
 export type GenreDataFragment = { __typename?: 'Genre', id: string, description?: string | null, name: string, ratio: number, color: string };
 
@@ -653,6 +653,10 @@ export const UpdateLoginUserDocument = gql`
     mutation UpdateLoginUser($input: UpdateLoginUserInput!) {
   updateLoginUser(input: $input) {
     id
+    image
+    name
+    userId
+    email
   }
 }
     `;

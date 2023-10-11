@@ -1,26 +1,23 @@
 'use client';
 
 import {
-  Group, Menu, UnstyledButton, Text, Anchor, Stack,
+  Menu, Anchor, UnstyledButton,
 } from '@mantine/core';
-import { IconChevronDown, IconLogout, IconSettings } from '@tabler/icons-react';
-import { Session } from 'next-auth';
+import { IconLogout, IconSettings } from '@tabler/icons-react';
 import { signOut } from 'next-auth/react';
 import React from 'react';
 
-import { UserAvatar } from 'components/common/UserAvatar';
-
-import classes from './index.module.css';
-
-interface MainHeaderUserMenuProps {
-  session: Session
+interface Props {
+  children: React.ReactNode
 }
 
 /**
  * 画面の右上に表示されるユーザー情報表示とそこからのドロップダウンメニュー
  */
-export const MainHeaderUserMenu: React.FC<MainHeaderUserMenuProps> = (props) => {
-  const { session } = props;
+export const UserMenu: React.FC<Props> = (props) => {
+  const {
+    children,
+  } = props;
 
   return (
     <Menu
@@ -31,18 +28,7 @@ export const MainHeaderUserMenu: React.FC<MainHeaderUserMenuProps> = (props) => 
     >
       <Menu.Target>
         <UnstyledButton>
-          <Group gap={7}>
-            <UserAvatar user={session?.user} size="md" />
-            <Stack gap={5}>
-              <Text mr="xs" className={classes.userName}>
-                {session?.user.name}
-              </Text>
-              <Text mr="xs" className={classes.userId}>
-                {`@${session?.user.userId}`}
-              </Text>
-            </Stack>
-            <IconChevronDown size={20} stroke={1.5} />
-          </Group>
+          {children}
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown>

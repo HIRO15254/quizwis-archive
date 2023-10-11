@@ -6,28 +6,33 @@ import {
   Collapse,
   ThemeIcon,
   UnstyledButton,
-  Anchor,
+  Anchor, rem,
 } from '@mantine/core';
-import { IconChevronLeft } from '@tabler/icons-react';
-import React, { useState } from 'react';
+import { IconChevronLeft, TablerIconsProps } from '@tabler/icons-react';
+import Link from 'next/link';
+import React, { ReactNode, useState } from 'react';
 
-import classes from './index.module.css';
+import classes from './LinksGroup.module.css';
 
 interface Props {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  icon: React.FC<any>;
+  icon: (props: TablerIconsProps) => ReactNode;
   label: string;
   initiallyOpened?: boolean;
-  link?: { label: string; link: string }[] | string;
+  link?: {
+    label: string;
+    link: string
+  }[] | string;
 }
 
-export const NavBarLinksGroup = ({
-  icon: Icon, label, initiallyOpened, link,
-}: Props) => {
+export const LinksGroup: React.FC<Props> = (props) => {
+  const {
+    icon: Icon, label, initiallyOpened, link,
+  } = props;
   const hasLinks = Array.isArray(link);
   const [opened, setOpened] = useState(initiallyOpened || false);
   const items = (hasLinks ? link : []).map((oneLink) => (
     <Anchor
+      component={Link}
       unstyled
       className={classes.link}
       href={oneLink.link}
@@ -52,10 +57,11 @@ export const NavBarLinksGroup = ({
               </Box>
               <IconChevronLeft
                 className={classes.chevron}
-                size="1rem"
                 stroke={1.5}
                 style={{
-                  transform: opened ? 'rotate: 90deg)' : 'none',
+                  width: rem(16),
+                  height: rem(16),
+                  transform: opened ? 'rotate(-90deg)' : 'none',
                 }}
               />
             </Group>
@@ -65,8 +71,7 @@ export const NavBarLinksGroup = ({
         )}
       {!hasLinks
         && (
-        <UnstyledButton onClick={() => setOpened((o) => !o)} className={classes.control}>
-          <Anchor href={link} unstyled>
+          <Anchor component={Link} href={link ?? '/'} className={classes.control}>
             <Group justify="space-between" gap={0}>
               <Box style={{ display: 'flex', alignItems: 'center' }}>
                 <ThemeIcon variant="light" size={30}>
@@ -78,7 +83,6 @@ export const NavBarLinksGroup = ({
               </Box>
             </Group>
           </Anchor>
-        </UnstyledButton>
         )}
     </>
   );

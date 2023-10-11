@@ -15,7 +15,7 @@ export const metadata = {
 /**
  * ログイン用のページ ログイン時のアクセスは禁止
  */
-const LoginPage: React.FC<LoginPageProps> = async (props) => {
+const LoginPage = async (props: LoginPageProps) => {
   const { searchParams } = props;
 
   const session = await getServerSession();

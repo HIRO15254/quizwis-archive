@@ -2,9 +2,7 @@
 
 import {
   MantineProvider,
-  useMantineColorScheme,
 } from '@mantine/core';
-import { useHotkeys } from '@mantine/hooks';
 import { Notifications } from '@mantine/notifications';
 import React from 'react';
 
@@ -19,13 +17,10 @@ export const StyleProvider = (props: Props) => {
     children,
   } = props;
 
-  const { toggleColorScheme } = useMantineColorScheme();
-  useHotkeys([['mod+j', () => toggleColorScheme(), { preventDefault: true }]]);
-
   return (
-    <>
+    <MantineProvider theme={theme}>
       <Notifications />
       {children}
-    </>
+    </MantineProvider>
   );
 };

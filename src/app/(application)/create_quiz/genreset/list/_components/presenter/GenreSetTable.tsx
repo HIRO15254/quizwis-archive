@@ -68,6 +68,7 @@ export const GenreSetTable: React.FC<Props> = (props) => {
         <tbody>
           {data.map((quizList) => (
             <GenreSetTableRow
+              key={quizList.id}
               data={quizList}
               operations={{
                 update: () => operations.update(quizList.id),
