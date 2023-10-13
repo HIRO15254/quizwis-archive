@@ -1,7 +1,9 @@
 'use client';
 
 // 各種import
-import { Title, Paper, Group } from '@mantine/core';
+import {
+  Title, Container,
+} from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import React from 'react';
 
@@ -40,22 +42,20 @@ export const GenreSetTableContainer: React.FC = () => {
 
   // 実際のコンポーネント
   return (
-    <Group justify="center" pb="sm">
-      <Paper w="100%" maw={800} p="xl" shadow="xs">
-        <Title order={1}>ジャンルセット一覧</Title>
-        {createGenreSetModal}
-        {updateGenreSetModal}
-        {deleteGenreSetModal}
-        <GenreSetTable
-          data={data?.getGenreSets ?? []}
-          loading={(!data && loading) || !called}
-          operations={{
-            create: createGenreSet,
-            update: updateGenreSet,
-            delete: deleteGenreSet,
-          }}
-        />
-      </Paper>
-    </Group>
+    <Container size="md">
+      <Title order={1}>ジャンルセット一覧</Title>
+      {createGenreSetModal}
+      {updateGenreSetModal}
+      {deleteGenreSetModal}
+      <GenreSetTable
+        data={data?.getGenreSets ?? []}
+        loading={(!data && loading) || !called}
+        operations={{
+          create: createGenreSet,
+          update: updateGenreSet,
+          delete: deleteGenreSet,
+        }}
+      />
+    </Container>
   );
 };

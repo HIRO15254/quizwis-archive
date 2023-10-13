@@ -5,7 +5,7 @@ import { useUpdateGenreMutation, useGetGenreLazyQuery } from 'gql';
 import { errorNotification, successNotification } from 'util/notifications';
 
 import { useGenreForm } from './useGenreForm';
-import { UpdateGenreModal } from '../_components/presenter/UpdateGenreModal';
+import { UpdateGenreModal } from '../_components/mutation/UpdateGenreModal';
 
 export const useUpdateGenreModal = () => {
   const [opened, handlers] = useDisclosure();

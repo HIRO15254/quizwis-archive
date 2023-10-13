@@ -5,7 +5,7 @@ import { useUpdateGenreSetMutation, useGetGenreSetLazyQuery } from 'gql';
 import { errorNotification, successNotification } from 'util/notifications';
 
 import { useGenreSetForm } from './useGenreSetForm';
-import { UpdateGenreSetModal } from '../_components/presenter/UpdateGenreSetModal';
+import { UpdateGenreSetModal } from '../_components/UpdateGenreSetModal';
 
 export const useUpdateGenreSetModal = () => {
   const [opened, handlers] = useDisclosure();
@@ -71,7 +71,7 @@ export const useUpdateGenreSetModal = () => {
     onSubmit,
     genreSetForm,
     loading,
-    submitButtonLoading: mutationLoading,
+    buttonLoading: mutationLoading,
   };
 
   return {

@@ -2,7 +2,7 @@ import { Textarea, TextInput } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import React from 'react';
 
-import { GenreSetFormType } from '../../_types/GenreSetFormType';
+import { GenreSetFormType } from '../_types/GenreSetFormType';
 
 interface Props {
   form: UseFormReturnType<GenreSetFormType>

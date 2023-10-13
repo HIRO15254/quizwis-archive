@@ -4,10 +4,10 @@ import {
 } from '@mantine/core';
 import React, { ReactNode } from 'react';
 
-import { FormModal } from 'components/common/FormModal';
+import { FormModal } from '../../../../../../../../components/common/FormModal';
 
-export interface Props extends ModalProps {
-  quizListForm: ReactNode;
+interface Props extends ModalProps {
+  genreForm: ReactNode;
   onSubmit: () => void;
   loading?: boolean;
   buttonLoading?: boolean;
@@ -16,19 +16,19 @@ export interface Props extends ModalProps {
 /**
  * ジャンルセットを作成するモーダル
  */
-export const UpdateQuizListModal: React.FC<Props> = (props) => {
+export const CreateGenreModal: React.FC<Props> = (props) => {
   const {
-    quizListForm,
+    genreForm,
     ...other
   } = props;
 
   return (
     <FormModal
+      title="新規ジャンル作成"
+      button="作成"
       {...other}
-      title="問題リスト更新"
-      button="更新"
     >
-      {quizListForm}
+      {genreForm}
     </FormModal>
   );
 };

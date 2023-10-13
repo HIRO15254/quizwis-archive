@@ -5,7 +5,7 @@ import { useCreateGenreSetMutation } from 'gql';
 import { errorNotification, successNotification } from 'util/notifications';
 
 import { useGenreSetForm } from './useGenreSetForm';
-import { CreateGenreSetModal } from '../_components/presenter/CreateGenreSetModal';
+import { CreateGenreSetModal } from '../_components/CreateGenreSetModal';
 
 type Return = {
   createGenreSetModal: React.ReactNode;
@@ -52,7 +52,7 @@ export const useCreateGenreSetModal = (): Return => {
     opened,
     onClose: handlers.close,
     onSubmit,
-    submitButtonLoading: loading,
+    buttonLoading: loading,
     genreSetForm,
   };
 

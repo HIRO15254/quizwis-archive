@@ -4,7 +4,8 @@ import {
 import { UseFormReturnType } from '@mantine/form';
 import React from 'react';
 
-import { GenreSetDataFragment } from '../../../../../../../gql';
+import { GenreSetDataFragment } from 'gql';
+
 import { QuizListFormType } from '../../_types/QuizListFormType';
 
 interface Props {

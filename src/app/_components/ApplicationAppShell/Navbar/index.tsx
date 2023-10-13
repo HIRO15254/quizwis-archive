@@ -1,5 +1,3 @@
-'use client';
-
 import {
   AppShell, ScrollArea,
 } from '@mantine/core';

@@ -5,6 +5,8 @@ import {
 import { getHotkeyHandler } from '@mantine/hooks';
 import React, { ReactNode } from 'react';
 
+import { FormModal } from '../../../../../../../../components/common/FormModal';
+
 export interface Props extends ModalProps {
   genreForm: ReactNode;
   onSubmit: () => void;
@@ -18,34 +20,16 @@ export interface Props extends ModalProps {
 export const UpdateGenreModal: React.FC<Props> = (props) => {
   const {
     genreForm,
-    onSubmit,
-    loading = false,
-    buttonLoading = false,
     ...other
   } = props;
 
   return (
-    <Modal
+    <FormModal
       title="ジャンル編集"
-      onKeyDown={getHotkeyHandler([
-        ['mod+Enter', onSubmit],
-      ])}
+      button="更新"
       {...other}
     >
-      <form onSubmit={onSubmit}>
-        <Stack>
-          <LoadingOverlay visible={loading} />
-          {genreForm}
-          <Group justify="flex-end">
-            <Button
-              type="submit"
-              loading={buttonLoading}
-            >
-              更新
-            </Button>
-          </Group>
-        </Stack>
-      </form>
-    </Modal>
+      {genreForm}
+    </FormModal>
   );
 };

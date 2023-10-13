@@ -3759,27 +3759,6 @@
   resolved "https://registry.yarnpkg.com/@react-buddy/ide-toolbox/-/ide-toolbox-2.4.0.tgz#8c986491f061334c0da6e7c77b65b88ef915ef8d"
   integrity sha512-TWHX6gwa0Gop7215uHhjFMbYLLdjM/b9rr0wYE3E0m7GNJ56gbPpbZiq86w9uI8zksl827acqGeT437MkuO64w==
 
-"@react-buddy/palette-mantine-core@^6.0.0":
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/@react-buddy/palette-mantine-core/-/palette-mantine-core-6.0.1.tgz#be7dcb4ee6e5ab35792e5013e3a79801eecbd89d"
-  integrity sha512-VLpfLtXqy7eyeAYBn+k909xyaXW6a+ykKWhAsGRTJmuidRZ5+5PffDRpVXGgj5bFrQ/+E2nkpzVUwOSzXTNnCw==
-  dependencies:
-    "@react-buddy/ide-toolbox" "^2.4.0"
-
-"@react-buddy/palette-mantine-dates@^6.0.0":
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/@react-buddy/palette-mantine-dates/-/palette-mantine-dates-6.0.1.tgz#7fe80153dd8e900d1e803421aa83a3febccf604e"
-  integrity sha512-uEDBSYArzqcA/J9ggHP0vulCt4tzrCqqJCfCC+o31J83nsRkE8YKMyYjZEv1RGRKrSTFWjL3TRaGCwF2XwmjzQ==
-  dependencies:
-    "@react-buddy/ide-toolbox" "^2.4.0"
-
-"@react-buddy/palette-mantine-form@^6.0.0":
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/@react-buddy/palette-mantine-form/-/palette-mantine-form-6.0.1.tgz#67e6457e59135dd046c2a7588fbc4cd795199aa6"
-  integrity sha512-0Wa56ma7ZXWNnTgFkrJozyb0cncOJh6GNHBnWQQCgREnteVXZLH7V87RTVikHp0geemwE/CNRfdQOLVlqF5rfQ==
-  dependencies:
-    "@react-buddy/ide-toolbox" "^2.4.0"
-
 "@remirror/core-constants@^2.0.1":
   version "2.0.1"
   resolved "https://registry.npmjs.org/@remirror/core-constants/-/core-constants-2.0.1.tgz"

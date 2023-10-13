@@ -6,29 +6,28 @@ import React, { ReactNode } from 'react';
 
 import { FormModal } from 'components/common/FormModal';
 
-export interface Props extends ModalProps {
-  quizListForm: ReactNode;
+interface Props extends ModalProps {
+  genreSetForm: ReactNode;
   onSubmit: () => void;
-  loading?: boolean;
   buttonLoading?: boolean;
 }
 
 /**
  * ジャンルセットを作成するモーダル
  */
-export const UpdateQuizListModal: React.FC<Props> = (props) => {
+export const CreateGenreSetModal: React.FC<Props> = (props) => {
   const {
-    quizListForm,
+    genreSetForm,
     ...other
   } = props;
 
   return (
     <FormModal
+      title="新規ジャンルセット作成"
+      button="作成"
       {...other}
-      title="問題リスト更新"
-      button="更新"
     >
-      {quizListForm}
+      {genreSetForm}
     </FormModal>
   );
 };

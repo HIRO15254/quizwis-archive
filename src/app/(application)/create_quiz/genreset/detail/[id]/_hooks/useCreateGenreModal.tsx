@@ -8,7 +8,7 @@ import {
 import { errorNotification, successNotification } from 'util/notifications';
 
 import { useGenreForm } from './useGenreForm';
-import { CreateGenreModal } from '../_components/presenter/CreateGenreModal';
+import { CreateGenreModal } from '../_components/mutation/CreateGenreModal';
 
 type Props = {
   genreSetId: string;

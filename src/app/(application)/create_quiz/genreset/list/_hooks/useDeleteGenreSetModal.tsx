@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useDeleteGenreSetMutation, useGetGenreSetLazyQuery } from 'gql';
 import { errorNotification, successNotification } from 'util/notifications';
 
-import { DeleteGenreSetModal } from '../_components/presenter/DeleteGenreSetModal';
+import { DeleteGenreSetModal } from '../_components/DeleteGenreSetModal';
 
 export const useDeleteGenreSetModal = () => {
   const [opened, handlers] = useDisclosure();
@@ -58,7 +58,7 @@ export const useDeleteGenreSetModal = () => {
     onConfirm: onDelete,
     data: genreSetData?.getGenreSet,
     loading,
-    confirmButtonLoading: mutationLoading,
+    buttonLoading: mutationLoading,
   };
 
   return {

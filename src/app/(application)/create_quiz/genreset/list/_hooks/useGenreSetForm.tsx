@@ -1,7 +1,7 @@
 import { isNotEmpty, useForm } from '@mantine/form';
 import React from 'react';
 
-import { GenreSetForm } from '../_components/presenter/GenreSetForm';
+import { GenreSetForm } from '../_components/GenreSetForm';
 import { GenreSetFormType } from '../_types/GenreSetFormType';
 
 export const useGenreSetForm = () => {

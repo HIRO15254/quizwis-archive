@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useDeleteGenreMutation, useGetGenreLazyQuery } from 'gql';
 import { errorNotification, successNotification } from 'util/notifications';
 
-import { DeleteGenreModal } from '../_components/presenter/DeleteGenreModal';
+import { DeleteGenreModal } from '../_components/mutation/DeleteGenreModal';
 
 export const useDeleteGenreModal = () => {
   const [opened, handlers] = useDisclosure();

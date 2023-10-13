@@ -1,7 +1,7 @@
 'use client';
 
 import {
-  Anchor, Group, Paper, Title,
+  Anchor, Container, Title,
 } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { encodeGlobalID } from '@pothos/plugin-relay';
@@ -52,25 +52,23 @@ export const GenreTableContainer: React.FC<Props> = (props) => {
   ]);
 
   return (
-    <Group justify="center" pb="sm">
-      <Paper w="100%" maw={800} p="xl" shadow="xs">
-        <Anchor href="/create_quiz/genreset/list" unstyled>
-          {'< ジャンルセット一覧に戻る'}
-        </Anchor>
-        <Title order={1} mt="md">{genreSetName ?? ''}</Title>
-        {deleteGenreModal}
-        {createGenreModal}
-        {updateGenreModal}
-        <GenreTable
-          loading={(!data && loading) || !called}
-          data={genreListToTree(genresData || [])}
-          operations={{
-            create: createGenre,
-            update: updateGenre,
-            delete: deleteGenre,
-          }}
-        />
-      </Paper>
-    </Group>
+    <Container size="md">
+      <Anchor href="/create_quiz/genreset/list" unstyled>
+        {'< ジャンルセット一覧に戻る'}
+      </Anchor>
+      <Title order={1} mt="md">{genreSetName ?? ''}</Title>
+      {deleteGenreModal}
+      {createGenreModal}
+      {updateGenreModal}
+      <GenreTable
+        loading={(!data && loading) || !called}
+        data={genreListToTree(genresData || [])}
+        operations={{
+          create: createGenre,
+          update: updateGenre,
+          delete: deleteGenre,
+        }}
+      />
+    </Container>
   );
 };
