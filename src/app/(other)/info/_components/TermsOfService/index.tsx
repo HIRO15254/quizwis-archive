@@ -1,3 +1,5 @@
+'use client';
+
 import {
   List, Stack, Title, Text, Space, Container,
 } from '@mantine/core';
