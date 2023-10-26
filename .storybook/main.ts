@@ -9,6 +9,7 @@ const config: StorybookConfig = {
     "@storybook/addon-interactions",
     '@storybook/addon-styling',
     'storybook-dark-mode',
+    "storybook-addon-apollo-client",
   ],
   framework: {
     name: "@storybook/nextjs",

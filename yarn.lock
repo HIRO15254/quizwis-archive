@@ -2808,7 +2808,7 @@
 
 "@graphql-tools/schema@^10.0.0":
   version "10.0.0"
-  resolved "https://registry.npmjs.org/@graphql-tools/schema/-/schema-10.0.0.tgz"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/schema/-/schema-10.0.0.tgz#7b5f6b6a59f51c927de8c9069bde4ebbfefc64b3"
   integrity sha512-kf3qOXMFcMs2f/S8Y3A8fm/2w+GaHAkfr3Gnhh2LOug/JgpY/ywgFVxO3jOeSpSEdoYcDKLcXVjMigNbY4AdQg==
   dependencies:
     "@graphql-tools/merge" "^9.0.0"
@@ -4768,7 +4768,7 @@
   resolved "https://registry.yarnpkg.com/@storybook/react-dom-shim/-/react-dom-shim-7.4.6.tgz#7f7e01dbb6abe104ae140e25b7ed98c347a5fb9f"
   integrity sha512-DSq8l9FDocUF1ooVI+TF83pddj1LynE/Hv0/y8XZhc3IgJ/HkuOQuUmfz29ezgfAi9gFYUR8raTIBi3/xdoRmw==
 
-"@storybook/react@7.4.6":
+"@storybook/react@7.4.6", "@storybook/react@^7.4.6":
   version "7.4.6"
   resolved "https://registry.yarnpkg.com/@storybook/react/-/react-7.4.6.tgz#240a78547add8db69b5d2eeae3d6c45feb79559b"
   integrity sha512-w0dVo64baFFPTGpUOWFqkKsu6pQincoymegSNgqaBd5DxEyMDRiRoTWSJHMKE9BwgE8SyWhRkP1ak1mkccSOhQ==
@@ -14470,6 +14470,14 @@ store2@^2.14.2:
   resolved "https://registry.yarnpkg.com/store2/-/store2-2.14.2.tgz#56138d200f9fe5f582ad63bc2704dbc0e4a45068"
   integrity sha512-siT1RiqlfQnGqgT/YzXVUNsom9S0H1OX+dpdGN1xkyYATo4I6sep5NmsRD/40s3IIOvlCq6akxkqG82urIZW1w==
 
+storybook-addon-apollo-client@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/storybook-addon-apollo-client/-/storybook-addon-apollo-client-5.0.0.tgz#0d1835626121982af1eee2eca45ed751b67fc7e7"
+  integrity sha512-vE0q7R90LuV5bmnas0B3HBU+0c7axmDpu5mYLTzqKLyQbgVlw102GGhodRA0EZOJa+KrQQ7d6auojPS3tZpVxQ==
+  dependencies:
+    "@storybook/components" "^7.0.0"
+    tslib "2.5.3"
+
 storybook-dark-mode@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/storybook-dark-mode/-/storybook-dark-mode-3.0.1.tgz#b79e8809fc89da9c06edb5d2d20cba163c256adc"
@@ -14874,10 +14882,10 @@ sugarss@^4.0.1:
   resolved "https://registry.yarnpkg.com/sugarss/-/sugarss-4.0.1.tgz#128a783ed71ee0fc3b489ce1f7d5a89bc1e24383"
   integrity sha512-WCjS5NfuVJjkQzK10s8WOBY+hhDxxNt/N6ZaGwxFZ+wN3/lKKFSaaKUNecULcTTvE4urLcKaZFQD8vO0mOZujw==
 
-supabase@^1.100.1:
-  version "1.100.1"
-  resolved "https://registry.yarnpkg.com/supabase/-/supabase-1.100.1.tgz#6064521532b4eb4a4481dc320c597f46efd426af"
-  integrity sha512-Tn03fjNGiCoJ06ZeBtCmaNj3Kqf2UzM8bpptiIrP7g5wPmAHL8MTDM2ZEemkRxAWAm2E+fcb8zGOSNbh0RCQGQ==
+supabase@^1.106.1:
+  version "1.106.1"
+  resolved "https://registry.yarnpkg.com/supabase/-/supabase-1.106.1.tgz#a7870099258b8118b3171054171e6e4024ef013b"
+  integrity sha512-Wc1GYraDRCRGZIkCPoN00QuSP//Cm2Q4q5B6LvEHb2dKoezO7Mx7SYZ5rhh3X0ko9Yii0ABeN2GE88ZVL9R5mg==
   dependencies:
     bin-links "^4.0.1"
     https-proxy-agent "^7.0.2"
@@ -15313,6 +15321,11 @@ tsconfig-paths@^4.0.0, tsconfig-paths@^4.1.2:
     minimist "^1.2.6"
     strip-bom "^3.0.0"
 
+tslib@2.5.3, tslib@~2.5.0:
+  version "2.5.3"
+  resolved "https://registry.npmjs.org/tslib/-/tslib-2.5.3.tgz"
+  integrity sha512-mSxlJJwl3BMEQCUNnxXBU9jP4JBktcEGhURcPR6VQVlnP0FdDEsIaz0C35dXNGLyRfrATNofF0F5p2KPxQgB+w==
+
 tslib@^1.13.0, tslib@^1.8.1:
   version "1.14.1"
   resolved "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
@@ -15332,11 +15345,6 @@ tslib@~2.4.0:
   version "2.4.1"
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.4.1.tgz"
   integrity sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==
-
-tslib@~2.5.0:
-  version "2.5.3"
-  resolved "https://registry.npmjs.org/tslib/-/tslib-2.5.3.tgz"
-  integrity sha512-mSxlJJwl3BMEQCUNnxXBU9jP4JBktcEGhURcPR6VQVlnP0FdDEsIaz0C35dXNGLyRfrATNofF0F5p2KPxQgB+w==
 
 tsutils@^3.21.0:
   version "3.21.0"

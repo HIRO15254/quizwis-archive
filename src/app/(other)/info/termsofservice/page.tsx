@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TermsOfService } from '../_components/TeamsOfService';
+import { TermsOfService } from '../_components/TermsOfService';
 
 export const metadata = {
   title: '利用規約 - QuizWis',

@@ -12,7 +12,6 @@
       <option name="VAR_DECLARATION_WRAP" value="2" />
       <option name="OBJECT_LITERAL_WRAP" value="2" />
       <option name="IMPORT_SORT_MODULE_NAME" value="true" />
-      <option name="IMPORT_PREFER_ABSOLUTE_PATH" value="TRUE" />
     </TypeScriptCodeStyleSettings>
     <codeStyleSettings language="CSS">
       <indentOptions>

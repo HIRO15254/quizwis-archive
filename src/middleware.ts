@@ -46,6 +46,6 @@ export default withAuth(
 
 export const config = {
   matcher: [
-    '/((?!auth|info).*)',
+    '/(application.*)',
   ],
 };
