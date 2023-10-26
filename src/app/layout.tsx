@@ -4,11 +4,10 @@ import React from 'react';
 import { AuthProvider } from 'components/providers/AuthProvider';
 import { GqlProvider } from 'components/providers/GqlProvider';
 import { HotKeysProvider } from 'components/providers/HotKeysProvider';
+import { StyleProvider } from 'components/providers/StyleProvider';
 
 import '@mantine/core/styles.css';
 import 'styles/globalColor.css';
-
-import { StyleProvider } from 'components/providers/StyleProvider';
 
 interface RootLayoutProps {
   children: React.ReactNode
