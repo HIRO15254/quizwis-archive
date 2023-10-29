@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession, NextAuthOptions } from 'next-auth';
@@ -33,10 +35,23 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({
+      token, user, trigger, session,
+    }) {
       if (user) {
-        // eslint-disable-next-line no-param-reassign
         token.userId = user.userId;
+      }
+      if (trigger === 'update') {
+        const newUser = await prisma.user.findUnique({
+          where: {
+            email: token.email ?? '',
+          },
+        });
+        if (newUser) {
+          token.picture = newUser?.image;
+          token.userId = newUser?.userId;
+          token.name = newUser?.name;
+        }
       }
       return token;
     },

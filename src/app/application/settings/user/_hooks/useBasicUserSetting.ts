@@ -1,13 +1,12 @@
 'use client';
 
 import { useForm } from '@mantine/form';
-import { showNotification } from '@mantine/notifications';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 import { GetLoginUserQuery, useGetLoginUserQuery, useUpdateLoginUserMutation } from 'gql';
+import { errorNotification, successNotification } from 'util/notifications';
 import { userIdValidator, userNameValidator, emailValidator } from 'util/validators';
-
-import { errorNotification, successNotification } from '../../../../../util/notifications';
 
 export type BasicUserSettingType = {
   userId: string
@@ -20,6 +19,7 @@ export type BasicUserSettingType = {
  */
 export const useBasicUserSetting = () => {
   const router = useRouter();
+  const { update: updateSession } = useSession();
 
   const form = useForm<BasicUserSettingType>({
     initialValues: {
@@ -47,7 +47,7 @@ export const useBasicUserSetting = () => {
   const { loading } = useGetLoginUserQuery({ onCompleted: initializeForm });
   const [updateUser] = useUpdateLoginUserMutation();
 
-  const formOnSubmit = (values: BasicUserSettingType) => {
+  const formOnSubmit = async (values: BasicUserSettingType) => {
     updateUser({
       variables: {
         input: {
@@ -56,13 +56,13 @@ export const useBasicUserSetting = () => {
           email: values.email,
         },
       },
-    }).then(() => {
+    }).then(async () => {
       successNotification({
         title: '更新成功',
         message: 'ユーザー情報を更新しました',
       });
+      await updateSession();
       router.refresh();
-      document.dispatchEvent(new Event('visibilitychange'));
     }).catch(() => {
       errorNotification({
         title: '更新失敗',
