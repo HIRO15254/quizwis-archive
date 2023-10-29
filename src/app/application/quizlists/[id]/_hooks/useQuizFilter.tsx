@@ -3,7 +3,7 @@ import React from 'react';
 
 import { QuizDataFragment, useGetGenresFromQuizListQuery } from 'gql';
 
-import { GenreFilterSelect } from '../_components/presenter/GenreFilterSelect';
+import { GenreFilterSelect } from '../_components/GenreFilterSelect';
 
 interface Props {
   quizListId: string;

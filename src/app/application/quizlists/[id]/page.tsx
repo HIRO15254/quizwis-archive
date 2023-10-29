@@ -1,7 +1,7 @@
 import { encodeGlobalID } from '@pothos/plugin-relay';
 import React from 'react';
 
-import { QuizTableContainer } from './_components/container/QuizTableContainer';
+import { QuizTableContainer } from './_containers/QuizTableContainer';
 
 export const metadata = {
   title: '問題リスト詳細 - QuizWis',

@@ -8,6 +8,7 @@ import { StyleProvider } from 'components/providers/StyleProvider';
 
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
+import '@mantine/tiptap/styles.css';
 import 'styles/globalColor.css';
 
 interface RootLayoutProps {

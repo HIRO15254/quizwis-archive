@@ -1,7 +1,7 @@
 'use client';
 
 import {
-  Title, Group, Anchor, Container,
+  Title, Group, Anchor, Container, Button,
 } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import Link from 'next/link';
@@ -12,17 +12,18 @@ import {
   useGetQuizListQuery,
 } from 'gql';
 
+import { QuizTable } from '../../_components/QuizTable';
+import { useCreateQuizModal } from '../../_hooks/useCreateQuizForm';
 import { useDeleteQuizModal } from '../../_hooks/useDeleteQuizModal';
 import { usePagination } from '../../_hooks/usePagination';
 import { useQuizFilter } from '../../_hooks/useQuizFilter';
-import { QuizTable } from '../presenter/QuizTable';
 
 interface QuizTableContainerProps {
   listId: string;
 }
 
 /**
- * クイズリストの一覧表示
+ * クイズの一覧表示
  */
 export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => {
   const { listId } = props;
@@ -65,6 +66,11 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
     deleteQuiz,
   } = useDeleteQuizModal();
 
+  const {
+    createQuizModal,
+    createQuiz,
+  } = useCreateQuizModal({ quizListId: listId });
+
   useHotkeys([
     ['mod+alt+N', () => {}, { preventDefault: true }],
   ]);
@@ -80,8 +86,16 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
         </Title>
         {genreFilterSelect}
         {dataPerPageSelect}
+        <Button
+          color="blue"
+          onClick={createQuiz}
+          style={{ float: 'right' }}
+        >
+          問題を追加
+        </Button>
       </Group>
       {deleteQuizModal}
+      {createQuizModal}
       <QuizTable
         operations={{
           update: () => {},
