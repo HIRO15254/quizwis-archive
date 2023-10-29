@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { UserSettingForm } from './_components/UserSettingForm';
+import { UserSettingContainer } from './_containers/UserSettingContainer';
 
 const UserSetting: React.FC = () => (
-  <UserSettingForm />
+  <UserSettingContainer />
 );
 
 export default UserSetting;

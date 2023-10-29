@@ -10,19 +10,16 @@ import { UserAvatar } from 'components/parts/UserAvatar';
 import { USER_ICON_SIZE } from 'config/userConfig';
 
 import { useAvatarSetting } from '../../_hooks/useAvatarSetting';
-import AvatarEditModal from '../AvatarEditModal';
 
 /**
  * ユーザーアイコンを設定するためのフォーム
  */
 export const AvatarSettingForm: React.FC = () => {
   const {
-    opened: openedModal,
-    image,
-    imageUrl,
+    user,
     onImageChange,
-    onCloseModal,
-    onImageSave,
+    image,
+    avatarEditModal,
   } = useAvatarSetting();
 
   return (
@@ -30,14 +27,9 @@ export const AvatarSettingForm: React.FC = () => {
       label="アイコン"
       description={`アップロードしたアイコンは${USER_ICON_SIZE}px四方にリサイズされます。`}
     >
-      <AvatarEditModal
-        opened={openedModal}
-        close={onCloseModal}
-        image={image}
-        onImageSave={onImageSave}
-      />
+      {avatarEditModal}
       <Group pt="sm">
-        <UserAvatar src={imageUrl} size="lg" />
+        <UserAvatar user={user} size="lg" />
         <FileInput
           placeholder="ファイルを選択…"
           accept="image/*"

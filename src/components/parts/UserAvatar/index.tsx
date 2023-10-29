@@ -12,7 +12,6 @@ interface UserAvatarProps extends AvatarProps {
 
 /**
  * ユーザーアイコン
- * @param MantineのAvatarPropsを継承(radiusの指定は不可, userにユーザー情報可)
  */
 export const UserAvatar: React.FC<UserAvatarProps> = (props) => {
   const {

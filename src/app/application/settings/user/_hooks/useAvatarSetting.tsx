@@ -11,7 +11,7 @@ import { useUpdateLoginUserMutation } from 'gql';
 import { supabase } from 'lib/supabase';
 import { createRandomID } from 'util/createUserId';
 
-import { OnImageSavePayload } from '../_components/AvatarEditModal';
+import AvatarEditModal, { OnImageSavePayload } from '../_components/AvatarEditModal';
 
 /**
  * アイコン設定を行うためのカスタムフック
@@ -84,10 +84,19 @@ export const useAvatarSetting = () => {
     });
   };
 
-  // 今のユーザーアイコンのURL
-  const imageUrl = session?.user?.image ?? '';
+  const user = session?.user;
+
+  const avatarEditModalProps = {
+    opened, close: onCloseModal, image, onImageSave,
+  };
+
+  const avatarEditModal = <AvatarEditModal {...avatarEditModalProps} />;
 
   return {
-    opened, image, onImageChange, onCloseModal, onImageSave, imageUrl,
+    opened,
+    user,
+    image,
+    onImageChange,
+    avatarEditModal,
   };
 };

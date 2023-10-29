@@ -35,7 +35,7 @@ export const UserMenu: React.FC<Props> = (props) => {
         <Menu.Label>
           アカウント
         </Menu.Label>
-        <Anchor unstyled href="/settings/user">
+        <Anchor unstyled href="/application/settings/user">
           <Menu.Item
             leftSection={<IconSettings size="0.9rem" stroke={1.5} />}
           >
@@ -45,7 +45,7 @@ export const UserMenu: React.FC<Props> = (props) => {
         <Menu.Item
           color="red"
           leftSection={<IconLogout size="0.9rem" stroke={1.5} />}
-          onClick={() => { signOut({ callbackUrl: '/' }); }}
+          onClick={() => { signOut({ callbackUrl: '/application/dashboard' }); }}
         >
           ログアウト
         </Menu.Item>

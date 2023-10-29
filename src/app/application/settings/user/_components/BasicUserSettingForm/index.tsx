@@ -1,7 +1,7 @@
 'use client';
 
 import {
-  Box, Button, Group, LoadingOverlay, Stack, TextInput, Tooltip,
+  Button, Group, LoadingOverlay, Stack, TextInput, Tooltip,
 } from '@mantine/core';
 import { IconAlertCircle, IconAt } from '@tabler/icons-react';
 import React from 'react';
@@ -12,7 +12,11 @@ import { useBasicUserSetting } from '../../_hooks/useBasicUserSetting';
  * ユーザーの基本情報を設定するためのフォーム
  */
 export const BasicUserSettingForm: React.FC = () => {
-  const { form, formOnSubmit, loading } = useBasicUserSetting();
+  const {
+    form,
+    formOnSubmit,
+    loading,
+  } = useBasicUserSetting();
 
   // フォーム右に表示して入力値が一般公開されることを示すアイコン
   const publicTooltip = (

@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 import { GetLoginUserQuery, useGetLoginUserQuery, useUpdateLoginUserMutation } from 'gql';
 import { userIdValidator, userNameValidator, emailValidator } from 'util/validators';
 
+import { errorNotification, successNotification } from '../../../../../util/notifications';
+
 export type BasicUserSettingType = {
   userId: string
   name: string
@@ -55,16 +57,14 @@ export const useBasicUserSetting = () => {
         },
       },
     }).then(() => {
-      showNotification({
-        color: 'teal',
+      successNotification({
         title: '更新成功',
         message: 'ユーザー情報を更新しました',
       });
       router.refresh();
       document.dispatchEvent(new Event('visibilitychange'));
     }).catch(() => {
-      showNotification({
-        color: 'red',
+      errorNotification({
         title: '更新失敗',
         message: 'ユーザー情報の更新に失敗しました',
       });
