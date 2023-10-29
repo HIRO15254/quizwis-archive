@@ -1,6 +1,4 @@
-import {
-  Container, Title,
-} from '@mantine/core/lib';
+import { Container, Title } from '@mantine/core';
 import React from 'react';
 
 import { UserSettingForm } from '../../_components/UserSettingForm';
