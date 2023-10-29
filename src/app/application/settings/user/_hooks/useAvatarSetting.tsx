@@ -66,7 +66,7 @@ export const useAvatarSetting = () => {
               },
             },
           });
-          await updateSession({ user: { ...session?.user, image: newUrl } });
+          await updateSession();
           router.refresh();
           showNotification({
             color: 'teal',
