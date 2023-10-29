@@ -11,11 +11,9 @@ const handler = startServerAndCreateNextHandler(
 );
 
 export async function GET(request: Request) {
-  const res = await handler(request);
-  return res;
+  return handler(request);
 }
 
 export async function POST(request: Request) {
-  const res = await handler(request);
-  return res;
+  return handler(request);
 }

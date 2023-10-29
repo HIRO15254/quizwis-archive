@@ -4,7 +4,7 @@ import { Title, Group, Paper } from '@mantine/core';
 import React from 'react';
 
 export const MainPageContents: React.FC = () => (
-  <Group position="center" pb="sm">
+  <Group justify="center" pb="sm">
     <Paper w="100%" maw={800} p="xl" shadow="xs">
       <Title>This is a Main Page</Title>
     </Paper>

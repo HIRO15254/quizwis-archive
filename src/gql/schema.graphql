@@ -98,9 +98,7 @@ input GetQuizListInput {
 }
 
 input GetQuizzesInput {
-  filter: QuizFilterInput
   listId: String!
-  pagination: PaginationInput!
 }
 
 input GetUserInput {
@@ -127,11 +125,6 @@ type Mutation {
 
 interface Node {
   id: ID!
-}
-
-input PaginationInput {
-  skip: Int!
-  take: Int!
 }
 
 type Query {
@@ -164,10 +157,6 @@ type Quiz implements Node {
   user: User!
 }
 
-input QuizFilterInput {
-  genreId: String
-}
-
 input QuizInputData {
   answer: String
   explanation: String
@@ -185,7 +174,7 @@ type QuizList implements Node {
   goal: Int
   id: ID!
   name: String!
-  quizCount(filter: QuizFilterInput): Int!
+  quizCount: Int!
   quizzes: [Quiz!]!
   user: User!
 }

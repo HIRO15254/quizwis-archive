@@ -15,7 +15,7 @@ interface GoogleLoginButtonProps extends ButtonProps {
 */
 const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = (props) => (
   <Button
-    leftIcon={<GoogleIcon />}
+    leftSection={<GoogleIcon />}
     variant="default"
     color="gray"
     {...props}
