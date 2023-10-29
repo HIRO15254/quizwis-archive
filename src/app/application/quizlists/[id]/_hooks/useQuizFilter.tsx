@@ -1,17 +1,30 @@
-import React, { useState } from 'react';
+import { useForm } from '@mantine/form';
+import React from 'react';
 
-import { QuizFilterInput, useGetGenresFromQuizListQuery } from 'gql';
+import { QuizDataFragment, useGetGenresFromQuizListQuery } from 'gql';
 
 import { GenreFilterSelect } from '../_components/presenter/GenreFilterSelect';
 
 interface Props {
   quizListId: string;
+  data: QuizDataFragment[];
 }
+
+type QuizFilterType = {
+  genreId: string | null;
+};
 
 export const useQuizFilter = (props: Props) => {
   const {
     quizListId,
+    data,
   } = props;
+
+  const form = useForm<QuizFilterType>({
+    initialValues: {
+      genreId: null,
+    },
+  });
 
   const { data: genres } = useGetGenresFromQuizListQuery({
     variables: {
@@ -21,29 +34,20 @@ export const useQuizFilter = (props: Props) => {
     },
   });
 
-  const [
-    filter,
-    setFilter,
-  ] = useState<QuizFilterInput>({
-    genreId: null,
+  const filteredData = data.filter((quiz) => {
+    if (form.values.genreId) {
+      return quiz.genre?.id === form.values.genreId;
+    }
+    return true;
   });
-
-  const onGenreFilterChange = (newGenreId: string | null) => {
-    const newFilter = {
-      ...filter,
-      genreId: newGenreId ?? undefined,
-    };
-    setFilter(newFilter);
-  };
 
   const genreFilterSelectProps = {
     genres: genres?.getQuizList.genreSet?.genres ?? [],
-    value: filter.genreId ?? null,
-    onChange: onGenreFilterChange,
+    ...form.getInputProps('genreId'),
   };
 
   return {
-    filterData: filter,
+    filteredData,
     genreFilterSelect: <GenreFilterSelect {...genreFilterSelectProps} />,
   };
 };

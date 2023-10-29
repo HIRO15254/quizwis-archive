@@ -1,7 +1,7 @@
-import { showNotification, NotificationData } from '@mantine/notifications';
+import { NotificationData, notifications } from '@mantine/notifications';
 
 export const successNotification = (props: NotificationData) => {
-  showNotification({
+  notifications.show({
     title: '成功',
     color: 'teal',
     ...props,
@@ -9,7 +9,7 @@ export const successNotification = (props: NotificationData) => {
 };
 
 export const errorNotification = (props: NotificationData) => {
-  showNotification({
+  notifications.show({
     title: 'エラー',
     color: 'red',
     ...props,

@@ -13,6 +13,7 @@ export const DataPerPageSelect = (props: Props) => {
   } = props;
   return (
     <NativeSelect
+      label="表示件数"
       value={value}
       onChange={(e) => onChange(Number(e.currentTarget.value))}
       style={{ width: 100 }}

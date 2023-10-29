@@ -3,6 +3,7 @@ import {
 } from '@mantine/core';
 import { decodeGlobalID } from '@pothos/plugin-relay';
 import { IconPencil, IconTrash } from '@tabler/icons-react';
+import Link from 'next/link';
 import React from 'react';
 
 import { TableActionIcon } from 'components/parts/TableActionICon';
@@ -28,7 +29,7 @@ export const QuizListTableRow: React.FC<Props> = (props) => {
   return (
     <Table.Tr>
       <Table.Td>
-        <Anchor href={`/application/quizlists/${databaseId}`}>
+        <Anchor component={Link} href={`/application/quizlists/${databaseId}`}>
           {data.name}
         </Anchor>
       </Table.Td>

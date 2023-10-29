@@ -1,19 +1,16 @@
-import { Select } from '@mantine/core';
+import { Select, SelectProps } from '@mantine/core';
 import React from 'react';
 
 import { GenreDataFragment } from 'gql';
 
-type Props = {
+interface Props extends SelectProps {
   genres: GenreDataFragment[];
-  value: string | null;
-  onChange: (newGenre: string | null) => void;
-};
+}
 
 export const GenreFilterSelect = (props: Props) => {
   const {
     genres,
-    value,
-    onChange,
+    ...rest
   } = props;
 
   const genresData = genres.map((genre) => ({
@@ -23,11 +20,11 @@ export const GenreFilterSelect = (props: Props) => {
 
   return (
     <Select
-      onChange={onChange}
+      label="ジャンル"
       clearable
-      value={value}
       style={{ width: 300 }}
       data={genresData}
+      {...rest}
     />
   );
 };

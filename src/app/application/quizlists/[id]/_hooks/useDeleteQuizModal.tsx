@@ -1,7 +1,7 @@
 import { useDisclosure } from '@mantine/hooks';
 import React, { useState } from 'react';
 
-import { useDeleteQuizMutation } from 'gql';
+import { useDeleteQuizMutation, useGetQuizLazyQuery } from 'gql';
 import { errorNotification, successNotification } from 'util/notifications';
 
 import { DeleteQuizModal } from '../_components/presenter/DeleteQuizModal';
@@ -9,19 +9,28 @@ import { DeleteQuizModal } from '../_components/presenter/DeleteQuizModal';
 export const useDeleteQuizModal = () => {
   const [opened, handlers] = useDisclosure();
   const [
-    deleteQuizList,
+    deleteQuiz,
     { loading: mutationLoading },
   ] = useDeleteQuizMutation();
+
+  const [
+    getQuiz,
+    {
+      data: quizData,
+      loading: getQuizLoading,
+    },
+  ] = useGetQuizLazyQuery();
 
   const [id, setId] = useState<string>('');
 
   const open = async (openId: string) => {
     setId(openId);
+    getQuiz({ variables: { input: { id: openId } } });
     handlers.open();
   };
 
   const onDelete = async () => {
-    await deleteQuizList({
+    await deleteQuiz({
       variables: {
         input: {
           id,
@@ -34,14 +43,16 @@ export const useDeleteQuizModal = () => {
       onError: () => {
         errorNotification({ message: 'クイズの削除に失敗しました。' });
       },
-      refetchQueries: ['GetQuizzes', 'GetQuizCount'],
+      refetchQueries: ['GetQuizzes'],
     });
   };
 
   const modalProps = {
+    data: quizData?.getQuiz,
     opened,
     onClose: handlers.close,
     onConfirm: onDelete,
+    loading: getQuizLoading,
     buttonLoading: mutationLoading,
   };
 

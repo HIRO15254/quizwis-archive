@@ -116,9 +116,7 @@ export type GetQuizListInput = {
 };
 
 export type GetQuizzesInput = {
-  filter?: InputMaybe<QuizFilterInput>;
   listId: Scalars['String']['input'];
-  pagination: PaginationInput;
 };
 
 export type GetUserInput = {
@@ -223,11 +221,6 @@ export type Node = {
   id: Scalars['ID']['output'];
 };
 
-export type PaginationInput = {
-  skip: Scalars['Int']['input'];
-  take: Scalars['Int']['input'];
-};
-
 export type Query = {
   __typename?: 'Query';
   getGenre: Genre;
@@ -300,10 +293,6 @@ export type Quiz = Node & {
   user: User;
 };
 
-export type QuizFilterInput = {
-  genreId?: InputMaybe<Scalars['String']['input']>;
-};
-
 export type QuizInputData = {
   answer?: InputMaybe<Scalars['String']['input']>;
   explanation?: InputMaybe<Scalars['String']['input']>;
@@ -325,11 +314,6 @@ export type QuizList = Node & {
   quizCount: Scalars['Int']['output'];
   quizzes: Array<Quiz>;
   user: User;
-};
-
-
-export type QuizListQuizCountArgs = {
-  filter?: InputMaybe<QuizFilterInput>;
 };
 
 export type QuizListInputData = {
@@ -539,14 +523,6 @@ export type GetQuizQueryVariables = Exact<{
 
 export type GetQuizQuery = { __typename?: 'Query', getQuiz: { __typename?: 'Quiz', id: string, question?: string | null, answer?: string | null, otherAnswer?: string | null, explanation?: string | null, source?: string | null, length: number, genre?: { __typename?: 'Genre', id: string, name: string, color: string } | null } };
 
-export type GetQuizCountQueryVariables = Exact<{
-  input: GetQuizListInput;
-  filter?: InputMaybe<QuizFilterInput>;
-}>;
-
-
-export type GetQuizCountQuery = { __typename?: 'Query', getQuizList: { __typename?: 'QuizList', id: string, quizCount: number } };
-
 export type GetQuizListQueryVariables = Exact<{
   input: GetQuizListInput;
 }>;
@@ -646,8 +622,13 @@ export function useGetLoginUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetLoginUserQuery, GetLoginUserQueryVariables>(GetLoginUserDocument, options);
         }
+export function useGetLoginUserSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetLoginUserQuery, GetLoginUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetLoginUserQuery, GetLoginUserQueryVariables>(GetLoginUserDocument, options);
+        }
 export type GetLoginUserQueryHookResult = ReturnType<typeof useGetLoginUserQuery>;
 export type GetLoginUserLazyQueryHookResult = ReturnType<typeof useGetLoginUserLazyQuery>;
+export type GetLoginUserSuspenseQueryHookResult = ReturnType<typeof useGetLoginUserSuspenseQuery>;
 export type GetLoginUserQueryResult = Apollo.QueryResult<GetLoginUserQuery, GetLoginUserQueryVariables>;
 export const UpdateLoginUserDocument = gql`
     mutation UpdateLoginUser($input: UpdateLoginUserInput!) {
@@ -1114,8 +1095,13 @@ export function useGetGenreLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetGenreQuery, GetGenreQueryVariables>(GetGenreDocument, options);
         }
+export function useGetGenreSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetGenreQuery, GetGenreQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetGenreQuery, GetGenreQueryVariables>(GetGenreDocument, options);
+        }
 export type GetGenreQueryHookResult = ReturnType<typeof useGetGenreQuery>;
 export type GetGenreLazyQueryHookResult = ReturnType<typeof useGetGenreLazyQuery>;
+export type GetGenreSuspenseQueryHookResult = ReturnType<typeof useGetGenreSuspenseQuery>;
 export type GetGenreQueryResult = Apollo.QueryResult<GetGenreQuery, GetGenreQueryVariables>;
 export const GetGenreDetailPageDataDocument = gql`
     query GetGenreDetailPageData($input: GetGenreSetInput!) {
@@ -1160,8 +1146,13 @@ export function useGetGenreDetailPageDataLazyQuery(baseOptions?: Apollo.LazyQuer
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetGenreDetailPageDataQuery, GetGenreDetailPageDataQueryVariables>(GetGenreDetailPageDataDocument, options);
         }
+export function useGetGenreDetailPageDataSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetGenreDetailPageDataQuery, GetGenreDetailPageDataQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetGenreDetailPageDataQuery, GetGenreDetailPageDataQueryVariables>(GetGenreDetailPageDataDocument, options);
+        }
 export type GetGenreDetailPageDataQueryHookResult = ReturnType<typeof useGetGenreDetailPageDataQuery>;
 export type GetGenreDetailPageDataLazyQueryHookResult = ReturnType<typeof useGetGenreDetailPageDataLazyQuery>;
+export type GetGenreDetailPageDataSuspenseQueryHookResult = ReturnType<typeof useGetGenreDetailPageDataSuspenseQuery>;
 export type GetGenreDetailPageDataQueryResult = Apollo.QueryResult<GetGenreDetailPageDataQuery, GetGenreDetailPageDataQueryVariables>;
 export const GetGenreSetDocument = gql`
     query GetGenreSet($input: GetGenreSetInput!) {
@@ -1195,8 +1186,13 @@ export function useGetGenreSetLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetGenreSetQuery, GetGenreSetQueryVariables>(GetGenreSetDocument, options);
         }
+export function useGetGenreSetSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetGenreSetQuery, GetGenreSetQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetGenreSetQuery, GetGenreSetQueryVariables>(GetGenreSetDocument, options);
+        }
 export type GetGenreSetQueryHookResult = ReturnType<typeof useGetGenreSetQuery>;
 export type GetGenreSetLazyQueryHookResult = ReturnType<typeof useGetGenreSetLazyQuery>;
+export type GetGenreSetSuspenseQueryHookResult = ReturnType<typeof useGetGenreSetSuspenseQuery>;
 export type GetGenreSetQueryResult = Apollo.QueryResult<GetGenreSetQuery, GetGenreSetQueryVariables>;
 export const GetGenreSetsDocument = gql`
     query GetGenreSets {
@@ -1229,8 +1225,13 @@ export function useGetGenreSetsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetGenreSetsQuery, GetGenreSetsQueryVariables>(GetGenreSetsDocument, options);
         }
+export function useGetGenreSetsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetGenreSetsQuery, GetGenreSetsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetGenreSetsQuery, GetGenreSetsQueryVariables>(GetGenreSetsDocument, options);
+        }
 export type GetGenreSetsQueryHookResult = ReturnType<typeof useGetGenreSetsQuery>;
 export type GetGenreSetsLazyQueryHookResult = ReturnType<typeof useGetGenreSetsLazyQuery>;
+export type GetGenreSetsSuspenseQueryHookResult = ReturnType<typeof useGetGenreSetsSuspenseQuery>;
 export type GetGenreSetsQueryResult = Apollo.QueryResult<GetGenreSetsQuery, GetGenreSetsQueryVariables>;
 export const GetGenresFromQuizListDocument = gql`
     query GetGenresFromQuizList($input: GetQuizListInput!) {
@@ -1274,8 +1275,13 @@ export function useGetGenresFromQuizListLazyQuery(baseOptions?: Apollo.LazyQuery
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetGenresFromQuizListQuery, GetGenresFromQuizListQueryVariables>(GetGenresFromQuizListDocument, options);
         }
+export function useGetGenresFromQuizListSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetGenresFromQuizListQuery, GetGenresFromQuizListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetGenresFromQuizListQuery, GetGenresFromQuizListQueryVariables>(GetGenresFromQuizListDocument, options);
+        }
 export type GetGenresFromQuizListQueryHookResult = ReturnType<typeof useGetGenresFromQuizListQuery>;
 export type GetGenresFromQuizListLazyQueryHookResult = ReturnType<typeof useGetGenresFromQuizListLazyQuery>;
+export type GetGenresFromQuizListSuspenseQueryHookResult = ReturnType<typeof useGetGenresFromQuizListSuspenseQuery>;
 export type GetGenresFromQuizListQueryResult = Apollo.QueryResult<GetGenresFromQuizListQuery, GetGenresFromQuizListQueryVariables>;
 export const GetQuizDocument = gql`
     query GetQuiz($input: GetQuizInput!) {
@@ -1309,46 +1315,14 @@ export function useGetQuizLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ge
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetQuizQuery, GetQuizQueryVariables>(GetQuizDocument, options);
         }
+export function useGetQuizSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetQuizQuery, GetQuizQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetQuizQuery, GetQuizQueryVariables>(GetQuizDocument, options);
+        }
 export type GetQuizQueryHookResult = ReturnType<typeof useGetQuizQuery>;
 export type GetQuizLazyQueryHookResult = ReturnType<typeof useGetQuizLazyQuery>;
+export type GetQuizSuspenseQueryHookResult = ReturnType<typeof useGetQuizSuspenseQuery>;
 export type GetQuizQueryResult = Apollo.QueryResult<GetQuizQuery, GetQuizQueryVariables>;
-export const GetQuizCountDocument = gql`
-    query GetQuizCount($input: GetQuizListInput!, $filter: QuizFilterInput) {
-  getQuizList(input: $input) {
-    id
-    quizCount(filter: $filter)
-  }
-}
-    `;
-
-/**
- * __useGetQuizCountQuery__
- *
- * To run a query within a React component, call `useGetQuizCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetQuizCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetQuizCountQuery({
- *   variables: {
- *      input: // value for 'input'
- *      filter: // value for 'filter'
- *   },
- * });
- */
-export function useGetQuizCountQuery(baseOptions: Apollo.QueryHookOptions<GetQuizCountQuery, GetQuizCountQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetQuizCountQuery, GetQuizCountQueryVariables>(GetQuizCountDocument, options);
-      }
-export function useGetQuizCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetQuizCountQuery, GetQuizCountQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetQuizCountQuery, GetQuizCountQueryVariables>(GetQuizCountDocument, options);
-        }
-export type GetQuizCountQueryHookResult = ReturnType<typeof useGetQuizCountQuery>;
-export type GetQuizCountLazyQueryHookResult = ReturnType<typeof useGetQuizCountLazyQuery>;
-export type GetQuizCountQueryResult = Apollo.QueryResult<GetQuizCountQuery, GetQuizCountQueryVariables>;
 export const GetQuizListDocument = gql`
     query GetQuizList($input: GetQuizListInput!) {
   getQuizList(input: $input) {
@@ -1381,8 +1355,13 @@ export function useGetQuizListLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetQuizListQuery, GetQuizListQueryVariables>(GetQuizListDocument, options);
         }
+export function useGetQuizListSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetQuizListQuery, GetQuizListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetQuizListQuery, GetQuizListQueryVariables>(GetQuizListDocument, options);
+        }
 export type GetQuizListQueryHookResult = ReturnType<typeof useGetQuizListQuery>;
 export type GetQuizListLazyQueryHookResult = ReturnType<typeof useGetQuizListLazyQuery>;
+export type GetQuizListSuspenseQueryHookResult = ReturnType<typeof useGetQuizListSuspenseQuery>;
 export type GetQuizListQueryResult = Apollo.QueryResult<GetQuizListQuery, GetQuizListQueryVariables>;
 export const GetQuizListsDocument = gql`
     query GetQuizLists {
@@ -1415,8 +1394,13 @@ export function useGetQuizListsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetQuizListsQuery, GetQuizListsQueryVariables>(GetQuizListsDocument, options);
         }
+export function useGetQuizListsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetQuizListsQuery, GetQuizListsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetQuizListsQuery, GetQuizListsQueryVariables>(GetQuizListsDocument, options);
+        }
 export type GetQuizListsQueryHookResult = ReturnType<typeof useGetQuizListsQuery>;
 export type GetQuizListsLazyQueryHookResult = ReturnType<typeof useGetQuizListsLazyQuery>;
+export type GetQuizListsSuspenseQueryHookResult = ReturnType<typeof useGetQuizListsSuspenseQuery>;
 export type GetQuizListsQueryResult = Apollo.QueryResult<GetQuizListsQuery, GetQuizListsQueryVariables>;
 export const GetQuizzesDocument = gql`
     query GetQuizzes($input: GetQuizzesInput!) {
@@ -1450,6 +1434,11 @@ export function useGetQuizzesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetQuizzesQuery, GetQuizzesQueryVariables>(GetQuizzesDocument, options);
         }
+export function useGetQuizzesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetQuizzesQuery, GetQuizzesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetQuizzesQuery, GetQuizzesQueryVariables>(GetQuizzesDocument, options);
+        }
 export type GetQuizzesQueryHookResult = ReturnType<typeof useGetQuizzesQuery>;
 export type GetQuizzesLazyQueryHookResult = ReturnType<typeof useGetQuizzesLazyQuery>;
+export type GetQuizzesSuspenseQueryHookResult = ReturnType<typeof useGetQuizzesSuspenseQuery>;
 export type GetQuizzesQueryResult = Apollo.QueryResult<GetQuizzesQuery, GetQuizzesQueryVariables>;

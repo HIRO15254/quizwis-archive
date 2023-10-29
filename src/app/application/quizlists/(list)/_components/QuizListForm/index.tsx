@@ -19,7 +19,6 @@ export const QuizListForm: React.FC<Props> = (props) => {
     genreSetData,
   } = props;
 
-  console.log(genreSetData);
   const genreSetSelectData = [{ value: '', label: 'なし' }].concat(
     genreSetData.map((genreSet) => ({
       value: genreSet.id,

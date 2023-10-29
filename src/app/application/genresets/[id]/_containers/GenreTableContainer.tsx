@@ -5,6 +5,7 @@ import {
 } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { encodeGlobalID } from '@pothos/plugin-relay';
+import Link from 'next/link';
 import React from 'react';
 
 import { useGetGenreDetailPageDataQuery } from 'gql';
@@ -53,7 +54,7 @@ export const GenreTableContainer: React.FC<Props> = (props) => {
 
   return (
     <Container size="md">
-      <Anchor href="/create_quiz/genreset/list" unstyled>
+      <Anchor component={Link} href="./">
         {'< ジャンルセット一覧に戻る'}
       </Anchor>
       <Title order={1} mt="md">{genreSetName ?? ''}</Title>

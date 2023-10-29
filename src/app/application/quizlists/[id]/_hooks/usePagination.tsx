@@ -4,28 +4,32 @@ import React, {
   useState,
 } from 'react';
 
-import { PaginationInput } from 'gql';
-
 import { DataPerPageSelect } from '../_components/presenter/DataPerPageSelect';
 
 const PAGINATION_DATA = ['10', '20', '50', '100'];
 
-export const usePageNation = () => {
+interface Props<T> {
+  data: T[];
+}
+
+// eslint-disable-next-line @typescript-eslint/comma-dangle
+export const usePagination = <T,>(props: Props<T>) => {
   const [page, setPage] = useState(1);
   const [dataPerPage, setDataPerPage] = useState(Number(PAGINATION_DATA[0]));
-  const [dataCount, setDataCount] = useState(0);
 
-  const paginationData: PaginationInput = useMemo(() => ({
-    skip: (page - 1) * dataPerPage,
-    take: dataPerPage,
-  }), [page, dataPerPage]);
+  const {
+    data,
+  } = props;
+
+  const maxPage = Math.max(Math.ceil(data.length / dataPerPage), 1);
 
   const newSetDataPerPage = (newDataPerPage: number) => {
     setDataPerPage(newDataPerPage);
-    setPage(1);
   };
 
-  const maxPage = Math.max(Math.ceil(dataCount / dataPerPage), 1);
+  if (page > maxPage) {
+    setPage(maxPage);
+  }
 
   const paginationProps = {
     total: maxPage,
@@ -39,11 +43,16 @@ export const usePageNation = () => {
     data: PAGINATION_DATA,
   };
 
+  const pageData = useMemo(() => {
+    const start = (page - 1) * dataPerPage;
+    const end = start + dataPerPage;
+    return data.slice(start, end);
+  }, [data, page, dataPerPage]);
+
   return {
     pagination: <Pagination {...paginationProps} />,
     dataPerPageSelect: <DataPerPageSelect {...dataPerPageSelectProps} />,
-    paginationData,
-    setDataCount,
+    pageData,
     setPage,
   };
 };

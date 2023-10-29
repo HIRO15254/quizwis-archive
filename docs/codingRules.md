@@ -18,7 +18,7 @@
 ## ファイル名規則
 
 - ファイル名は`camelCase`で統一する
-- React Componentを定義するファイルは、エクスポートするComponentと同名の`PascalCase`で命名されたフォルダーの中の`DeleteQuizModal.tsx`とする
+- React Componentを定義するファイルは、エクスポートするComponentと同名の`PascalCase`で命名されたフォルダーの中の`index.tsx`とする
 
 ## 設計規則
 

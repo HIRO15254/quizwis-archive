@@ -1,21 +1,19 @@
 'use client';
 
-// 各種import
 import {
-  Title, Paper, Group, Anchor, Container,
+  Title, Group, Anchor, Container,
 } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
-import React, { useEffect } from 'react';
+import Link from 'next/link';
+import React from 'react';
 
 import {
-  useGetQuizCountLazyQuery,
+  useGetQuizzesQuery,
   useGetQuizListQuery,
-  useGetQuizzesLazyQuery,
 } from 'gql';
 
 import { useDeleteQuizModal } from '../../_hooks/useDeleteQuizModal';
-import { useInlineQuizEditor } from '../../_hooks/useInlineQuizEditor';
-import { usePageNation } from '../../_hooks/usePageNation';
+import { usePagination } from '../../_hooks/usePagination';
 import { useQuizFilter } from '../../_hooks/useQuizFilter';
 import { QuizTable } from '../presenter/QuizTable';
 
@@ -29,11 +27,13 @@ interface QuizTableContainerProps {
 export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => {
   const { listId } = props;
 
-  const [
-    getQuizzes,
-    { loading, data, called },
-  ] = useGetQuizzesLazyQuery({
+  const { loading, data, called } = useGetQuizzesQuery({
     fetchPolicy: 'network-only',
+    variables: {
+      input: {
+        listId,
+      },
+    },
   });
 
   const quizListName = useGetQuizListQuery({
@@ -45,55 +45,20 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
   }).data?.getQuizList.name;
 
   const {
-    filterData,
+    filteredData,
     genreFilterSelect,
   } = useQuizFilter({
     quizListId: listId,
+    data: data?.getQuizzes ?? [],
   });
 
   const {
     pagination,
     dataPerPageSelect,
-    paginationData,
-    setDataCount,
-    setPage,
-  } = usePageNation();
-
-  const [reloadQuizCount] = useGetQuizCountLazyQuery({
-    variables: {
-      input: {
-        id: listId,
-      },
-      filter: filterData,
-    },
-    onCompleted: (result) => {
-      setDataCount(result.getQuizList.quizCount);
-    },
+    pageData,
+  } = usePagination({
+    data: filteredData,
   });
-
-  useEffect(() => {
-    getQuizzes({
-      variables: {
-        input: {
-          listId,
-          filter: filterData,
-          pagination: paginationData,
-        },
-      },
-    });
-    reloadQuizCount();
-  }, [filterData, paginationData, listId, getQuizzes, reloadQuizCount]);
-
-  useEffect(() => {
-    setPage(1);
-  }, [setPage, filterData]);
-
-  const {
-    inlineQuizEditorProps,
-    create,
-    update,
-    editingQuizId,
-  } = useInlineQuizEditor({ listId });
 
   const {
     deleteQuizModal,
@@ -101,35 +66,29 @@ export const QuizTableContainer: React.FC<QuizTableContainerProps> = (props) => 
   } = useDeleteQuizModal();
 
   useHotkeys([
-    ['mod+alt+N', () => create(), { preventDefault: true }],
-    ['mod+Enter', () => { if (editingQuizId) { inlineQuizEditorProps.operation.update(); } }, { preventDefault: true }],
-    ['Escape', () => { if (editingQuizId) { inlineQuizEditorProps.operation.cancel(); } }, { preventDefault: true }],
+    ['mod+alt+N', () => {}, { preventDefault: true }],
   ]);
 
-  // 実際のコンポーネント
   return (
     <Container size="xl">
-      <Anchor href="/create_quiz/quizlist/list" unstyled>
+      <Anchor component={Link} href="./">
         {'< 問題リスト一覧に戻る'}
       </Anchor>
       <Group align="baseline">
         <Title order={1} mt="md">
           {quizListName ?? ''}
         </Title>
+        {genreFilterSelect}
+        {dataPerPageSelect}
       </Group>
       {deleteQuizModal}
       <QuizTable
-        inlineQuizEditorProps={inlineQuizEditorProps}
         operations={{
-          create,
-          update,
+          update: () => {},
           delete: deleteQuiz,
         }}
-        editingQuizId={editingQuizId}
-        data={data?.getQuizzes ?? []}
+        data={pageData}
         loading={(!data && loading) || !called}
-        dataPerPageSelect={dataPerPageSelect}
-        genreFilterSelect={genreFilterSelect}
       />
       {pagination}
     </Container>

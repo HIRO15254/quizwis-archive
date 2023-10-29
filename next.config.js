@@ -13,7 +13,6 @@ module.exports = {
   reactStrictMode: false,
   swcMinify: true,
   experimental: {
-    serverActions: true,
     optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
   },
 };

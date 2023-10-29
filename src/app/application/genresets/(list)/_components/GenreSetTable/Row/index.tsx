@@ -3,6 +3,7 @@ import {
 } from '@mantine/core';
 import { decodeGlobalID } from '@pothos/plugin-relay';
 import { IconPencil, IconTrash } from '@tabler/icons-react';
+import Link from 'next/link';
 import React from 'react';
 
 import { TableActionIcon } from 'components/parts/TableActionICon';
@@ -26,7 +27,7 @@ export const GenreSetTableRow: React.FC<Props> = (props) => {
   return (
     <Table.Tr key={data.id}>
       <Table.Td>
-        <Anchor href={`/application/genresets/${databaseId}`}>
+        <Anchor component={Link} href={`/application/genresets/${databaseId}`}>
           {data.name}
         </Anchor>
       </Table.Td>
