@@ -13,7 +13,7 @@ import {
 } from 'gql';
 
 import { QuizTable } from '../../_components/QuizTable';
-import { useCreateQuizModal } from '../../_hooks/useCreateQuizForm';
+import { useCreateQuizModal } from '../../_hooks/useCreateQuizModal';
 import { useDeleteQuizModal } from '../../_hooks/useDeleteQuizModal';
 import { usePagination } from '../../_hooks/usePagination';
 import { useQuizFilter } from '../../_hooks/useQuizFilter';

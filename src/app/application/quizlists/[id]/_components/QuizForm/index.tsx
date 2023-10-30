@@ -67,6 +67,7 @@ export const QuizForm: React.FC<Props> = (props) => {
           <RichTextEditor.Content />
         </RichTextEditor>
       </Input.Wrapper>
+
     </>
   );
 };
