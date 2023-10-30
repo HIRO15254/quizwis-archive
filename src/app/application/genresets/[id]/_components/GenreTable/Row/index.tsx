@@ -35,9 +35,7 @@ export const GenreTableRow: React.FC<Props> = (props) => {
               onClick={toggle}
               style={{ visibility: genre.children.length === 0 ? 'hidden' : undefined }}
             />
-            <GenreBadge color={genre.data.color ?? 'gray'}>
-              {genre.data.name}
-            </GenreBadge>
+            <GenreBadge genre={genre.data} />
           </Group>
         </Table.Td>
         <Table.Td>

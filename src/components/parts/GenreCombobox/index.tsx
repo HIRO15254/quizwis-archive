@@ -1,7 +1,6 @@
 import {
-  Combobox, Input, InputBase, InputBaseProps, InputProps, rem, Text, TextInput, useCombobox,
+  Combobox, InputBase, InputBaseProps, useCombobox,
 } from '@mantine/core';
-import { IconChevronDown } from '@tabler/icons-react';
 import React from 'react';
 
 import { GenreDataFragment } from 'gql';

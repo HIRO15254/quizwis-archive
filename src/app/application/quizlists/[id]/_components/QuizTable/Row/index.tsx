@@ -43,9 +43,7 @@ export const QuizTableRow: React.FC<Props> = (props) => {
       </Table.Td>
       <Table.Td>
         {data.genre && (
-          <GenreBadge color={data.genre.color ?? 'gray'}>
-            {data.genre.name}
-          </GenreBadge>
+          <GenreBadge genre={data.genre} />
         )}
         {!data.genre && (
           <Text c="dimmed">未設定</Text>
