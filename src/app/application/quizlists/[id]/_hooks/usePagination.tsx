@@ -4,7 +4,7 @@ import React, {
   useState,
 } from 'react';
 
-import { DataPerPageSelect } from '../_components/presenter/DataPerPageSelect';
+import { DataPerPageSelect } from '../_components/DataPerPageSelect';
 
 const PAGINATION_DATA = ['10', '20', '50', '100'];
 

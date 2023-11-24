@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useDeleteQuizMutation, useGetQuizLazyQuery } from 'gql';
 import { errorNotification, successNotification } from 'util/notifications';
 
-import { DeleteQuizModal } from '../_components/presenter/DeleteQuizModal';
+import { DeleteQuizModal } from '../_components/DeleteQuizModal';
 
 export const useDeleteQuizModal = () => {
   const [opened, handlers] = useDisclosure();

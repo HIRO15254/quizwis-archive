@@ -1,44 +1,42 @@
-// "use client";
-
-// 各種import
 import { Badge, BadgeProps, Tooltip } from '@mantine/core';
 import React from 'react';
 
-// Propsの型定義
-interface GenreBadgeProps extends BadgeProps {
-  children: string;
+import { GenreDataFragment } from 'gql';
+
+interface Props extends BadgeProps {
+  genre: GenreDataFragment;
   noTooltip?: boolean;
 }
 
 /**
- * 説明
+ * ジャンルを示すためのバッジ
  */
-export const GenreBadge: React.FC<GenreBadgeProps> = (props) => {
+export const GenreBadge: React.FC<Props> = (props) => {
   const {
-    children,
+    genre,
     noTooltip,
     ...others
   } = props;
 
-  if (children.length > 10) {
+  if (genre.name.length > 10) {
     if (noTooltip) {
       return (
-        <Badge variant="light" size="lg" color="gray" {...others}>
-          {`${children.slice(0, 9)}...`}
+        <Badge variant="light" size="lg" color={genre.color} {...others}>
+          {`${genre.name.slice(0, 9)}...`}
         </Badge>
       );
     }
     return (
-      <Tooltip label={children}>
-        <Badge variant="light" size="lg" color="gray" {...others}>
-          {`${children.slice(0, 9)}...`}
+      <Tooltip label={genre.name}>
+        <Badge variant="light" size="lg" color={genre.color} {...others}>
+          {`${genre.name.slice(0, 9)}...`}
         </Badge>
       </Tooltip>
     );
   }
   return (
-    <Badge variant="light" size="lg" {...others}>
-      {children}
+    <Badge variant="light" size="lg" color={genre.color} {...others}>
+      {genre.name}
     </Badge>
   );
 };

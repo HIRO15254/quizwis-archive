@@ -395,7 +395,7 @@ export type GenreDataFragment = { __typename?: 'Genre', id: string, description?
 
 export type GenreSetDataFragment = { __typename?: 'GenreSet', id: string, name: string, description?: string | null };
 
-export type QuizDataFragment = { __typename?: 'Quiz', id: string, question?: string | null, answer?: string | null, otherAnswer?: string | null, explanation?: string | null, source?: string | null, length: number, genre?: { __typename?: 'Genre', id: string, name: string, color: string } | null };
+export type QuizDataFragment = { __typename?: 'Quiz', id: string, question?: string | null, answer?: string | null, otherAnswer?: string | null, explanation?: string | null, source?: string | null, length: number, genre?: { __typename?: 'Genre', id: string, description?: string | null, name: string, ratio: number, color: string } | null };
 
 export type QuizListDataFragment = { __typename?: 'QuizList', id: string, name: string, description?: string | null, quizCount: number, goal?: number | null, genreSet?: { __typename?: 'GenreSet', name: string, id: string } | null };
 
@@ -446,14 +446,14 @@ export type CreateQuizMutationVariables = Exact<{
 }>;
 
 
-export type CreateQuizMutation = { __typename?: 'Mutation', createQuiz: { __typename?: 'Quiz', id: string, question?: string | null, answer?: string | null, otherAnswer?: string | null, explanation?: string | null, source?: string | null, length: number, genre?: { __typename?: 'Genre', id: string, name: string, color: string } | null } };
+export type CreateQuizMutation = { __typename?: 'Mutation', createQuiz: { __typename?: 'Quiz', id: string, question?: string | null, answer?: string | null, otherAnswer?: string | null, explanation?: string | null, source?: string | null, length: number, genre?: { __typename?: 'Genre', id: string, description?: string | null, name: string, ratio: number, color: string } | null } };
 
 export type UpdateQuizMutationVariables = Exact<{
   input: UpdateQuizInput;
 }>;
 
 
-export type UpdateQuizMutation = { __typename?: 'Mutation', updateQuiz: { __typename?: 'Quiz', id: string, question?: string | null, answer?: string | null, otherAnswer?: string | null, explanation?: string | null, source?: string | null, length: number, genre?: { __typename?: 'Genre', id: string, name: string, color: string } | null } };
+export type UpdateQuizMutation = { __typename?: 'Mutation', updateQuiz: { __typename?: 'Quiz', id: string, question?: string | null, answer?: string | null, otherAnswer?: string | null, explanation?: string | null, source?: string | null, length: number, genre?: { __typename?: 'Genre', id: string, description?: string | null, name: string, ratio: number, color: string } | null } };
 
 export type DeleteQuizMutationVariables = Exact<{
   input: DeleteQuizInput;
@@ -521,7 +521,7 @@ export type GetQuizQueryVariables = Exact<{
 }>;
 
 
-export type GetQuizQuery = { __typename?: 'Query', getQuiz: { __typename?: 'Quiz', id: string, question?: string | null, answer?: string | null, otherAnswer?: string | null, explanation?: string | null, source?: string | null, length: number, genre?: { __typename?: 'Genre', id: string, name: string, color: string } | null } };
+export type GetQuizQuery = { __typename?: 'Query', getQuiz: { __typename?: 'Quiz', id: string, question?: string | null, answer?: string | null, otherAnswer?: string | null, explanation?: string | null, source?: string | null, length: number, genre?: { __typename?: 'Genre', id: string, description?: string | null, name: string, ratio: number, color: string } | null } };
 
 export type GetQuizListQueryVariables = Exact<{
   input: GetQuizListInput;
@@ -540,8 +540,15 @@ export type GetQuizzesQueryVariables = Exact<{
 }>;
 
 
-export type GetQuizzesQuery = { __typename?: 'Query', getQuizzes: Array<{ __typename?: 'Quiz', id: string, question?: string | null, answer?: string | null, otherAnswer?: string | null, explanation?: string | null, source?: string | null, length: number, genre?: { __typename?: 'Genre', id: string, name: string, color: string } | null }> };
+export type GetQuizzesQuery = { __typename?: 'Query', getQuizzes: Array<{ __typename?: 'Quiz', id: string, question?: string | null, answer?: string | null, otherAnswer?: string | null, explanation?: string | null, source?: string | null, length: number, genre?: { __typename?: 'Genre', id: string, description?: string | null, name: string, ratio: number, color: string } | null }> };
 
+export const GenreSetDataFragmentDoc = gql`
+    fragment GenreSetData on GenreSet {
+  id
+  name
+  description
+}
+    `;
 export const GenreDataFragmentDoc = gql`
     fragment GenreData on Genre {
   id
@@ -549,13 +556,6 @@ export const GenreDataFragmentDoc = gql`
   name
   ratio
   color
-}
-    `;
-export const GenreSetDataFragmentDoc = gql`
-    fragment GenreSetData on GenreSet {
-  id
-  name
-  description
 }
     `;
 export const QuizDataFragmentDoc = gql`
@@ -568,12 +568,10 @@ export const QuizDataFragmentDoc = gql`
   source
   length
   genre {
-    id
-    name
-    color
+    ...GenreData
   }
 }
-    `;
+    ${GenreDataFragmentDoc}`;
 export const QuizListDataFragmentDoc = gql`
     fragment QuizListData on QuizList {
   id

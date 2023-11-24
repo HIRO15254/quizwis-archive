@@ -41,9 +41,12 @@ export const GenreForm: React.FC<Props> = (props) => {
       <Text size="sm">
         プレビュー
         <br />
-        <GenreBadge color={form.values.color ?? 'gray'}>
-          {form.values.name}
-        </GenreBadge>
+        <GenreBadge
+          genre={{
+            ...form.values,
+            id: 'preview',
+          }}
+        />
       </Text>
       <Textarea
         label="ジャンルの説明"
